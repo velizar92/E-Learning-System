@@ -1,4 +1,6 @@
 using E_LearningSystem.Data.Data;
+using E_LearningSystem.Services.Contracts;
+using E_LearningSystem.Services.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +15,13 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ELearningSystemDbContext>();
+
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<ILectureService, LectureService>();
+builder.Services.AddScoped<IResourceService, ResourceService>();
+builder.Services.AddScoped<ITrainerService, TrainerService>();
 
 var app = builder.Build();
 
