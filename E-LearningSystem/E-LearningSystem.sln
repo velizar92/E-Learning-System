@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E-LearningSystem.Web", "E-LearningSystem.Web\E-LearningSystem.Web.csproj", "{83335C0A-2A0E-47BF-892C-3C64D04D7B93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E-LearningSystem.Web", "E-LearningSystem.Web\E-LearningSystem.Web.csproj", "{83335C0A-2A0E-47BF-892C-3C64D04D7B93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E-LearningSystem.Data", "E-LearningSystem.Data\E-LearningSystem.Data.csproj", "{23CCBA26-456A-42E8-A675-73D54111A5A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E-LearningSystem.Data", "E-LearningSystem.Data\E-LearningSystem.Data.csproj", "{23CCBA26-456A-42E8-A675-73D54111A5A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E-LearningSystem.Services", "E-LearningSystem.Services\E-LearningSystem.Services.csproj", "{B0CE817D-3C66-4246-A1AE-E013E13FE9BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E-LearningSystem.Services", "E-LearningSystem.Services\E-LearningSystem.Services.csproj", "{B0CE817D-3C66-4246-A1AE-E013E13FE9BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E-LearningSystem.Tests", "E-LearningSystem.Tests\E-LearningSystem.Tests.csproj", "{911DB21E-B9ED-4ECC-A816-10F59C3DF833}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E-LearningSystem.Tests", "E-LearningSystem.Tests\E-LearningSystem.Tests.csproj", "{911DB21E-B9ED-4ECC-A816-10F59C3DF833}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E-LearningSystem.Infrastructure", "E-LearningSystem.Infrastructure\E-LearningSystem.Infrastructure.csproj", "{D88B39CF-86F7-4E25-96A6-04DFE1AFC88C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{911DB21E-B9ED-4ECC-A816-10F59C3DF833}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{911DB21E-B9ED-4ECC-A816-10F59C3DF833}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{911DB21E-B9ED-4ECC-A816-10F59C3DF833}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D88B39CF-86F7-4E25-96A6-04DFE1AFC88C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D88B39CF-86F7-4E25-96A6-04DFE1AFC88C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D88B39CF-86F7-4E25-96A6-04DFE1AFC88C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D88B39CF-86F7-4E25-96A6-04DFE1AFC88C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
