@@ -24,7 +24,7 @@
 
         public TrainerStatus Status { get; set; }
 
-        [Required]
+        [Required]      
         public string UserId { get; set; }
 
         public ICollection<Course> Courses { get; set; }

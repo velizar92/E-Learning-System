@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\E-LearningSystem.Services\E-LearningSystem.Services.csproj" />
-    <ProjectReference Include="..\E-LearningSystem.Web\E-LearningSystem.Web.csproj" />
   </ItemGroup>
 
 </Project>

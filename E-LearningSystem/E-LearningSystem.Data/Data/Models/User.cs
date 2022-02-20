@@ -2,7 +2,6 @@
 {
     using Microsoft.AspNetCore.Identity;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
     using static DataConstants.User;
 
@@ -24,11 +23,6 @@
 
         [Required]
         public string ProfileImageUrl { get; set; }
-
-
-        [ForeignKey(nameof(Trainer))]
-        public int TrainerId { get; set; }
-        public Trainer Trainer { get; set; }
 
 
         public ICollection<Course> Courses { get; set; }
