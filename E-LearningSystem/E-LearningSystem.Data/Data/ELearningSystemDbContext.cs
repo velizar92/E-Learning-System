@@ -4,6 +4,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+    using E_LearningSystem.Data.Data.Models;
 
     public class ELearningSystemDbContext : IdentityDbContext<IdentityUser>
     {
@@ -13,13 +14,14 @@
         {
         }
 
-
         public DbSet<Course> Courses { get; set; }
         public DbSet<CourseCategory> CourseCategories { get; set; }
         public DbSet<Lecture> Lectures { get; set; }
         public DbSet<Resource> Resources { get; set; }
         public DbSet<ResourceType> ResourceTypes { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
+        public DbSet<Issue> Issues { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -36,11 +38,6 @@
               .HasOne<User>()
               .WithOne()
               .HasForeignKey<Trainer>(d => d.UserId)
-              .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<Course>()
-              .HasOne(p => p.Trainer)
-              .WithMany(b => b.Courses)
               .OnDelete(DeleteBehavior.Restrict);
         }
     }

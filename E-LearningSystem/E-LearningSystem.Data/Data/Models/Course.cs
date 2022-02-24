@@ -1,5 +1,6 @@
 ﻿namespace E_LearningSystem.Data.Models
 {
+    using E_LearningSystem.Data.Data.Models;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,6 +12,7 @@
         {
             this.Lectures = new HashSet<Lecture>();
             this.Users = new HashSet<User>();
+            this.Issues = new HashSet<Issue>();
         }
 
         [Key]
@@ -38,15 +40,14 @@
 
         [ForeignKey(nameof(Trainer))]
         public int TrainerId { get; set; }
-
         public Trainer Trainer { get; init; }
-
-
-        public string UserId { get; set; }
+     
 
         public ICollection<User> Users { get; set; }
 
         public ICollection<Lecture> Lectures { get; set; }
+
+        public ICollection<Issue> Issues { get; set; }
 
     }
 }
