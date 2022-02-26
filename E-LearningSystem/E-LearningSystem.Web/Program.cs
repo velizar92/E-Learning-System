@@ -1,5 +1,4 @@
 using E_LearningSystem.Data.Data;
-using E_LearningSystem.Services.Contracts;
 using E_LearningSystem.Services.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

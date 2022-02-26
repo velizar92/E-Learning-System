@@ -26,6 +26,10 @@
         public string Description { get; set; }
 
         [Required]
+        [Range(1, int.MaxValue)]
+        public double Price { get; set; }
+
+        [Required]
         public string ImageUrl { get; set; }
 
         public int? AssignedStudents { get; set; }
