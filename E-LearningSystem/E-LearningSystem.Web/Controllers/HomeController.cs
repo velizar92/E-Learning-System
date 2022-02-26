@@ -1,9 +1,9 @@
-﻿using E_LearningSystem.Web.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-
-namespace E_LearningSystem.Web.Controllers
+﻿namespace E_LearningSystem.Web.Controllers
 {
+    using System.Diagnostics;
+    using E_LearningSystem.Web.Models;
+    using Microsoft.AspNetCore.Mvc;
+   
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace E_LearningSystem.Web.Controllers
+﻿namespace E_LearningSystem.Web.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+
     public class CoursesController : Controller
     {
         public IActionResult Index()
