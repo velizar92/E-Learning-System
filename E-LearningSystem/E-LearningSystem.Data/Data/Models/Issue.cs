@@ -1,8 +1,9 @@
-﻿namespace E_LearningSystem.Data.Data.Models
+﻿namespace E_LearningSystem.Data.Models
 {
-    using E_LearningSystem.Data.Models;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+
+    using static DataConstants.Issue;
 
     public class Issue
     {     
@@ -10,13 +11,15 @@
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(IssueTitleMaxLength)]
         public string Title { get; set; }
 
         [Required]
+        [MaxLength(IssueDescriptionMaxLength)]
         public string Description { get; set; }
 
         DateTime? CreationDate { get; set; }
-
+        
         DateTime? ResolvingDate { get; set; }
 
 

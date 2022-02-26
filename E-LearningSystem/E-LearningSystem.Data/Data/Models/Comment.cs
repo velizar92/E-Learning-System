@@ -1,6 +1,7 @@
-﻿namespace E_LearningSystem.Data.Data.Models
+﻿namespace E_LearningSystem.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Comment
     {
@@ -11,6 +12,10 @@
         public string Content { get; set; }
 
         public string UserId { get; set; }
+
+        [ForeignKey(nameof(Lecture))]
+        public int LectureId { get; set; }
+        public Lecture Lecture { get; set; }
      
     }
 }

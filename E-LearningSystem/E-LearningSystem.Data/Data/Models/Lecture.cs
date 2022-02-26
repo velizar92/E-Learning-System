@@ -1,6 +1,5 @@
 ﻿namespace E_LearningSystem.Data.Models
-{
-
+{   
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,6 +10,7 @@
         public Lecture()
         {
             this.Resources = new HashSet<Resource>();
+            this.Comments = new HashSet<Comment>();
         }
 
         [Key]
@@ -31,6 +31,7 @@
 
 
         public ICollection<Resource> Resources { get; set; }
+        public ICollection<Comment> Comments { get; set; }
 
     }
 }

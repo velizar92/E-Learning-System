@@ -45,5 +45,14 @@
             public const int ResourceTypeNameMinLength = 5;
             public const int ResourceTypeNameMaxLength = 100;
         }
+
+        public class Issue
+        {
+            public const int IssueTitleMinLength = 10;
+            public const int IssueTitleMaxLength = 150;
+
+            public const int IssueDescriptionMinLength = 20;
+            public const int IssueDescriptionMaxLength = 1000;
+        }
     }
 }
