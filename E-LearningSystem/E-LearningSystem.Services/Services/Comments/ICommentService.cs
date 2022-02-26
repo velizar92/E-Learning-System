@@ -1,4 +1,4 @@
-﻿namespace E_LearningSystem.Services.Contracts
+﻿namespace E_LearningSystem.Services.Services
 {
     public interface ICommentService
     {
