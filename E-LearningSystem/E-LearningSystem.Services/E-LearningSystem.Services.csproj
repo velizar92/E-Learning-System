@@ -16,11 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Comments\Models\" />
-    <Folder Include="Services\Issues\Models\" />
     <Folder Include="Services\Resources\Models\" />
-    <Folder Include="Services\ShoppingCarts\Models\" />
-    <Folder Include="Services\Trainers\Models\" />
   </ItemGroup>
 
 </Project>
