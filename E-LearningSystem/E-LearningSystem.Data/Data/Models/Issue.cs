@@ -22,6 +22,8 @@
         
         DateTime? ResolvingDate { get; set; }
 
+        public string UserId { get; set; }
+
 
         [ForeignKey(nameof(Course))]
         public int CourseId { get; set; }
