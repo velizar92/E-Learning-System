@@ -21,8 +21,7 @@
 
         public async Task<int> AddLectureToCourse(int _courseId, string _name, string _description, IEnumerable<IFormFile> _resourceFiles)
         {
-            List<Resource> resources = new List<Resource>();
-            int tempResourceId = 1;
+            List<Resource> resources = new List<Resource>();           
             foreach (var file in _resourceFiles)
             {
                 string fullpath = Path.Combine(webHostEnvironment.WebRootPath, file.FileName);
@@ -107,7 +106,6 @@
             await dbContext.SaveChangesAsync();
             return true;
         }
-
 
 
         public async Task<LectureDetailsServiceModel> GetLectureDetails(int _lectureId)
