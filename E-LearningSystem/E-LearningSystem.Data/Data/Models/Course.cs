@@ -34,6 +34,8 @@
 
         public int? AssignedStudents { get; set; }
 
+        public string UserId { get; set; }
+
 
         [ForeignKey(nameof(CourseCategory))]
         public int CourseCategoryId { get; set; }

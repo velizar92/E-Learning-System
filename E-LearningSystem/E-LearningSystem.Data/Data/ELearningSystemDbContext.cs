@@ -3,7 +3,7 @@
     using E_LearningSystem.Data.Models;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;  
 
     public class ELearningSystemDbContext : IdentityDbContext<IdentityUser>
     {
@@ -22,8 +22,8 @@
         public DbSet<Issue> Issues { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
-
-
+      
+      
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -46,6 +46,7 @@
              .WithOne()
              .HasForeignKey<ShoppingCart>(d => d.UserId)
              .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

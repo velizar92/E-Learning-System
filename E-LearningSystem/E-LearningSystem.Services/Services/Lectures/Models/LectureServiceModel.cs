@@ -1,8 +1,8 @@
-﻿namespace E_LearningSystem.Services.Services.Courses.Models
+﻿namespace E_LearningSystem.Services.Services.Lectures.Models
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class AllCoursesServiceModel
+    public class LectureServiceModel
     {
         [Required]
         public int Id { get; set; }
@@ -12,11 +12,5 @@
 
         [Required]
         public string Description { get; set; }
-
-        [Required]
-        public double Price { get; set; }
-
-        [Required]
-        public string ImageUrl { get; set; }
     }
 }
