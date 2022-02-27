@@ -1,11 +1,12 @@
 ﻿namespace E_LearningSystem.Data.Models
 {
+    using E_LearningSystem.Data.Data.Models;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     using static DataConstants.Resource;
 
-    public class Resource
+    public class Resource : BaseEntity
     {
         [Key]
         public int Id { get; set; }

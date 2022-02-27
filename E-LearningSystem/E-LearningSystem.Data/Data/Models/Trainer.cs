@@ -1,9 +1,10 @@
 ﻿namespace E_LearningSystem.Data.Models
 {
     using E_LearningSystem.Data.Data.Enums;
+    using E_LearningSystem.Data.Data.Models;
     using System.ComponentModel.DataAnnotations;
 
-    public class Trainer
+    public class Trainer : BaseEntity
     {
         [Key]
         public int Id { get; set; }

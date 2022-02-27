@@ -1,11 +1,12 @@
 ﻿namespace E_LearningSystem.Data.Models
-{   
+{
+    using E_LearningSystem.Data.Data.Models;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     using static DataConstants.Lecture;
 
-    public class Lecture
+    public class Lecture : BaseEntity
     {
         public Lecture()
         {

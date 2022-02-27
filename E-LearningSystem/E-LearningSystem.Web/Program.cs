@@ -1,7 +1,7 @@
 using E_LearningSystem.Data.Data;
+using E_LearningSystem.Data.Models;
 using E_LearningSystem.Services.Services;
 using E_LearningSystem.Services.Services.Statistics;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +13,7 @@ builder.Services.AddDbContext<ELearningSystemDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ELearningSystemDbContext>();
 
 builder.Services.AddControllersWithViews();

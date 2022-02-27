@@ -1,10 +1,12 @@
 ﻿namespace E_LearningSystem.Data.Data
 {
-    using E_LearningSystem.Data.Models;
+    using System.Threading;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;  
-
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+    using E_LearningSystem.Data.Models;
+    using E_LearningSystem.Data.Data.Models;
+   
     public class ELearningSystemDbContext : IdentityDbContext<IdentityUser>
     {
 
@@ -46,7 +48,39 @@
              .WithOne()
              .HasForeignKey<ShoppingCart>(d => d.UserId)
              .OnDelete(DeleteBehavior.Restrict);
-
         }
+
+        public override int SaveChanges()
+        {
+            ApplyTimestamps();
+            return base.SaveChanges();
+        }
+
+      
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            ApplyTimestamps();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+
+        private void ApplyTimestamps()
+        {
+            var entities = ChangeTracker.Entries()
+                .Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
+
+            foreach (var entity in entities)
+            {
+                var now = DateTime.UtcNow; 
+
+                if (entity.State == EntityState.Added)
+                {
+                    ((BaseEntity)entity.Entity).CreatedOn = now;
+                }
+                ((BaseEntity)entity.Entity).UpdatedOn = now;
+            }
+        }
+
+
     }
 }

@@ -1,8 +1,9 @@
 ﻿namespace E_LearningSystem.Data.Models
-{   
+{
+    using E_LearningSystem.Data.Data.Models;
     using System.ComponentModel.DataAnnotations;
     
-    public class ShoppingCart
+    public class ShoppingCart : BaseEntity
     {
         public ShoppingCart()
         {
