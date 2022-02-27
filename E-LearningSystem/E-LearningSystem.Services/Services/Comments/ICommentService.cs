@@ -8,7 +8,7 @@
 
         Task<bool> DeleteComment(int _commentId);
 
-        IEnumerable<Task<AllLectureCommentsServiceModel>> GetLectureComments(string _lectureId);
+        Task<IEnumerable<AllLectureCommentsServiceModel>> GetLectureComments(int _lectureId);
         
     }
 }

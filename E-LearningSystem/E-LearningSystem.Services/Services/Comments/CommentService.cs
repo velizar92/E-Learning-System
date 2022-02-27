@@ -1,6 +1,8 @@
 ﻿namespace E_LearningSystem.Services.Services
 {
+    using Microsoft.EntityFrameworkCore;
     using E_LearningSystem.Data.Data;
+    using E_LearningSystem.Data.Models;
 
     public class CommentService : ICommentService
     {
@@ -12,24 +14,81 @@
         }
 
 
-        public Task<int> CreateComment(int _lectureId, string _userId, string _content)
+        public async Task<int> CreateComment(int _lectureId, string _userId, string _content)
         {
-            throw new NotImplementedException();
+            var lecture = await dbContext
+                             .Lectures
+                             .Where(l => l.Id == _lectureId).FirstOrDefaultAsync();
+
+            if (lecture == null)
+            {
+                return 0;
+            }
+
+            var comment = new Comment()
+            {
+                LectureId = _lectureId,
+                UserId = _userId,
+                Content = _content,
+            };
+
+
+            await dbContext.Comments.AddAsync(comment);
+            await dbContext.SaveChangesAsync();
+
+            return comment.Id;
         }
 
-        public Task<bool> DeleteComment(int _commentId)
+
+        public async Task<bool> DeleteComment(int _commentId)
         {
-            throw new NotImplementedException();
+            var comment = await dbContext
+                .Comments
+                .FirstOrDefaultAsync(c => c.Id == _commentId);
+
+            if (comment != null)
+            {
+                dbContext.Comments.Remove(comment);
+                return true;
+            }
+
+            return false;
         }
 
-        public Task<bool> EditComment(int _commentId, string _content)
+
+        public async Task<bool> EditComment(int _commentId, string _content)
         {
-            throw new NotImplementedException();
+            var comment = await dbContext
+                            .Comments
+                            .Where(c => c.Id == _commentId).FirstOrDefaultAsync();
+
+            if (comment == null)
+            {
+                return false;
+            }
+
+            comment.Content = _content;
+            await dbContext.SaveChangesAsync();
+
+            return true;
         }
 
-        public IEnumerable<Task<AllLectureCommentsServiceModel>> GetLectureComments(string _lectureId)
+
+        public async Task<IEnumerable<AllLectureCommentsServiceModel>> GetLectureComments(int _lectureId)
         {
-            throw new NotImplementedException();
+            return await dbContext
+                      .Comments
+                      .Where(c => c.LectureId == _lectureId)
+                      .Select(c => new AllLectureCommentsServiceModel
+                      {
+                          Id = c.Id,
+                          LectureId = c.LectureId,
+                          Content = c.Content
+                      })
+                      .ToListAsync();
+
         }
+
+
     }
 }
