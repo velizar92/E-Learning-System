@@ -1,6 +1,6 @@
 ﻿namespace E_LearningSystem.Services.Services
 {
-    using E_LearningSystem.Data.Data.Enums;
+    using E_LearningSystem.Data.Enums;
 
     public interface ITrainerService
     {

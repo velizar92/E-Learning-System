@@ -4,8 +4,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-    using E_LearningSystem.Data.Models;
-    using E_LearningSystem.Data.Data.Models;
+    using E_LearningSystem.Data.Models;  
    
     public class ELearningSystemDbContext : IdentityDbContext<IdentityUser>
     {

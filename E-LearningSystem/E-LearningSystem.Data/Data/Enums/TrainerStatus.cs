@@ -1,4 +1,4 @@
-﻿namespace E_LearningSystem.Data.Data.Enums
+﻿namespace E_LearningSystem.Data.Enums
 {
     public enum TrainerStatus
     {

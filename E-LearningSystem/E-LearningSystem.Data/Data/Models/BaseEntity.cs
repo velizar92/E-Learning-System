@@ -1,4 +1,4 @@
-﻿namespace E_LearningSystem.Data.Data.Models
+﻿namespace E_LearningSystem.Data.Models
 {
     public abstract class BaseEntity
     {

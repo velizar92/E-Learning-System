@@ -3,9 +3,8 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Identity;
     using E_LearningSystem.Data.Data;
-    using E_LearningSystem.Data.Data.Enums;
+    using E_LearningSystem.Data.Enums;
     using E_LearningSystem.Data.Models;
-
 
     public class TrainerService : ITrainerService
     {

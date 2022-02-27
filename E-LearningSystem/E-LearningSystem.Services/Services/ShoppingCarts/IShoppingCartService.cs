@@ -1,7 +1,7 @@
-﻿using E_LearningSystem.Data.Models;
-
-namespace E_LearningSystem.Services.Services
+﻿namespace E_LearningSystem.Services.Services
 {
+    using E_LearningSystem.Data.Models;
+
     public interface IShoppingCartService
     {
         Task<bool> AddCourseToCart(int _shoppingCartId, int _courseId);
