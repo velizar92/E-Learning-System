@@ -151,6 +151,7 @@
         {
             return await dbContext
                            .Courses
+                           .OrderByDescending(c => c.CreatedOn)
                            .Select(c => new LatestCoursesServiceModel
                            {
                                Id = c.Id,
