@@ -43,6 +43,7 @@
             }
 
             shoppingCart.Courses.Clear();
+            await dbContext.SaveChangesAsync();
             return true;
         }
 

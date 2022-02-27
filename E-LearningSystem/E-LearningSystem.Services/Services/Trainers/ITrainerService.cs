@@ -7,13 +7,11 @@
         Task<int> CreateTrainer(string _firstName, string _lastName, string _userName,
             string _email, string _profileImageUrl, string _cvUrl, TrainerStatus _trainerStatus);
 
-        Task<bool> EditTrainer(int _trainerId, string _firstName, string _lastName, string _userName,
-            string _email, string _profileImageUrl, string _cvUrl, TrainerStatus _trainerStatus);
+        Task<bool> EditTrainer(int _trainerId, string _fullName, string _cvUrl, TrainerStatus _trainerStatus);
 
         Task<bool> DeleteTrainer(int _trainerId);
 
-        IEnumerable<Task<AllTrainersServiceModel>> GetAllTrainers();
+        Task<IEnumerable<AllTrainersServiceModel>> GetAllTrainers();
 
-        IEnumerable<Task<AllTrainersServiceModel>> GetTrainersByCourse(string _courseName);
     }
 }
