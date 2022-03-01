@@ -1,1 +1,18 @@
-﻿
+﻿@using E_LearningSystem.Services.Services.Courses.Models
+@model IEnumerable<AllCoursesServiceModel>
+
+<div class="row">
+    @foreach (var course in Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3" style="width: 18rem;">
+                <img src="../@course.ImageUrl" class="card-img-top" alt="Test" width="300" height="300">
+                <div class="card-body">
+                    <h5 class="card-title">@course.Name</h5>
+                    <p class="card-text">@course.Description</p>
+                    <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-primary">Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

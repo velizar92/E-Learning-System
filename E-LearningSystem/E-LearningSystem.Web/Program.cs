@@ -5,6 +5,7 @@ using E_LearningSystem.Data.Data;
 using E_LearningSystem.Data.Models;
 using E_LearningSystem.Services.Services;
 using E_LearningSystem.Services.Services.Statistics;
+using E_LearningSystem.Infrastructure.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,8 @@ builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IIssueService, IssueService>();
 builder.Services.AddScoped<IStatisticService, StatisticService>();
 
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();    
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -52,6 +55,9 @@ else
 }
 
 app.UseHttpsRedirection();
+
+SeedDatabase();
+
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -65,3 +71,15 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+
+
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.InitializeDatabase(app);
+    }
+}
+
