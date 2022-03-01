@@ -1,11 +1,10 @@
-﻿namespace E_LearningSystem.Services.Services.Lectures.Models
+﻿namespace E_LearningSystem.Web.Models.Lecture
 {
     using System.ComponentModel.DataAnnotations;
     using E_LearningSystem.Data.Models;
-   
-    public class LectureServiceModel
+    
+    public class CreateLectureFormModel
     {
-        [Required]
         public int Id { get; set; }
 
         [Required]

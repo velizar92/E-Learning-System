@@ -23,9 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Lectures\" />
     <Folder Include="Views\Trainers\" />
-    <Folder Include="Views\Resources\" />
   </ItemGroup>
 
 </Project>

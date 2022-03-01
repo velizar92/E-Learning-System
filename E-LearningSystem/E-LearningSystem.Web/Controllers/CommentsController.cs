@@ -20,7 +20,6 @@
         }
 
 
-
         [HttpPost]
         public async Task<IActionResult> CreateComment(int _lectureId, CommentFormModel _commentModel)
         {

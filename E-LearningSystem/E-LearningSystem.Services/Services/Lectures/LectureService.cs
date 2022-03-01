@@ -5,6 +5,7 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using E_LearningSystem.Data.Models;
+    using E_LearningSystem.Services.Services.Lectures.Models;
 
     public class LectureService : ILectureService
     {
@@ -105,6 +106,22 @@
 
             await dbContext.SaveChangesAsync();
             return true;
+        }
+
+
+        public async Task<LectureServiceModel> GetLectureById(int _lectureId)
+        {
+            return await dbContext
+                             .Lectures
+                             .Where(l => l.Id == _lectureId)
+                             .Select(l => new LectureServiceModel
+                             {
+                                 Id = l.Id,
+                                 Name = l.Name,
+                                 Description = l.Description,
+                                 Resources = (Resource[])l.Resources,
+                             })
+                             .FirstOrDefaultAsync();
         }
 
 
