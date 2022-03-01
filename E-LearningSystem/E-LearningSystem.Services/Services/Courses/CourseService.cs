@@ -73,7 +73,7 @@
         }
 
 
-        public async Task<bool> EditCourse(int _courseId, string _name, string _description, string _imageUrl, int _categoryId)
+        public async Task<bool> EditCourse(int _courseId, string _name, string _description, int _categoryId, IFormFile _pictureFile)
         {
             var course = await dbContext.Courses.FindAsync(_courseId);
 
@@ -82,9 +82,15 @@
                 return false;
             }
 
+            string fullpath = Path.Combine(webHostEnvironment.WebRootPath, _pictureFile.FileName);
+            using (var stream = new FileStream(fullpath, FileMode.Create))
+            {
+                await _pictureFile.CopyToAsync(stream);
+            }
+
             course.Name = _name;
             course.Description = _description;
-            course.ImageUrl = _imageUrl;
+            course.ImageUrl = _pictureFile.FileName;
             course.CourseCategoryId = _categoryId;
 
             await dbContext.SaveChangesAsync();
@@ -121,6 +127,23 @@
                             })
                             .ToListAsync();
 
+        }
+
+        public async Task<CourseServiceModel> GetCourseById(int _id)
+        {
+            var course = await dbContext
+                            .Courses    
+                            .Where(c => c.Id == _id)
+                            .Select(c => new CourseServiceModel
+                            { 
+                                Name = c.Name,
+                                Description= c.Description,
+                                ImageUrl = c.ImageUrl,
+                                CategoryId = c.CourseCategoryId
+                            })
+                            .FirstOrDefaultAsync();
+
+            return course;
         }
 
 
@@ -182,22 +205,5 @@
                              .ToListAsync();          
         }
 
-
-        //Get my course as a normal user ("Trainer")
-        public async Task<IEnumerable<AllCoursesServiceModel>> GetMyCourses(int _trainerId)
-        {
-            return await dbContext
-                             .Courses
-                             .Where(c => c.TrainerId == _trainerId)
-                             .Select(c => new AllCoursesServiceModel
-                             {
-                                 Id = c.Id,
-                                 Name = c.Name,
-                                 Description = c.Description,
-                                 Price = c.Price,
-                                 ImageUrl = c.ImageUrl,
-                             })
-                             .ToListAsync();
-        }
     }
 }

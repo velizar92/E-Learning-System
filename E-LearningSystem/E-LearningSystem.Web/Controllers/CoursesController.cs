@@ -22,7 +22,7 @@
 
         [HttpGet]
         public async Task<IActionResult> Create()
-        {       
+        {
             return View(new CourseFormModel
             {
                 Categories = await courseService.GetAllCourseCategories()
@@ -55,16 +55,64 @@
                                  _pictureFile);
 
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(MyCourses));
+        }
+
+
+        [HttpGet]
+        public IActionResult Edit(int _id)
+        {
+            var course = courseService.GetCourseById(_id);
+
+            return View(course);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int _courseId, CourseFormModel _courseModel, IFormFile _pictureFile)
+        {
+            var user = await userManagerService.GetUserAsync(HttpContext.User);
+
+            if (!this.courseService.CheckIfCourseCategoryExists(_courseModel.CategoryId))
+            {
+                this.ModelState.AddModelError(nameof(_courseModel.CategoryId), "Category does not exist.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                _courseModel.Categories = await courseService.GetAllCourseCategories();
+
+                return View(_courseModel);
+            }
+
+            var course = courseService.EditCourse(
+                                _courseId,
+                                _courseModel.Name,
+                                _courseModel.Description,
+                                _courseModel.CategoryId,
+                                _pictureFile);
+
+
+            return RedirectToAction(nameof(MyCourses));
         }
 
 
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> AllCourses()
         {
             var courses = await courseService.GetAllCourses();
 
             return View(courses);
+        }
+
+
+
+        public async Task<IActionResult> MyCourses()
+        {
+            var user = await userManagerService.GetUserAsync(HttpContext.User);
+            var myCourses = await courseService.GetMyCourses(user.Id);
+
+            return View(myCourses);
         }
 
 
@@ -86,7 +134,7 @@
                 return BadRequest();
             }
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(AllCourses));
         }
     }
 }
