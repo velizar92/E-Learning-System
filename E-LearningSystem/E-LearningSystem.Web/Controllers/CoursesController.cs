@@ -21,7 +21,7 @@
 
 
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> CreateCourse()
         {
             return View(new CourseFormModel
             {
@@ -31,7 +31,7 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> Create(CourseFormModel _courseModel, IFormFile _pictureFile)
+        public async Task<IActionResult> CreateCourse(CourseFormModel _courseModel, IFormFile _pictureFile)
         {
             var user = await this.userManagerService.GetUserAsync(HttpContext.User);
 
@@ -60,7 +60,7 @@
 
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int _id)
+        public async Task<IActionResult> EditCourse(int _id)
         {
             var course = await this.courseService.GetCourseById(_id);
 
@@ -77,7 +77,7 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int _courseId, CourseFormModel _courseModel, IFormFile _pictureFile)
+        public async Task<IActionResult> EditCourse(int _courseId, CourseFormModel _courseModel, IFormFile _pictureFile)
         {
             var user = await userManagerService.GetUserAsync(HttpContext.User);
 
@@ -133,7 +133,7 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int _id)
+        public async Task<IActionResult> DeleteCourse(int _id)
         {
             var result = await courseService.DeleteCourse(_id);
 

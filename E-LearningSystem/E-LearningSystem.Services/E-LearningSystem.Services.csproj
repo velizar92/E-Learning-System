@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Resources\Models\" />
     <Folder Include="Services\Statistics\Models\" />
   </ItemGroup>
 

@@ -19,7 +19,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(int _courseId, IssueFormModel _issueModel)
+        public async Task<IActionResult> CreateIssue(int _courseId, IssueFormModel _issueModel)
         {
             var user = await this.userManagerService.GetUserAsync(HttpContext.User);
 
@@ -31,7 +31,7 @@
 
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int _commentId)
+        public async Task<IActionResult> EditIssue(int _commentId)
         {
             var issue = await this.issueService.GetIssueDetails(_commentId);
 
@@ -46,7 +46,7 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int _issueId, IssueFormModel _issueModel)
+        public async Task<IActionResult> EditIssue(int _issueId, IssueFormModel _issueModel)
         {
             bool isEdited = await this.issueService.EditIssue(_issueId, _issueModel.Title, _issueModel.Description);
 
@@ -57,7 +57,7 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int _issueId)
+        public async Task<IActionResult> DeleteIssue(int _issueId)
         {
             bool isDeleted = await this.issueService.DeleteIssue(_issueId);
 

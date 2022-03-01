@@ -22,7 +22,7 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> Create(int _lectureId, CommentFormModel _commentModel)
+        public async Task<IActionResult> CreateComment(int _lectureId, CommentFormModel _commentModel)
         {
             var user = await this.userManagerService.GetUserAsync(HttpContext.User);
 
@@ -34,7 +34,7 @@
 
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int _commentId)
+        public async Task<IActionResult> EditComment(int _commentId)
         {
             var comment = await this.commentService.GetCommentById(_commentId);
            
@@ -43,7 +43,7 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int _commentId, string _content)
+        public async Task<IActionResult> EditComment(int _commentId, string _content)
         {
             bool isEdited = await this.commentService.EditComment(_commentId, _content);
 
@@ -54,7 +54,7 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int _commentId)
+        public async Task<IActionResult> DeleteComment(int _commentId)
         {
             bool isDeleted = await this.commentService.DeleteComment(_commentId);
 
