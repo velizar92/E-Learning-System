@@ -22,4 +22,10 @@
     <ProjectReference Include="..\E-LearningSystem.Services\E-LearningSystem.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Lectures\" />
+    <Folder Include="Views\Trainers\" />
+    <Folder Include="Views\Resources\" />
+  </ItemGroup>
+
 </Project>

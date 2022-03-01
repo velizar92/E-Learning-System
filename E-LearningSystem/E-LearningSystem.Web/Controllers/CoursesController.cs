@@ -60,11 +60,19 @@
 
 
         [HttpGet]
-        public IActionResult Edit(int _id)
+        public async Task<IActionResult> Edit(int _id)
         {
-            var course = this.courseService.GetCourseById(_id);
+            var course = await this.courseService.GetCourseById(_id);
 
-            return View(course);
+            CourseFormModel courseFormModel = new CourseFormModel
+            {
+                Name = course.Name,
+                Description = course.Description,
+                CategoryId = course.CategoryId,
+                ImageUrl = course.ImageUrl
+            };
+
+            return View(courseFormModel);
         }
 
 
