@@ -6,6 +6,7 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
+    <img src="~/@UserManager.GetUserAsync(User).Result.ProfileImageUrl" width="30" height="30"/>
     <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
     </li>

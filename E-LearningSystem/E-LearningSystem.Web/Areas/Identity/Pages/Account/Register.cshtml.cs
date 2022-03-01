@@ -89,8 +89,7 @@ namespace E_LearningSystem.Web.Areas.Identity.Pages.Account
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
-
-            [Required]
+        
             [Display(Name = "Profile Image")]
             public string ProfileImageUrl { get; set; }
 
