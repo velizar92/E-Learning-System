@@ -15,7 +15,7 @@
         }
 
 
-        public IActionResult Details(int _id)
+        public IActionResult Details(string _id)
         {
             var cartDetails = this.shoppingCartService.GetCartDetails(_id);
 
@@ -24,7 +24,7 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> AddCourseToCart(int _shoppingCartId, int _courseId)
+        public async Task<IActionResult> AddCourseToCart(string _shoppingCartId, int _courseId)
         {
             bool isAdded = await this.shoppingCartService.AddCourseToCart(_shoppingCartId, _courseId);
 
@@ -35,7 +35,7 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> DeleteCourseFromCart(int _shoppingCartId, int _courseId)
+        public async Task<IActionResult> DeleteCourseFromCart(string _shoppingCartId, int _courseId)
         {
             bool isDeleted = await this.shoppingCartService.DeleteCourseFromCart(_shoppingCartId, _courseId);
 
@@ -46,7 +46,7 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> BuyCourses(int _shoppingCartId)
+        public async Task<IActionResult> BuyCourses(string _shoppingCartId)
         {
             bool areBuyed = await this.shoppingCartService.BuyCourses(_shoppingCartId);
 

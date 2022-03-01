@@ -43,11 +43,6 @@
         public CourseCategory CourseCategory { get; set; }
 
 
-        [ForeignKey(nameof(Trainer))]
-        public int TrainerId { get; set; }
-        public Trainer Trainer { get; init; }
-     
-
         public ICollection<User> Users { get; set; }
 
         public ICollection<Lecture> Lectures { get; set; }

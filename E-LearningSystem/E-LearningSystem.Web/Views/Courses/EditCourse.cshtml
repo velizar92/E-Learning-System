@@ -1,1 +1,38 @@
-﻿
+﻿@using E_LearningSystem.Web.Models.Course
+@model CourseFormModel
+
+<form method="post" enctype="multipart/form-data"
+      asp-controller="Courses" asp-action="CreateCourse">
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Name</label>
+        <input asp-for="Name" class="form-control" placeholder="Some Name">
+        <span asp-validation-for="Name" class="small text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Description</label>
+        <textarea asp-for="Description" class="form-control" placeholder="Some Description"></textarea> 
+        <span asp-validation-for="Description" class="small text-danger"></span>
+    </div>
+
+    
+
+    <div class="form-group">
+        <label asp-for="CategoryId"></label>
+        <select asp-for="CategoryId" class="form-control">
+            @foreach (var category in Model.Categories) 
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        </select>
+        <span asp-validation-for="CategoryId" class="small text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Image Url</label>
+        <input type="file" name="_pictureFile" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

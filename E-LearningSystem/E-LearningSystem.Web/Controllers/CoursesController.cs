@@ -5,7 +5,8 @@
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Web.Models.Course;
     using E_LearningSystem.Data.Models;
-
+    using E_LearningSystem.Infrastructure.Extensions;
+    using Microsoft.AspNetCore.Authorization;
 
     public class CoursesController : Controller
     {
@@ -19,10 +20,10 @@
         }
 
 
-
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> CreateCourse()
-        {
+        {       
             return View(new CourseFormModel
             {
                 Categories = await this.courseService.GetAllCourseCategories()
@@ -31,9 +32,12 @@
 
 
         [HttpPost]
+        [Authorize]
+        //Will be permitted only for Admin and Trainer roles
         public async Task<IActionResult> CreateCourse(CourseFormModel _courseModel, IFormFile _pictureFile)
-        {
-            var user = await this.userManagerService.GetUserAsync(HttpContext.User);
+        {           
+            string userId = User.Id();
+            ModelState.Remove("Categories");
 
             if (!this.courseService.CheckIfCourseCategoryExists(_courseModel.CategoryId))
             {
@@ -48,7 +52,7 @@
             }
 
             int courseId = await this.courseService.CreateCourse(
-                                 user.Id,
+                                  userId,
                                  _courseModel.Name,
                                  _courseModel.Description,
                                  _courseModel.CategoryId,
@@ -60,7 +64,8 @@
 
 
         [HttpGet]
-        public async Task<IActionResult> EditCourse(int _id)
+        [Authorize]
+        public async Task<IActionResult> EditCourse(int _id, IFormFile _pictureFile)
         {
             var course = await this.courseService.GetCourseById(_id);
 
@@ -68,8 +73,7 @@
             {
                 Name = course.Name,
                 Description = course.Description,
-                CategoryId = course.CategoryId,
-                ImageUrl = course.ImageUrl
+                CategoryId = course.CategoryId,              
             };
 
             return View(courseFormModel);
@@ -77,10 +81,9 @@
 
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> EditCourse(int _courseId, CourseFormModel _courseModel, IFormFile _pictureFile)
-        {
-            var user = await userManagerService.GetUserAsync(HttpContext.User);
-
+        {           
             if (!this.courseService.CheckIfCourseCategoryExists(_courseModel.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(_courseModel.CategoryId), "Category does not exist.");
@@ -114,16 +117,17 @@
         }
 
 
-
+        [Authorize]
         public async Task<IActionResult> MyCourses()
         {
-            var user = await userManagerService.GetUserAsync(HttpContext.User);
-            var myCourses = await courseService.GetMyCourses(user.Id);
+            string userId = User.Id();
+            var myCourses = await courseService.GetMyCourses(userId);
 
             return View(myCourses);
         }
 
 
+        [Authorize]
         public async Task<IActionResult> Details(int _id)
         {
             var courseDetails = await courseService.GetCourseDetails(_id);
@@ -133,6 +137,7 @@
 
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> DeleteCourse(int _id)
         {
             var result = await courseService.DeleteCourse(_id);

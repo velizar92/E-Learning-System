@@ -14,7 +14,7 @@
         }
 
 
-        public async Task<bool> AddCourseToCart(int _shoppingCartId, int _courseId)
+        public async Task<bool> AddCourseToCart(string _shoppingCartId, int _courseId)
         {
             var shoppingCart = await GetCartById(_shoppingCartId);
 
@@ -33,7 +33,7 @@
         }
 
 
-        public async Task<bool> BuyCourses(int _shoppingCartId)
+        public async Task<bool> BuyCourses(string _shoppingCartId)
         {
             var shoppingCart = await GetCartById(_shoppingCartId);
 
@@ -48,7 +48,7 @@
         }
 
 
-        public async Task<bool> DeleteCourseFromCart(int _shoppingCartId, int _courseId)
+        public async Task<bool> DeleteCourseFromCart(string _shoppingCartId, int _courseId)
         {
              var shoppingCart = await GetCartById(_shoppingCartId);
 
@@ -67,7 +67,7 @@
         }
 
 
-        public async Task<ShoppingCart> GetCartById(int _shoppingCartId)
+        public async Task<ShoppingCart> GetCartById(string _shoppingCartId)
         {
             var shoppingCart = await dbContext
                                 .ShoppingCarts
@@ -77,7 +77,7 @@
         }
 
 
-        public async Task<ShoppingCartDetailsServiceModel> GetCartDetails(int _shoppingCartId)
+        public async Task<ShoppingCartDetailsServiceModel> GetCartDetails(string _shoppingCartId)
         {
             var shoppingCart = await GetCartById(_shoppingCartId);
 

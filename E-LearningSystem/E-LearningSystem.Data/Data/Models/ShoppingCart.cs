@@ -1,5 +1,6 @@
 ﻿namespace E_LearningSystem.Data.Models
 {
+    using System;
     using System.ComponentModel.DataAnnotations; 
      
     public class ShoppingCart : BaseEntity
@@ -10,7 +11,7 @@
         }
 
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         public string UserId { get; set; }
 

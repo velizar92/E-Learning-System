@@ -5,8 +5,8 @@
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Web.Models.Comment;
-    
-   
+    using E_LearningSystem.Infrastructure.Extensions;
+
     public class CommentsController : Controller
     {
         private readonly ICommentService commentService;
@@ -23,9 +23,9 @@
         [HttpPost]
         public async Task<IActionResult> CreateComment(int _lectureId, CommentFormModel _commentModel)
         {
-            var user = await this.userManagerService.GetUserAsync(HttpContext.User);
+            string userId = User.Id();
 
-            int commentId = await this.commentService.CreateComment(_lectureId, user.Id, _commentModel.Content);
+            int commentId = await this.commentService.CreateComment(_lectureId, userId, _commentModel.Content);
 
             return RedirectToAction(nameof(AllComments));
         }

@@ -4,7 +4,7 @@
 
     public class ShoppingCartDetailsServiceModel
     {
-        public int CartId { get; set; }
+        public string CartId { get; set; }
 
         public IEnumerable<CourseDetailsServiceModel> Courses { get; set; }
     }

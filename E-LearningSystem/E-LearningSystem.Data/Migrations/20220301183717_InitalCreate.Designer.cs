@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_LearningSystem.Data.Migrations
 {
     [DbContext(typeof(ELearningSystemDbContext))]
-    [Migration("20220227155240_AddBaseEntityClassAndInheritance")]
-    partial class AddBaseEntityClassAndInheritance
+    [Migration("20220301183717_InitalCreate")]
+    partial class InitalCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -107,11 +107,8 @@ namespace E_LearningSystem.Data.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int?>("ShoppingCartId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TrainerId")
-                        .HasColumnType("int");
+                    b.Property<string>("ShoppingCartId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("datetime2");
@@ -125,8 +122,6 @@ namespace E_LearningSystem.Data.Migrations
                     b.HasIndex("CourseCategoryId");
 
                     b.HasIndex("ShoppingCartId");
-
-                    b.HasIndex("TrainerId");
 
                     b.ToTable("Courses");
                 });
@@ -275,11 +270,8 @@ namespace E_LearningSystem.Data.Migrations
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.ShoppingCart", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -609,15 +601,7 @@ namespace E_LearningSystem.Data.Migrations
                         .WithMany("Courses")
                         .HasForeignKey("ShoppingCartId");
 
-                    b.HasOne("E_LearningSystem.Data.Models.Trainer", "Trainer")
-                        .WithMany()
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("CourseCategory");
-
-                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.Issue", b =>

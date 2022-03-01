@@ -5,6 +5,7 @@
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Web.Models.Issue;
+    using E_LearningSystem.Infrastructure.Extensions;
 
     public class IssuesController : Controller
     {
@@ -21,9 +22,9 @@
         [HttpPost]
         public async Task<IActionResult> CreateIssue(int _courseId, IssueFormModel _issueModel)
         {
-            var user = await this.userManagerService.GetUserAsync(HttpContext.User);
+            string userId = User.Id();
 
-            int issueId = await this.issueService.CreateIssue(user.Id, _courseId, _issueModel.Title, _issueModel.Description);
+            int issueId = await this.issueService.CreateIssue(userId, _courseId, _issueModel.Title, _issueModel.Description);
 
             return RedirectToAction(nameof(MyIssues));
         }
@@ -86,8 +87,8 @@
 
         public async Task<IActionResult> MyIssues()
         {
-            var user = await this.userManagerService.GetUserAsync(HttpContext.User);
-            var myIssues = await this.issueService.GetMyReportedIssues(user.Id);
+            string userId = User.Id();
+            var myIssues = await this.issueService.GetMyReportedIssues(userId);
 
             return View(myIssues);
         }

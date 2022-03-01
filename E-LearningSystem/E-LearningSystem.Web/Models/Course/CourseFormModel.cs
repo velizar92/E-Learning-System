@@ -11,10 +11,6 @@
         [Required]
         public string Description { get; set; }
 
-        [Required]
-        public string ImageUrl { get; set; }
-
-
         [Display(Name = "Category")]
         public int CategoryId { get; init; }
 

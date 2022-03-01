@@ -2,7 +2,6 @@
 {
     using Microsoft.AspNetCore.Identity;
     using System.ComponentModel.DataAnnotations;
-     
     using static DataConstants.User;
 
     public class User : IdentityUser
@@ -22,7 +21,7 @@
         public string LastName { get; set; }
 
         [Required]
-        public string ProfileImageUrl { get; set; }      
+        public string ProfileImageUrl { get; set; }
 
         public ICollection<Course> Courses { get; set; }
 

@@ -4,7 +4,7 @@
     using Microsoft.AspNetCore.Identity;
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services;
-    
+    using E_LearningSystem.Infrastructure.Extensions;
 
     public class ResourcesController : Controller
     {
@@ -31,8 +31,8 @@
         
         public async Task<IActionResult> MyResources()
         {
-            var user = await this.userManagerService.GetUserAsync(HttpContext.User);
-            var myResources =  await this.resourceService.GetMyResources(user.Id);
+            string userId = User.Id();
+            var myResources =  await this.resourceService.GetMyResources(userId);
 
             return View(myResources);
         }
