@@ -25,7 +25,7 @@
         {
             return View(new CourseFormModel
             {
-                Categories = await courseService.GetAllCourseCategories()
+                Categories = await this.courseService.GetAllCourseCategories()
             });
         }
 
@@ -33,7 +33,7 @@
         [HttpPost]
         public async Task<IActionResult> Create(CourseFormModel _courseModel, IFormFile _pictureFile)
         {
-            var user = await userManagerService.GetUserAsync(HttpContext.User);
+            var user = await this.userManagerService.GetUserAsync(HttpContext.User);
 
             if (!this.courseService.CheckIfCourseCategoryExists(_courseModel.CategoryId))
             {
@@ -42,12 +42,12 @@
 
             if (!ModelState.IsValid)
             {
-                _courseModel.Categories = await courseService.GetAllCourseCategories();
+                _courseModel.Categories = await this.courseService.GetAllCourseCategories();
 
                 return View(_courseModel);
             }
 
-            int courseId = await courseService.CreateCourse(
+            int courseId = await this.courseService.CreateCourse(
                                  user.Id,
                                  _courseModel.Name,
                                  _courseModel.Description,
@@ -62,7 +62,7 @@
         [HttpGet]
         public IActionResult Edit(int _id)
         {
-            var course = courseService.GetCourseById(_id);
+            var course = this.courseService.GetCourseById(_id);
 
             return View(course);
         }
