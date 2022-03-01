@@ -3,6 +3,7 @@
     using Microsoft.EntityFrameworkCore;
     using E_LearningSystem.Data.Data;
     using E_LearningSystem.Data.Models;
+    using E_LearningSystem.Services.Services.Comments.Models;
 
     public class CommentService : ICommentService
     {
@@ -71,6 +72,21 @@
             await dbContext.SaveChangesAsync();
 
             return true;
+        }
+
+
+        public Task<CommentServiceModel> GetCommentById(int _commentId)
+        {
+            var comment = dbContext
+                             .Comments
+                             .Where(c => c.Id == _commentId)
+                             .Select(c => new CommentServiceModel
+                             {
+                                 Content = c.Content
+                             })
+                             .FirstOrDefaultAsync();
+
+            return comment;
         }
 
 
