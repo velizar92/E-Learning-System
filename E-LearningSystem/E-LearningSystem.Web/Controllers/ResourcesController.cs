@@ -12,17 +12,17 @@
         private readonly UserManager<User> userManagerService;
 
 
-        public ResourcesController(IResourceService _resourceService, UserManager<User> _userManagerService)
+        public ResourcesController(IResourceService resourceService, UserManager<User> userManagerService)
         {
-            this.resourceService = _resourceService;
-            this.userManagerService = _userManagerService;
+            this.resourceService = resourceService;
+            this.userManagerService = userManagerService;
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> DeleteResource(int _resourceId)
+        public async Task<IActionResult> DeleteResource(int resourceId)
         {
-            bool isDeleted = await this.resourceService.DeleteResource(_resourceId);
+            bool isDeleted = await this.resourceService.DeleteResource(resourceId);
 
             return RedirectToAction(nameof(MyResources));
         }

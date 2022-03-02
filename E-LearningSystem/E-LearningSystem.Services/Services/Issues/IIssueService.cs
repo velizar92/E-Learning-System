@@ -2,16 +2,16 @@
 {
     public interface IIssueService
     {
-        Task<int> CreateIssue(string _userId, int _courseId, string _title, string _description);
+        Task<int> CreateIssue(string userId, int courseId, string title, string description);
 
-        Task<bool> EditIssue(int _issueId, string _title, string _description);
+        Task<bool> EditIssue(int issueId, string title, string description);
 
-        Task<bool> DeleteIssue(int _issueId);
+        Task<bool> DeleteIssue(int issueId);
 
-        Task<IssueDetailsServiceModel> GetIssueDetails(int _issueId);
+        Task<IssueDetailsServiceModel> GetIssueDetails(int issueId);
 
         Task<IEnumerable<AllIssuesServiceModel>> GetAllReportedIssues();
 
-        Task<IEnumerable<AllIssuesServiceModel>> GetMyReportedIssues(string _userId);
+        Task<IEnumerable<AllIssuesServiceModel>> GetMyReportedIssues(string userId);
     }
 }

@@ -13,17 +13,17 @@
         private readonly ELearningSystemDbContext dbContext;
         private readonly IWebHostEnvironment webHostEnvironment;
 
-        public LectureService(ELearningSystemDbContext _dbContext, IWebHostEnvironment _webHostEnvironment)
+        public LectureService(ELearningSystemDbContext dbContext, IWebHostEnvironment webHostEnvironment)
         {
-            this.dbContext = _dbContext;
-            this.webHostEnvironment = _webHostEnvironment;
+            this.dbContext = dbContext;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
 
-        public async Task<int> AddLectureToCourse(int _courseId, string _name, string _description, IEnumerable<IFormFile> _resourceFiles)
+        public async Task<int> AddLectureToCourse(int courseId, string name, string description, IEnumerable<IFormFile> resourceFiles)
         {
             List<Resource> resources = new List<Resource>();           
-            foreach (var file in _resourceFiles)
+            foreach (var file in resourceFiles)
             {
                 string fullpath = Path.Combine(webHostEnvironment.WebRootPath, file.FileName);
                 using (var stream = new FileStream(fullpath, FileMode.Create))
@@ -32,16 +32,16 @@
                 }
             }
 
-            resources = GetResources(_resourceFiles);
+            resources = GetResources(resourceFiles);
 
             var lecture = new Lecture
             {
-                Name = _name,
-                Description = _description,
+                Name = name,
+                Description = description,
                 Resources = resources,
             };
 
-            var course = await dbContext.Courses.FirstOrDefaultAsync(c => c.Id == _courseId);
+            var course = await dbContext.Courses.FirstOrDefaultAsync(c => c.Id == courseId);
 
             if (course == null)
             {
@@ -55,16 +55,16 @@
         }
 
 
-        public async Task<(bool, int?)> DeleteLecture(int _lectureId)
+        public async Task<(bool, int?)> DeleteLecture(int lectureId)
         {
-            var lecture = await dbContext.Lectures.FindAsync(_lectureId);
+            var lecture = await dbContext.Lectures.FindAsync(lectureId);
 
             if (lecture == null)
             {
                 return (false, null);
             }
 
-            var resources = dbContext.Resources.Where(r => r.LectureId == _lectureId).ToList();
+            var resources = dbContext.Resources.Where(r => r.LectureId == lectureId).ToList();
             lecture.Resources = resources;
 
             foreach (var resource in lecture.Resources)
@@ -79,11 +79,11 @@
         }
 
 
-        public async Task<bool> EditLecture(int _lectureId, string _name, string _description, IEnumerable<IFormFile> _resourceFiles)
+        public async Task<bool> EditLecture(int lectureId, string name, string description, IEnumerable<IFormFile> resourceFiles)
         {
             List<Resource> resources = new List<Resource>();
             
-            foreach (var file in _resourceFiles)
+            foreach (var file in resourceFiles)
             {
                 string fullpath = Path.Combine(webHostEnvironment.WebRootPath, file.FileName);
                 using (var stream = new FileStream(fullpath, FileMode.Create))
@@ -92,16 +92,16 @@
                 }
             }
 
-            resources = GetResources(_resourceFiles);
-            var lecture = dbContext.Lectures.Find(_lectureId);
+            resources = GetResources(resourceFiles);
+            var lecture = dbContext.Lectures.Find(lectureId);
 
             if (lecture == null)
             {
                 return false;
             }
 
-            lecture.Name = _name;
-            lecture.Description = _description;
+            lecture.Name = name;
+            lecture.Description = description;
             lecture.Resources = resources;
 
             await dbContext.SaveChangesAsync();
@@ -109,11 +109,11 @@
         }
 
 
-        public async Task<LectureServiceModel> GetLectureById(int _lectureId)
+        public async Task<LectureServiceModel> GetLectureById(int lectureId)
         {
             return await dbContext
                              .Lectures
-                             .Where(l => l.Id == _lectureId)
+                             .Where(l => l.Id == lectureId)
                              .Select(l => new LectureServiceModel
                              {
                                  Id = l.Id,
@@ -125,11 +125,11 @@
         }
 
 
-        public async Task<LectureDetailsServiceModel> GetLectureDetails(int _lectureId)
+        public async Task<LectureDetailsServiceModel> GetLectureDetails(int lectureId)
         {
             return await dbContext
                  .Lectures
-                 .Where(l => l.Id == _lectureId)
+                 .Where(l => l.Id == lectureId)
                  .Select(x => new LectureDetailsServiceModel
                  {
                      Id = x.Id,
@@ -141,12 +141,12 @@
         }
 
 
-        private List<Resource> GetResources(IEnumerable<IFormFile> _resourceFiles)
+        private List<Resource> GetResources(IEnumerable<IFormFile> resourceFiles)
         {
             List<Resource> resources = new List<Resource>();
             int tempResourceId = 1;
 
-            foreach (var resourceFile in _resourceFiles)
+            foreach (var resourceFile in resourceFiles)
             {
                 if (resourceFile.ContentType == "application/pdf")
                     tempResourceId = 3;

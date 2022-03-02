@@ -3,24 +3,25 @@
     using Microsoft.EntityFrameworkCore;
     using E_LearningSystem.Data.Data;
     using E_LearningSystem.Data.Models;
+    using E_LearningSystem.Services.Services.Courses.Models;
 
     public class ShoppingCartService : IShoppingCartService
     {
         private readonly ELearningSystemDbContext dbContext;
 
-        public ShoppingCartService(ELearningSystemDbContext _dbContext)
+        public ShoppingCartService(ELearningSystemDbContext dbContext)
         {
-            this.dbContext = _dbContext;
+            this.dbContext = dbContext;
         }
 
 
-        public async Task<bool> AddCourseToCart(string _shoppingCartId, int _courseId)
+        public async Task<bool> AddCourseToCart(string shoppingCartId, int courseId)
         {
-            var shoppingCart = await GetCartById(_shoppingCartId);
+            var shoppingCart = await GetCartById(shoppingCartId);
 
             var course = await dbContext
                                .Courses
-                               .FirstOrDefaultAsync(c => c.Id == _courseId);
+                               .FirstOrDefaultAsync(c => c.Id == courseId);
 
             if (shoppingCart == null || course == null)
             {
@@ -33,9 +34,9 @@
         }
 
 
-        public async Task<bool> BuyCourses(string _shoppingCartId)
+        public async Task<bool> BuyCourses(string shoppingCartId)
         {
-            var shoppingCart = await GetCartById(_shoppingCartId);
+            var shoppingCart = await GetCartById(shoppingCartId);
 
             if (shoppingCart == null)
             {
@@ -48,13 +49,13 @@
         }
 
 
-        public async Task<bool> DeleteCourseFromCart(string _shoppingCartId, int _courseId)
+        public async Task<bool> DeleteCourseFromCart(string shoppingCartId, int courseId)
         {
-             var shoppingCart = await GetCartById(_shoppingCartId);
+             var shoppingCart = await GetCartById(shoppingCartId);
 
              var course = await dbContext
                                .Courses
-                               .FirstOrDefaultAsync(c => c.Id == _courseId);
+                               .FirstOrDefaultAsync(c => c.Id == courseId);
 
             if (shoppingCart == null || course == null)
             {
@@ -67,19 +68,19 @@
         }
 
 
-        public async Task<ShoppingCart> GetCartById(string _shoppingCartId)
+        public async Task<ShoppingCart> GetCartById(string shoppingCartId)
         {
             var shoppingCart = await dbContext
                                 .ShoppingCarts
-                                .FirstOrDefaultAsync(sc => sc.Id == _shoppingCartId);
+                                .FirstOrDefaultAsync(sc => sc.Id == shoppingCartId);
 
             return shoppingCart;
         }
 
 
-        public async Task<ShoppingCartDetailsServiceModel> GetCartDetails(string _shoppingCartId)
+        public async Task<ShoppingCartDetailsServiceModel> GetCartDetails(string shoppingCartId)
         {
-            var shoppingCart = await GetCartById(_shoppingCartId);
+            var shoppingCart = await GetCartById(shoppingCartId);
 
             if(shoppingCart != null)
             {

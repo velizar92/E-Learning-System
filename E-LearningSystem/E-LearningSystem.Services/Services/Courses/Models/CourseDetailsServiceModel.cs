@@ -1,4 +1,4 @@
-﻿namespace E_LearningSystem.Services.Services
+﻿namespace E_LearningSystem.Services.Services.Courses.Models
 {
     using System.ComponentModel.DataAnnotations;
     using E_LearningSystem.Services.Services.Lectures.Models;

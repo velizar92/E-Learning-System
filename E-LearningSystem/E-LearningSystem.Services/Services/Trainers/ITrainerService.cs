@@ -4,12 +4,12 @@
 
     public interface ITrainerService
     {
-        Task<int> CreateTrainer(string _firstName, string _lastName, string _userName,
-            string _email, string _profileImageUrl, string _cvUrl, TrainerStatus _trainerStatus);
+        Task<int> CreateTrainer(string firstName, string lastName, string userName,
+            string email, string profileImageUrl, string cvUrl, TrainerStatus trainerStatus);
 
-        Task<bool> EditTrainer(int _trainerId, string _fullName, string _cvUrl, TrainerStatus _trainerStatus);
+        Task<bool> EditTrainer(int trainerId, string fullName, string cvUrl, TrainerStatus trainerStatus);
 
-        Task<bool> DeleteTrainer(int _trainerId);
+        Task<bool> DeleteTrainer(int trainerId);
 
         Task<IEnumerable<AllTrainersServiceModel>> GetAllTrainers();
 

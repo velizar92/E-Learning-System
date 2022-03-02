@@ -4,14 +4,14 @@
 
     public interface IShoppingCartService
     {
-        Task<bool> AddCourseToCart(string _shoppingCartId, int _courseId);
+        Task<bool> AddCourseToCart(string shoppingCartId, int courseId);
 
-        Task<bool> DeleteCourseFromCart(string _shoppingCartId, int _courseId);
+        Task<bool> DeleteCourseFromCart(string shoppingCartId, int courseId);
       
-        Task<ShoppingCartDetailsServiceModel> GetCartDetails(string _shoppingCartId);
+        Task<ShoppingCartDetailsServiceModel> GetCartDetails(string shoppingCartId);
 
-        Task<bool> BuyCourses(string _shoppingCartId);
+        Task<bool> BuyCourses(string shoppingCartId);
 
-        Task<ShoppingCart> GetCartById(string _shoppingCartId);
+        Task<ShoppingCart> GetCartById(string shoppingCartId);
     }
 }

@@ -4,11 +4,11 @@ namespace E_LearningSystem.Services.Services
 {
     public interface IResourceService
     {
-        Task<bool> DeleteResource(int _resourceId);
+        Task<bool> DeleteResource(int resourceId);
 
-        bool CheckIfResourceTypeExists(int _resourceTypeId);
+        bool CheckIfResourceTypeExists(int resourceTypeId);
 
-        Task<IEnumerable<AllResourcesServiceModel>> GetMyResources(string _userId);
+        Task<IEnumerable<AllResourcesServiceModel>> GetMyResources(string userId);
 
     }
 }

@@ -13,10 +13,10 @@
         private readonly ICourseService courseService;
         private readonly UserManager<User> userManagerService;
 
-        public CoursesController(ICourseService _courseService, UserManager<User> _userManager)
+        public CoursesController(ICourseService courseService, UserManager<User> userManager)
         {
-            this.courseService = _courseService;
-            this.userManagerService = _userManager;
+            this.courseService = courseService;
+            this.userManagerService = userManager;
         }
 
 
@@ -34,29 +34,29 @@
         [HttpPost]
         [Authorize]
         //Will be permitted only for Admin and Trainer roles
-        public async Task<IActionResult> CreateCourse(CourseFormModel _courseModel, IFormFile _pictureFile)
+        public async Task<IActionResult> CreateCourse(CourseFormModel courseModel, IFormFile pictureFile)
         {           
             string userId = User.Id();
             ModelState.Remove("Categories");
 
-            if (!this.courseService.CheckIfCourseCategoryExists(_courseModel.CategoryId))
+            if (!this.courseService.CheckIfCourseCategoryExists(courseModel.CategoryId))
             {
-                this.ModelState.AddModelError(nameof(_courseModel.CategoryId), "Category does not exist.");
+                this.ModelState.AddModelError(nameof(courseModel.CategoryId), "Category does not exist.");
             }
 
             if (!ModelState.IsValid)
             {
-                _courseModel.Categories = await this.courseService.GetAllCourseCategories();
+                courseModel.Categories = await this.courseService.GetAllCourseCategories();
 
-                return View(_courseModel);
+                return View(courseModel);
             }
 
             int courseId = await this.courseService.CreateCourse(
                                   userId,
-                                 _courseModel.Name,
-                                 _courseModel.Description,
-                                 _courseModel.CategoryId,
-                                 _pictureFile);
+                                 courseModel.Name,
+                                 courseModel.Description,
+                                 courseModel.CategoryId,
+                                 pictureFile);
 
 
             return RedirectToAction(nameof(MyCourses));
@@ -68,6 +68,11 @@
         public async Task<IActionResult> EditCourse(int _id, IFormFile _pictureFile)
         {
             var course = await this.courseService.GetCourseById(_id);
+
+            if(course == null)
+            {
+                return NotFound();
+            }
 
             CourseFormModel courseFormModel = new CourseFormModel
             {
@@ -82,26 +87,26 @@
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> EditCourse(int _courseId, CourseFormModel _courseModel, IFormFile _pictureFile)
+        public async Task<IActionResult> EditCourse(int courseId, CourseFormModel courseModel, IFormFile pictureFile)
         {           
-            if (!this.courseService.CheckIfCourseCategoryExists(_courseModel.CategoryId))
+            if (!this.courseService.CheckIfCourseCategoryExists(courseModel.CategoryId))
             {
-                this.ModelState.AddModelError(nameof(_courseModel.CategoryId), "Category does not exist.");
+                this.ModelState.AddModelError(nameof(courseModel.CategoryId), "Category does not exist.");
             }
 
             if (!ModelState.IsValid)
             {
-                _courseModel.Categories = await courseService.GetAllCourseCategories();
+                courseModel.Categories = await courseService.GetAllCourseCategories();
 
-                return View(_courseModel);
+                return View(courseModel);
             }
 
             var course = courseService.EditCourse(
-                                _courseId,
-                                _courseModel.Name,
-                                _courseModel.Description,
-                                _courseModel.CategoryId,
-                                _pictureFile);
+                                courseId,
+                                courseModel.Name,
+                                courseModel.Description,
+                                courseModel.CategoryId,
+                                pictureFile);
 
 
             return RedirectToAction(nameof(MyCourses));
@@ -128,9 +133,9 @@
 
 
         [Authorize]
-        public async Task<IActionResult> Details(int _id)
+        public async Task<IActionResult> Details(int id)
         {
-            var courseDetails = await courseService.GetCourseDetails(_id);
+            var courseDetails = await courseService.GetCourseDetails(id);
 
             return View(courseDetails);
         }
@@ -138,9 +143,9 @@
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> DeleteCourse(int _id)
+        public async Task<IActionResult> DeleteCourse(int id)
         {
-            var result = await courseService.DeleteCourse(_id);
+            var result = await courseService.DeleteCourse(id);
 
             if (result == false)
             {

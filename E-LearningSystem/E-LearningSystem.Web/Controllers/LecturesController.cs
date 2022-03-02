@@ -12,10 +12,10 @@
         private readonly UserManager<User> userManagerService;
 
 
-        public LecturesController(ILectureService _lectureService, UserManager<User> _userManagerService)
+        public LecturesController(ILectureService lectureService, UserManager<User> userManagerService)
         {
-            this.lectureService = _lectureService;
-            this.userManagerService = _userManagerService;
+            this.lectureService = lectureService;
+            this.userManagerService = userManagerService;
         }
 
 
@@ -28,24 +28,24 @@
 
         [HttpPost]
         public async Task<IActionResult> CreateLecture(
-            int _courseId,
-            CreateLectureFormModel _lectureModel,
-            IEnumerable<IFormFile> _resourceFiles)
+            int courseId,
+            CreateLectureFormModel lectureModel,
+            IEnumerable<IFormFile> resourceFiles)
         {
             int lectureId = await this.lectureService.AddLectureToCourse(
-                                _courseId,
-                                _lectureModel.Name,
-                                _lectureModel.Description,
-                                _resourceFiles);
+                                courseId,
+                                lectureModel.Name,
+                                lectureModel.Description,
+                                resourceFiles);
 
             return RedirectToAction("Details", "Courses");
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> EditLecture(int _lectureId)
+        public async Task<IActionResult> EditLecture(int lectureId)
         {
-            var lecture = await lectureService.GetLectureById(_lectureId);
+            var lecture = await lectureService.GetLectureById(lectureId);
 
             if(lecture == null)
             {
@@ -66,29 +66,29 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> EditLecture(int _lectureId, CreateLectureFormModel _lectureModel)
+        public async Task<IActionResult> EditLecture(int lectureId, CreateLectureFormModel lectureModel)
         {
-            var lecture = await lectureService.GetLectureById(_lectureId);
+            var lecture = await lectureService.GetLectureById(lectureId);
 
             if (lecture == null)
             {
                 return NotFound();
             }
          
-            lecture.Id = _lectureModel.Id;
-            lecture.Name = _lectureModel.Name;
-            lecture.Description = _lectureModel.Description;
-            lecture.Resources = _lectureModel.Resources;
+            lecture.Id = lectureModel.Id;
+            lecture.Name = lectureModel.Name;
+            lecture.Description = lectureModel.Description;
+            lecture.Resources = lectureModel.Resources;
 
-            return RedirectToAction(nameof(Details), new { _lectureId });
+            return RedirectToAction(nameof(Details), new { lectureId });
         }
 
 
 
         [HttpGet]
-        public async Task<IActionResult> Details(int _lectureId)
+        public async Task<IActionResult> Details(int lectureId)
         {
-            var lectureDetails = await lectureService.GetLectureDetails(_lectureId);
+            var lectureDetails = await lectureService.GetLectureDetails(lectureId);
 
             return View(lectureDetails);
 
@@ -96,9 +96,9 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int _lectureId)
+        public async Task<IActionResult> Delete(int lectureId)
         {
-            var (isDeleted, courseId) = await lectureService.DeleteLecture(_lectureId);
+            var (isDeleted, courseId) = await lectureService.DeleteLecture(lectureId);
 
             //TO DO Some check with "isDeleted"
 

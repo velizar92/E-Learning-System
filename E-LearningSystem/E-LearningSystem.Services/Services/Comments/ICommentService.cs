@@ -4,15 +4,15 @@
 
     public interface ICommentService
     {
-        Task<int> CreateComment(int _lectureId, string _userId, string _content);
+        Task<int> CreateComment(int lectureId, string userId, string content);
 
-        Task<bool> EditComment(int _commentId, string _content);
+        Task<bool> EditComment(int commentId, string content);
 
-        Task<bool> DeleteComment(int _commentId);
+        Task<bool> DeleteComment(int commentId);
 
-        Task<CommentServiceModel> GetCommentById(int _commentId);
+        Task<CommentServiceModel> GetCommentById(int commentId);
 
-        Task<IEnumerable<AllLectureCommentsServiceModel>> GetLectureComments(int _lectureId);
+        Task<IEnumerable<AllLectureCommentsServiceModel>> GetLectureComments(int lectureId);
         
     }
 }

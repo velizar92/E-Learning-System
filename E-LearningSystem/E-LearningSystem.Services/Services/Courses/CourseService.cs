@@ -15,10 +15,10 @@
         private readonly ELearningSystemDbContext dbContext;
         private readonly IWebHostEnvironment webHostEnvironment;      
 
-        public CourseService(ELearningSystemDbContext _dbContext, IWebHostEnvironment _webHostEnvironment)
+        public CourseService(ELearningSystemDbContext dbContext, IWebHostEnvironment webHostEnvironment)
         {
-            this.dbContext = _dbContext;
-            this.webHostEnvironment = _webHostEnvironment;       
+            this.dbContext = dbContext;
+            this.webHostEnvironment = webHostEnvironment;       
         }
 
         public bool CheckIfCourseCategoryExists(int _categoryId)
@@ -32,22 +32,22 @@
         }
 
 
-        public async Task<int> CreateCourse(string userId, string _name, string _description, int _categoryId, IFormFile _pictureFile)
+        public async Task<int> CreateCourse(string userId, string name, string description, int categoryId, IFormFile pictureFile)
         {
 
-            string fullpath = Path.Combine(webHostEnvironment.WebRootPath, _pictureFile.FileName);
+            string fullpath = Path.Combine(webHostEnvironment.WebRootPath, pictureFile.FileName);
             using (var stream = new FileStream(fullpath, FileMode.Create))
             {
-                await _pictureFile.CopyToAsync(stream);
+                await pictureFile.CopyToAsync(stream);
             }
 
             Course course = new Course()
             {
                 UserId = userId,
-                Name = _name,
-                Description = _description,
-                ImageUrl = _pictureFile.FileName,
-                CourseCategoryId = _categoryId
+                Name = name,
+                Description = description,
+                ImageUrl = pictureFile.FileName,
+                CourseCategoryId = categoryId
             };
 
             await dbContext.Courses.AddAsync(course);
@@ -57,9 +57,9 @@
         }
 
 
-        public async Task<bool> DeleteCourse(int _courseId)
+        public async Task<bool> DeleteCourse(int courseId)
         {
-            var course = await dbContext.Courses.FirstOrDefaultAsync(c => c.Id == _courseId);
+            var course = await dbContext.Courses.FirstOrDefaultAsync(c => c.Id == courseId);
 
             if (course == null)
             {
@@ -73,25 +73,25 @@
         }
 
 
-        public async Task<bool> EditCourse(int _courseId, string _name, string _description, int _categoryId, IFormFile _pictureFile)
+        public async Task<bool> EditCourse(int courseId, string name, string description, int categoryId, IFormFile pictureFile)
         {
-            var course = await dbContext.Courses.FindAsync(_courseId);
+            var course = await dbContext.Courses.FindAsync(courseId);
 
             if (course == null)
             {
                 return false;
             }
 
-            string fullpath = Path.Combine(webHostEnvironment.WebRootPath, _pictureFile.FileName);
+            string fullpath = Path.Combine(webHostEnvironment.WebRootPath, pictureFile.FileName);
             using (var stream = new FileStream(fullpath, FileMode.Create))
             {
-                await _pictureFile.CopyToAsync(stream);
+                await pictureFile.CopyToAsync(stream);
             }
 
-            course.Name = _name;
-            course.Description = _description;
-            course.ImageUrl = _pictureFile.FileName;
-            course.CourseCategoryId = _categoryId;
+            course.Name = name;
+            course.Description = description;
+            course.ImageUrl = pictureFile.FileName;
+            course.CourseCategoryId = categoryId;
 
             await dbContext.SaveChangesAsync();
 
@@ -129,11 +129,11 @@
 
         }
 
-        public async Task<CourseServiceModel> GetCourseById(int _id)
+        public async Task<CourseServiceModel> GetCourseById(int id)
         {
             var course = await dbContext
                             .Courses    
-                            .Where(c => c.Id == _id)
+                            .Where(c => c.Id == id)
                             .Select(c => new CourseServiceModel
                             { 
                                 Name = c.Name,
@@ -147,11 +147,11 @@
         }
 
 
-        public async Task<CourseDetailsServiceModel> GetCourseDetails(int _courseId)
+        public async Task<CourseDetailsServiceModel> GetCourseDetails(int courseId)
         {       
             return await dbContext
                            .Courses
-                           .Where(c => c.Id == _courseId)
+                           .Where(c => c.Id == courseId)
                            .Select(x => new CourseDetailsServiceModel
                            {
                                Id = x.Id,
@@ -170,7 +170,7 @@
         }
 
 
-        public async Task<IEnumerable<LatestCoursesServiceModel>> GetLatestCourses(int _count)
+        public async Task<IEnumerable<LatestCoursesServiceModel>> GetLatestCourses(int count)
         {
             return await dbContext
                            .Courses
@@ -183,17 +183,17 @@
                                Price = c.Price,
                                ImageUrl = c.ImageUrl,
                            })
-                           .Take(_count)
+                           .Take(count)
                            .ToListAsync();
         }
 
 
         //Get my course as a normal user ("Learner")
-        public async Task<IEnumerable<AllCoursesServiceModel>> GetMyCourses(string _userId)
+        public async Task<IEnumerable<AllCoursesServiceModel>> GetMyCourses(string userId)
         {
             return await dbContext
                              .Courses
-                             .Where(c => c.UserId == _userId)
+                             .Where(c => c.UserId == userId)
                              .Select(c => new AllCoursesServiceModel
                              {
                                  Id = c.Id,

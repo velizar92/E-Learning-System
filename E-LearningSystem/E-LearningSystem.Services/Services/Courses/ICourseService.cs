@@ -5,25 +5,25 @@
     
     public interface ICourseService
     {
-        Task<int> CreateCourse(string _userId, string _name, string _description, int _categoryId, IFormFile _pictureFile);
+        Task<int> CreateCourse(string userId, string name, string description, int categoryId, IFormFile pictureFile);
 
-        Task<bool> EditCourse(int _courseId, string _name, string _description, int _categoryId, IFormFile _pictureFile);
+        Task<bool> EditCourse(int courseId, string name, string description, int categoryId, IFormFile pictureFile);
 
-        Task<bool> DeleteCourse(int _courseId);
+        Task<bool> DeleteCourse(int courseId);
 
-        bool CheckIfCourseCategoryExists(int _categoryId);
+        bool CheckIfCourseCategoryExists(int categoryId);
 
-        Task<CourseServiceModel> GetCourseById(int _id);
+        Task<CourseServiceModel> GetCourseById(int id);
 
-        Task<CourseDetailsServiceModel> GetCourseDetails(int _courseId);
+        Task<CourseDetailsServiceModel> GetCourseDetails(int courseId);
 
         Task<IEnumerable<CourseCategoriesServiceModel>> GetAllCourseCategories();
 
         Task<IEnumerable<AllCoursesServiceModel>> GetAllCourses();
 
-        Task<IEnumerable<AllCoursesServiceModel>> GetMyCourses(string _userId);
+        Task<IEnumerable<AllCoursesServiceModel>> GetMyCourses(string userId);
      
-        Task<IEnumerable<LatestCoursesServiceModel>> GetLatestCourses(int _count);
+        Task<IEnumerable<LatestCoursesServiceModel>> GetLatestCourses(int count);
 
     }
 }

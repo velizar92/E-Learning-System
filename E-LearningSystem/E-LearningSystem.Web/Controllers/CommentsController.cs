@@ -13,19 +13,19 @@
         private readonly UserManager<User> userManagerService;
 
 
-        public CommentsController(ICommentService _commentService, UserManager<User> _userManagerService)
+        public CommentsController(ICommentService commentService, UserManager<User> userManagerService)
         {
-            this.commentService = _commentService;
-            this.userManagerService = _userManagerService;
+            this.commentService = commentService;
+            this.userManagerService = userManagerService;
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateComment(int _lectureId, CommentFormModel _commentModel)
+        public async Task<IActionResult> CreateComment(int lectureId, CommentFormModel commentModel)
         {
             string userId = User.Id();
 
-            int commentId = await this.commentService.CreateComment(_lectureId, userId, _commentModel.Content);
+            int commentId = await this.commentService.CreateComment(lectureId, userId, commentModel.Content);
 
             return RedirectToAction(nameof(AllComments));
         }
@@ -33,18 +33,18 @@
 
 
         [HttpGet]
-        public async Task<IActionResult> EditComment(int _commentId)
+        public async Task<IActionResult> EditComment(int commentId)
         {
-            var comment = await this.commentService.GetCommentById(_commentId);
+            var comment = await this.commentService.GetCommentById(commentId);
            
             return View(comment);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> EditComment(int _commentId, string _content)
+        public async Task<IActionResult> EditComment(int commentId, string content)
         {
-            bool isEdited = await this.commentService.EditComment(_commentId, _content);
+            bool isEdited = await this.commentService.EditComment(commentId, content);
 
             //TO DO Checks...
 
@@ -53,9 +53,9 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> DeleteComment(int _commentId)
+        public async Task<IActionResult> DeleteComment(int commentId)
         {
-            bool isDeleted = await this.commentService.DeleteComment(_commentId);
+            bool isDeleted = await this.commentService.DeleteComment(commentId);
 
             //TO DO Checks...
 

@@ -13,18 +13,18 @@
         private readonly UserManager<User> userManagerService;
 
 
-        public IssuesController(IIssueService _issueService, UserManager<User> _userManagerService)
+        public IssuesController(IIssueService issueService, UserManager<User> userManagerService)
         {
-            this.issueService = _issueService;
-            this.userManagerService = _userManagerService;
+            this.issueService = issueService;
+            this.userManagerService = userManagerService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateIssue(int _courseId, IssueFormModel _issueModel)
+        public async Task<IActionResult> CreateIssue(int courseId, IssueFormModel issueModel)
         {
             string userId = User.Id();
 
-            int issueId = await this.issueService.CreateIssue(userId, _courseId, _issueModel.Title, _issueModel.Description);
+            int issueId = await this.issueService.CreateIssue(userId, courseId, issueModel.Title, issueModel.Description);
 
             return RedirectToAction(nameof(MyIssues));
         }
@@ -32,9 +32,9 @@
 
 
         [HttpGet]
-        public async Task<IActionResult> EditIssue(int _commentId)
+        public async Task<IActionResult> EditIssue(int issueId)
         {
-            var issue = await this.issueService.GetIssueDetails(_commentId);
+            var issue = await this.issueService.GetIssueDetails(issueId);
 
             IssueFormModel issueFormModel = new IssueFormModel
             {
@@ -47,9 +47,9 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> EditIssue(int _issueId, IssueFormModel _issueModel)
+        public async Task<IActionResult> EditIssue(int issueId, IssueFormModel issueModel)
         {
-            bool isEdited = await this.issueService.EditIssue(_issueId, _issueModel.Title, _issueModel.Description);
+            bool isEdited = await this.issueService.EditIssue(issueId, issueModel.Title, issueModel.Description);
 
             //TO DO Checks...
 
@@ -58,9 +58,9 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> DeleteIssue(int _issueId)
+        public async Task<IActionResult> DeleteIssue(int issueId)
         {
-            bool isDeleted = await this.issueService.DeleteIssue(_issueId);
+            bool isDeleted = await this.issueService.DeleteIssue(issueId);
 
             //TO DO Checks...
 
@@ -68,9 +68,9 @@
         }
 
 
-        public async Task<IActionResult> Details(int _issueId)
+        public async Task<IActionResult> Details(int issueId)
         {
-            var issueDetails = await this.issueService.GetIssueDetails(_issueId);
+            var issueDetails = await this.issueService.GetIssueDetails(issueId);
 
             return View(issueDetails);
         }

@@ -8,15 +8,15 @@
     {
         private readonly ELearningSystemDbContext dbContext;
        
-        public ResourceService(ELearningSystemDbContext _dbContext)
+        public ResourceService(ELearningSystemDbContext dbContext)
         {
-            this.dbContext = _dbContext;          
+            this.dbContext = dbContext;          
         }
 
 
-        public bool CheckIfResourceTypeExists(int _resourceTypeId)
+        public bool CheckIfResourceTypeExists(int resourceTypeId)
         {
-            if (dbContext.ResourceTypes.Any(r => r.Id == _resourceTypeId) == false)
+            if (dbContext.ResourceTypes.Any(r => r.Id == resourceTypeId) == false)
             {
                 return false;
             }
@@ -25,9 +25,9 @@
         }
 
 
-        public async Task<bool> DeleteResource(int _resourceId)
+        public async Task<bool> DeleteResource(int resourceId)
         {
-            var resource = await dbContext.Resources.FirstOrDefaultAsync(r => r.Id == _resourceId);
+            var resource = await dbContext.Resources.FirstOrDefaultAsync(r => r.Id == resourceId);
 
             if (resource == null)
             {
@@ -41,13 +41,13 @@
         }
 
 
-        public async Task<IEnumerable<AllResourcesServiceModel>> GetMyResources(string _userId)
+        public async Task<IEnumerable<AllResourcesServiceModel>> GetMyResources(string userId)
         {
             List<AllResourcesServiceModel> myResources = new List<AllResourcesServiceModel>();
 
             var myCourses = await dbContext
                                     .Courses
-                                    .Where(c => c.UserId == _userId)
+                                    .Where(c => c.UserId == userId)
                                     .Include(l => l.Lectures)
                                     .ThenInclude(l => l.Resources)
                                     .ToListAsync();

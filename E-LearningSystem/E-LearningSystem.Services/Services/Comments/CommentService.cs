@@ -15,11 +15,11 @@
         }
 
 
-        public async Task<int> CreateComment(int _lectureId, string _userId, string _content)
+        public async Task<int> CreateComment(int lectureId, string userId, string content)
         {
             var lecture = await dbContext
                              .Lectures
-                             .Where(l => l.Id == _lectureId).FirstOrDefaultAsync();
+                             .Where(l => l.Id == lectureId).FirstOrDefaultAsync();
 
             if (lecture == null)
             {
@@ -28,9 +28,9 @@
 
             var comment = new Comment()
             {
-                LectureId = _lectureId,
-                UserId = _userId,
-                Content = _content,
+                LectureId = lectureId,
+                UserId = userId,
+                Content = content,
             };
 
 
@@ -41,11 +41,11 @@
         }
 
 
-        public async Task<bool> DeleteComment(int _commentId)
+        public async Task<bool> DeleteComment(int commentId)
         {
             var comment = await dbContext
                 .Comments
-                .FirstOrDefaultAsync(c => c.Id == _commentId);
+                .FirstOrDefaultAsync(c => c.Id == commentId);
 
             if (comment != null)
             {
@@ -57,29 +57,29 @@
         }
 
 
-        public async Task<bool> EditComment(int _commentId, string _content)
+        public async Task<bool> EditComment(int commentId, string content)
         {
             var comment = await dbContext
                             .Comments
-                            .Where(c => c.Id == _commentId).FirstOrDefaultAsync();
+                            .Where(c => c.Id == commentId).FirstOrDefaultAsync();
 
             if (comment == null)
             {
                 return false;
             }
 
-            comment.Content = _content;
+            comment.Content = content;
             await dbContext.SaveChangesAsync();
 
             return true;
         }
 
 
-        public Task<CommentServiceModel> GetCommentById(int _commentId)
+        public Task<CommentServiceModel> GetCommentById(int commentId)
         {
             var comment = dbContext
                              .Comments
-                             .Where(c => c.Id == _commentId)
+                             .Where(c => c.Id == commentId)
                              .Select(c => new CommentServiceModel
                              {
                                  Content = c.Content
@@ -90,11 +90,11 @@
         }
 
 
-        public async Task<IEnumerable<AllLectureCommentsServiceModel>> GetLectureComments(int _lectureId)
+        public async Task<IEnumerable<AllLectureCommentsServiceModel>> GetLectureComments(int lectureId)
         {
             return await dbContext
                       .Comments
-                      .Where(c => c.LectureId == _lectureId)
+                      .Where(c => c.LectureId == lectureId)
                       .Select(c => new AllLectureCommentsServiceModel
                       {
                           Id = c.Id,

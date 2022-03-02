@@ -5,15 +5,15 @@
 
     public interface ILectureService
     {
-        Task<int> AddLectureToCourse(int _courseId, string _name, string _description, IEnumerable<IFormFile> _resourceFiles);
+        Task<int> AddLectureToCourse(int courseId, string name, string description, IEnumerable<IFormFile> resourceFiles);
 
-        Task<bool> EditLecture(int _lectureId, string _name, string _description, IEnumerable<IFormFile> _resourceFiles);
+        Task<bool> EditLecture(int lectureId, string name, string description, IEnumerable<IFormFile> resourceFiles);
 
-        Task<(bool, int?)> DeleteLecture(int _lectureId);
+        Task<(bool, int?)> DeleteLecture(int lectureId);
 
-        Task<LectureServiceModel> GetLectureById(int _lectureId);
+        Task<LectureServiceModel> GetLectureById(int lectureId);
 
-        Task<LectureDetailsServiceModel> GetLectureDetails(int _lectureId);
+        Task<LectureDetailsServiceModel> GetLectureDetails(int lectureId);
        
     }
 }

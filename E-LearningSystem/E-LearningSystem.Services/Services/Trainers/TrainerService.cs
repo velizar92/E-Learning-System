@@ -11,33 +11,33 @@
         private readonly ELearningSystemDbContext dbContext;
         private readonly UserManager<User> userManager;
 
-        public TrainerService(ELearningSystemDbContext _dbContext, UserManager<User> _userManager)
+        public TrainerService(ELearningSystemDbContext dbContext, UserManager<User> userManager)
         {
-            this.dbContext = _dbContext;
-            this.userManager = _userManager;
+            this.dbContext = dbContext;
+            this.userManager = userManager;
         }
 
 
-        public async Task<int> CreateTrainer(string _firstName, string _lastName, string _userName,
-            string _email, string _profileImageUrl, string _cvUrl, TrainerStatus _trainerStatus)
+        public async Task<int> CreateTrainer(string firstName, string lastName, string userName,
+            string email, string profileImageUrl, string cvUrl, TrainerStatus trainerStatus)
         {
             var user = new User()
             {
-                FirstName = _firstName,
-                LastName = _lastName,
-                UserName = _userName,
-                Email = _email,
-                ProfileImageUrl = _profileImageUrl,
+                FirstName = firstName,
+                LastName = lastName,
+                UserName = userName,
+                Email = email,
+                ProfileImageUrl = profileImageUrl,
             };
 
             await userManager.CreateAsync(user);
 
             var trainer = new Trainer()
             {
-                FullName = _firstName + " " + _lastName,
-                CVUrl = _cvUrl,
+                FullName = firstName + " " + lastName,
+                CVUrl = cvUrl,
                 UserId = user.Id,
-                Status = _trainerStatus,
+                Status = trainerStatus,
             };
 
             await dbContext.Trainers.AddAsync(trainer);
@@ -47,9 +47,9 @@
         }
 
 
-        public async Task<bool> DeleteTrainer(int _trainerId)
+        public async Task<bool> DeleteTrainer(int trainerId)
         {
-            var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == _trainerId);
+            var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainerId);
 
             if (trainer == null)
             {
@@ -62,18 +62,18 @@
         }
 
 
-        public async Task<bool> EditTrainer(int _trainerId, string _fullName, string _cvUrl, TrainerStatus _trainerStatus)
+        public async Task<bool> EditTrainer(int trainerId, string fullName, string cvUrl, TrainerStatus trainerStatus)
         {
-            var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == _trainerId);
+            var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainerId);
 
             if (trainer == null)
             {
                 return false;
             }
 
-            trainer.FullName = _fullName;
-            trainer.CVUrl = _cvUrl;
-            trainer.Status = _trainerStatus;
+            trainer.FullName = fullName;
+            trainer.CVUrl = cvUrl;
+            trainer.Status = trainerStatus;
 
             await dbContext.SaveChangesAsync();
             return true;
