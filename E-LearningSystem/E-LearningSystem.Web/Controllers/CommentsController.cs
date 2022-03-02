@@ -21,9 +21,15 @@
 
 
         [HttpGet]
-        public IActionResult CreateComment()
+        public async Task<IActionResult> CreateComment()
         {
-            return View();
+            var user = await userManagerService.GetUserAsync(HttpContext.User);
+
+            return View(new CommentFormModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+            });
         }
 
 
