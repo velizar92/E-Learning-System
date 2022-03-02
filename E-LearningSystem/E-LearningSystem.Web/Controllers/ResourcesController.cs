@@ -9,21 +9,24 @@
     public class ResourcesController : Controller
     {
         private readonly IResourceService resourceService;
+        private readonly ILectureService lectureService;
         private readonly UserManager<User> userManagerService;
 
 
-        public ResourcesController(IResourceService resourceService, UserManager<User> userManagerService)
+        public ResourcesController(IResourceService resourceService, ILectureService lectureService, UserManager<User> userManagerService)
         {
             this.resourceService = resourceService;
+            this.lectureService = lectureService;
             this.userManagerService = userManagerService;
         }
 
        
         public async Task<IActionResult> DeleteResource(int resourceId)
         {
+            int id = await this.lectureService.GetLectureIdByResourceId(resourceId);
             bool isDeleted = await this.resourceService.DeleteResource(resourceId);
-
-            return RedirectToAction(nameof(MyResources));
+          
+            return RedirectToAction("Details", "Lectures", new { id });
         }
 
 

@@ -121,6 +121,7 @@
                              .Select(l => new LectureServiceModel
                              {
                                  Id = l.Id,
+                                 CourseId = l.CourseId,
                                  Name = l.Name,
                                  Description = l.Description,
                                  Resources = l.Resources.ToArray(),
@@ -134,14 +135,24 @@
             return await dbContext
                  .Lectures
                  .Where(l => l.Id == lectureId)
-                 .Select(x => new LectureDetailsServiceModel
+                 .Select(l => new LectureDetailsServiceModel
                  {
-                     Id = x.Id,
-                     Name = x.Name,
-                     Description = x.Description,
-                     ResourceUrls = x.Resources.Select(x => x.Name).ToArray()
+                     Id = l.Id,
+                     CourseId = l.CourseId,
+                     Name = l.Name,
+                     Description = l.Description,
+                     ResourceUrls = l.Resources.Select(x => x.Name).ToArray()
                  })
                  .FirstOrDefaultAsync();
+        }
+
+        public async Task<int> GetLectureIdByResourceId(int resourceId)
+        {
+            var resource = await dbContext
+                            .Resources
+                            .FirstOrDefaultAsync(r => r.Id == resourceId);
+
+            return resource.LectureId;
         }
 
 

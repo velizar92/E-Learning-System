@@ -14,6 +14,9 @@
         Task<LectureServiceModel> GetLectureById(int lectureId);
 
         Task<LectureDetailsServiceModel> GetLectureDetails(int lectureId);
-       
+
+        Task<int> GetLectureIdByResourceId(int resourceId);
+
+
     }
 }

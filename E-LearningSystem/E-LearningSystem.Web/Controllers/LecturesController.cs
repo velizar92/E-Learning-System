@@ -54,7 +54,8 @@
 
             CreateLectureFormModel lectureFormModel = new CreateLectureFormModel()
             {
-                Id = lecture.Id,
+                Id = lecture.Id,    
+                CourseId = lecture.CourseId,
                 Name = lecture.Name,
                 Description = lecture.Description,
                 Resources = lecture.Resources,
