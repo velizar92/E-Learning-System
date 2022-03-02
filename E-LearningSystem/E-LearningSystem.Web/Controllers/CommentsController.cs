@@ -52,7 +52,7 @@
         }
 
 
-        [HttpPost]
+       
         public async Task<IActionResult> DeleteComment(int commentId)
         {
             bool isDeleted = await this.commentService.DeleteComment(commentId);

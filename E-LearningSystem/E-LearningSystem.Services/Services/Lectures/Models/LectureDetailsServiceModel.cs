@@ -1,4 +1,4 @@
-﻿namespace E_LearningSystem.Services.Services
+﻿namespace E_LearningSystem.Services.Services.Lectures.Models
 {
     public class LectureDetailsServiceModel
     {

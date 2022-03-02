@@ -18,8 +18,7 @@
             this.userManagerService = userManagerService;
         }
 
-
-        [HttpPost]
+       
         public async Task<IActionResult> DeleteResource(int resourceId)
         {
             bool isDeleted = await this.resourceService.DeleteResource(resourceId);

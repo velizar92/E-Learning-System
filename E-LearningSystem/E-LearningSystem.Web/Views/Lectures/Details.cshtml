@@ -1,1 +1,28 @@
-﻿
+﻿@using E_LearningSystem.Services.Services.Lectures.Models
+@model LectureDetailsServiceModel
+
+<h2>Lecture details</h2>
+
+<p>@Model.Name</p>
+<p>@Model.Description</p>
+
+
+<br />
+
+<h2>Resource Urls</h2>
+@foreach (var resourceUrl in @Model.ResourceUrls)
+{
+
+    if (resourceUrl.EndsWith(".docx"))
+    {
+        <a href="~/@resourceUrl">@resourceUrl</a>
+    }
+    else if (resourceUrl.EndsWith("mp4"))
+    {
+        <video width="1000" controls>
+            <source src="~/@resourceUrl" type="video/mp4">          
+        </video>
+    }
+}
+
+<br />

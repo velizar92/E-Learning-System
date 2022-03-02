@@ -28,24 +28,24 @@
 
         [HttpPost]
         public async Task<IActionResult> CreateLecture(
-            int courseId,
+            int id,
             CreateLectureFormModel lectureModel,
-            IEnumerable<IFormFile> resourceFiles)
+            IEnumerable<IFormFile> files)
         {
             int lectureId = await this.lectureService.AddLectureToCourse(
-                                courseId,
+                                id,
                                 lectureModel.Name,
                                 lectureModel.Description,
-                                resourceFiles);
+                                files);
 
-            return RedirectToAction("Details", "Courses");
+            return RedirectToAction("Details", "Courses", new { id });
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> EditLecture(int lectureId)
+        public async Task<IActionResult> EditLecture(int id)
         {
-            var lecture = await lectureService.GetLectureById(lectureId);
+            var lecture = await lectureService.GetLectureById(id);
 
             if(lecture == null)
             {
@@ -66,43 +66,41 @@
 
 
         [HttpPost]
-        public async Task<IActionResult> EditLecture(int lectureId, CreateLectureFormModel lectureModel)
+        public async Task<IActionResult> EditLecture(int id, CreateLectureFormModel lectureModel, IEnumerable<IFormFile> files)
         {
-            var lecture = await lectureService.GetLectureById(lectureId);
+            var lecture = await lectureService.GetLectureById(id);
 
             if (lecture == null)
             {
                 return NotFound();
             }
-         
-            lecture.Id = lectureModel.Id;
-            lecture.Name = lectureModel.Name;
-            lecture.Description = lectureModel.Description;
-            lecture.Resources = lectureModel.Resources;
 
-            return RedirectToAction(nameof(Details), new { lectureId });
+            bool isEdited = await this.lectureService.EditLecture(id, lectureModel.Name, lectureModel.Description, files);
+
+            return RedirectToAction(nameof(Details), new { id });
         }
 
 
 
         [HttpGet]
-        public async Task<IActionResult> Details(int lectureId)
+        public async Task<IActionResult> Details(int id)
         {
-            var lectureDetails = await lectureService.GetLectureDetails(lectureId);
+            var lectureDetails = await lectureService.GetLectureDetails(id);
 
             return View(lectureDetails);
 
         }
 
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(int lectureId)
+    
+        public async Task<IActionResult> DeleteLecture(int id)
         {
-            var (isDeleted, courseId) = await lectureService.DeleteLecture(lectureId);
+            var (isDeleted, courseId) = await lectureService.DeleteLecture(id);
 
             //TO DO Some check with "isDeleted"
 
-            return RedirectToAction("Details", "Course", new { courseId });
+            id = courseId;
+
+            return RedirectToAction("Details", "Courses", new { id });
         }
 
     }

@@ -33,8 +33,7 @@
             return RedirectToAction(nameof(Details), new { shoppingCartId });
         }
 
-
-        [HttpPost]
+     
         public async Task<IActionResult> DeleteCourseFromCart(string shoppingCartId, int courseId)
         {
             bool isDeleted = await this.shoppingCartService.DeleteCourseFromCart(shoppingCartId, courseId);
@@ -45,7 +44,7 @@
         }
 
 
-        [HttpPost]
+        
         public async Task<IActionResult> BuyCourses(string shoppingCartId)
         {
             bool areBuyed = await this.shoppingCartService.BuyCourses(shoppingCartId);

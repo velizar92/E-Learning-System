@@ -1,1 +1,25 @@
-﻿
+﻿@using E_LearningSystem.Web.Models.Lecture
+@model CreateLectureFormModel
+
+<form method="post" enctype="multipart/form-data"
+      asp-controller="Lectures" asp-action="CreateLecture">
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Name</label>
+        <input asp-for="Name" class="form-control" placeholder="Some Name">
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Description</label>
+        <textarea asp-for="Description" class="form-control" placeholder="Some Description"></textarea> 
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Resource URLs</label>
+        <input type="file" name="files" class="form-control" multiple>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+

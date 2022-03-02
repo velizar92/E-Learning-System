@@ -57,7 +57,7 @@
         }
 
 
-        [HttpPost]
+       
         public async Task<IActionResult> DeleteIssue(int issueId)
         {
             bool isDeleted = await this.issueService.DeleteIssue(issueId);

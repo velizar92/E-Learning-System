@@ -52,7 +52,7 @@
             }
 
             int courseId = await this.courseService.CreateCourse(
-                                  userId,
+                                 userId,
                                  courseModel.Name,
                                  courseModel.Description,
                                  courseModel.CategoryId,
@@ -65,9 +65,9 @@
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> EditCourse(int _id, IFormFile _pictureFile)
+        public async Task<IActionResult> EditCourse(int id, IFormFile pictureFile)
         {
-            var course = await this.courseService.GetCourseById(_id);
+            var course = await this.courseService.GetCourseById(id);
 
             if(course == null)
             {
@@ -87,7 +87,7 @@
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> EditCourse(int courseId, CourseFormModel courseModel, IFormFile pictureFile)
+        public async Task<IActionResult> EditCourse(int id, CourseFormModel courseModel, IFormFile pictureFile)
         {           
             if (!this.courseService.CheckIfCourseCategoryExists(courseModel.CategoryId))
             {
@@ -102,7 +102,7 @@
             }
 
             var course = courseService.EditCourse(
-                                courseId,
+                                id,
                                 courseModel.Name,
                                 courseModel.Description,
                                 courseModel.CategoryId,
@@ -140,8 +140,7 @@
             return View(courseDetails);
         }
 
-
-        [HttpPost]
+      
         [Authorize]
         public async Task<IActionResult> DeleteCourse(int id)
         {

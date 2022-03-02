@@ -55,13 +55,13 @@
         }
 
 
-        public async Task<(bool, int?)> DeleteLecture(int lectureId)
+        public async Task<(bool, int)> DeleteLecture(int lectureId)
         {
             var lecture = await dbContext.Lectures.FindAsync(lectureId);
 
             if (lecture == null)
             {
-                return (false, null);
+                return (false, 0);
             }
 
             var resources = dbContext.Resources.Where(r => r.LectureId == lectureId).ToList();
@@ -102,8 +102,12 @@
 
             lecture.Name = name;
             lecture.Description = description;
-            lecture.Resources = resources;
 
+            foreach (var resourceItem in resources)
+            {
+                lecture.Resources.Add(resourceItem);
+            }
+           
             await dbContext.SaveChangesAsync();
             return true;
         }
@@ -119,7 +123,7 @@
                                  Id = l.Id,
                                  Name = l.Name,
                                  Description = l.Description,
-                                 Resources = (Resource[])l.Resources,
+                                 Resources = l.Resources.ToArray(),
                              })
                              .FirstOrDefaultAsync();
         }

@@ -9,7 +9,7 @@
 
         Task<bool> EditLecture(int lectureId, string name, string description, IEnumerable<IFormFile> resourceFiles);
 
-        Task<(bool, int?)> DeleteLecture(int lectureId);
+        Task<(bool, int)> DeleteLecture(int lectureId);
 
         Task<LectureServiceModel> GetLectureById(int lectureId);
 

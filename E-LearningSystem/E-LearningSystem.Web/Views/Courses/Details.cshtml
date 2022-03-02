@@ -5,10 +5,10 @@
     <img src="~/@Model.ImageUrl" width="100%" height="500">
     <p>@Model.Name</p>
     <p>@Model.Description</p>
-     <a asp-controller="Courses" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete Course</a>
+     <a asp-controller="Courses" asp-action="DeleteCourse" asp-route-id="@Model.Id" class="btn btn-danger">Delete Course</a>
 
 
-<a asp-controller="Lecture" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-primary">Add Lecture</a>
+<a asp-controller="Lectures" asp-action="CreateLecture" asp-route-id="@Model.Id" class="btn btn-primary">Add Lecture</a>
 <p></p>
     <ol class="list-group list-group-numbered col-md-12">
 
@@ -20,7 +20,9 @@
                     @lecture.Description
                 </div>
                 
-                 <a asp-controller="Lectures" asp-action="Details" asp-route-id="@lecture.Id" class="btn btn-primary">View More</a>
+                <a asp-controller="Lectures" asp-action="EditLecture" asp-route-id="@lecture.Id" class="btn btn-secondary">Edit Lecture</a>
+                <a asp-controller="Lectures" asp-action="DeleteLecture" asp-route-id="@lecture.Id" class="btn btn-danger">Delete Lecture</a>
+                <a asp-controller="Lectures" asp-action="Details" asp-route-id="@lecture.Id" class="btn btn-primary">View More</a>
             </li>
         }
     </ol>

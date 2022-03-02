@@ -66,6 +66,19 @@
                 return false;
             }
 
+            var lectures = dbContext.Lectures.Where(r => r.CourseId == courseId).ToList();
+
+            foreach (var lecture in lectures)
+            {
+                var resources = dbContext.Resources.Where(r => r.LectureId == lecture.Id).ToList();
+                foreach (var resourse in resources)
+                {
+                    dbContext.Resources.Remove(resourse);
+                }
+
+                dbContext.Lectures.Remove(lecture);
+            }
+
             dbContext.Courses.Remove(course);
             await dbContext.SaveChangesAsync();
 
