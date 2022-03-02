@@ -32,7 +32,7 @@
         }
 
 
-        public async Task<int> CreateCourse(string userId, string name, string description, int categoryId, IFormFile pictureFile)
+        public async Task<int> CreateCourse(string userId, string name, string description, double price, int categoryId, IFormFile pictureFile)
         {
 
             string fullpath = Path.Combine(webHostEnvironment.WebRootPath, pictureFile.FileName);
@@ -47,6 +47,7 @@
                 Name = name,
                 Description = description,
                 ImageUrl = pictureFile.FileName,
+                Price = price,
                 CourseCategoryId = categoryId
             };
 

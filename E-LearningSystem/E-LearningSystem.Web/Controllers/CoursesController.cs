@@ -55,7 +55,8 @@
                                  userId,
                                  courseModel.Name,
                                  courseModel.Description,
-                                 courseModel.CategoryId,
+                                 courseModel.Price,
+                                 courseModel.CategoryId,                               
                                  pictureFile);
 
 

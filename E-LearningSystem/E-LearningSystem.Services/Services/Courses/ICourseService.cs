@@ -5,7 +5,7 @@
     
     public interface ICourseService
     {
-        Task<int> CreateCourse(string userId, string name, string description, int categoryId, IFormFile pictureFile);
+        Task<int> CreateCourse(string userId, string name, string description, double price, int categoryId, IFormFile pictureFile);
 
         Task<bool> EditCourse(int courseId, string name, string description, int categoryId, IFormFile pictureFile);
 

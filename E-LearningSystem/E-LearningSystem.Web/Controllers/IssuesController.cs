@@ -26,6 +26,7 @@
             return View();
         }
 
+
         [HttpPost]
         public async Task<IActionResult> CreateIssue(int id, IssueFormModel issueModel)
         {
