@@ -6,6 +6,7 @@
     <p>@Model.Name</p>
     <p>@Model.Description</p>
      <a asp-controller="Courses" asp-action="DeleteCourse" asp-route-id="@Model.Id" class="btn btn-danger">Delete Course</a>
+     <a asp-controller="Issues" asp-action="CreateIssue" asp-route-id="@Model.Id" class="btn btn-danger">Report Issue</a>
 
 
 <a asp-controller="Lectures" asp-action="CreateLecture" asp-route-id="@Model.Id" class="btn btn-primary">Add Lecture</a>

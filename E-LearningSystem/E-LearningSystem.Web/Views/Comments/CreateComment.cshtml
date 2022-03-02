@@ -1,0 +1,16 @@
+﻿@using E_LearningSystem.Web.Models.Comment
+@model CommentFormModel
+
+<h2>Comment section</h2>
+
+<form method="post"
+      asp-controller="Comments" asp-action="CreateComment">
+
+    <div class="mb-3">
+        <label asp-for="Content" class="form-label">Comment</label>
+        <textarea asp-for="Content" class="form-control"></textarea> 
+        <span asp-validation-for="Content" class="small text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

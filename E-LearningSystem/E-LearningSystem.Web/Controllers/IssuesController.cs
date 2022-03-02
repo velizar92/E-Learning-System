@@ -19,12 +19,19 @@
             this.userManagerService = userManagerService;
         }
 
+
+        [HttpGet]
+        public IActionResult CreateIssue()
+        {
+            return View();
+        }
+
         [HttpPost]
-        public async Task<IActionResult> CreateIssue(int courseId, IssueFormModel issueModel)
+        public async Task<IActionResult> CreateIssue(int id, IssueFormModel issueModel)
         {
             string userId = User.Id();
 
-            int issueId = await this.issueService.CreateIssue(userId, courseId, issueModel.Title, issueModel.Description);
+            int issueId = await this.issueService.CreateIssue(userId, id, issueModel.Title, issueModel.Description);
 
             return RedirectToAction(nameof(MyIssues));
         }

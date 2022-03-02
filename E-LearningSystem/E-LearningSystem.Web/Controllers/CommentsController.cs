@@ -20,12 +20,19 @@
         }
 
 
+        [HttpGet]
+        public IActionResult CreateComment()
+        {
+            return View();
+        }
+
+
         [HttpPost]
-        public async Task<IActionResult> CreateComment(int lectureId, CommentFormModel commentModel)
+        public async Task<IActionResult> CreateComment(int id, CommentFormModel commentModel)
         {
             string userId = User.Id();
 
-            int commentId = await this.commentService.CreateComment(lectureId, userId, commentModel.Content);
+            int commentId = await this.commentService.CreateComment(id, userId, commentModel.Content);
 
             return RedirectToAction(nameof(AllComments));
         }

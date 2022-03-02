@@ -7,24 +7,36 @@
 <p>@Model.Description</p>
 
 
-<br />
-
-<h2>Resource Urls</h2>
-@foreach (var resourceUrl in @Model.ResourceUrls)
-{
-
-    if (resourceUrl.EndsWith(".docx"))
+<div class="row">
+    @foreach (var resourceUrl in @Model.ResourceUrls)
     {
-        <a href="~/@resourceUrl">@resourceUrl</a>
+        <div class="col-md-4">
+            <div class="card mb-3" style="width: 18rem;">
+                @if (resourceUrl.EndsWith(".docx"))
+                {
+                    <img src="../pdf.png" class="card-img-top" alt="Test" width="300" height="300">
+                    <a href="~/@resourceUrl">@resourceUrl</a>
+                }
+                else if (resourceUrl.EndsWith(".mp4"))
+                {
+                    <video width="290" height="290" controls>
+                        <source src="~/@resourceUrl" type="video/mp4">
+                    </video>
+                }
+                <div class="card-body">
+                    <h5 class="card-title">test title</h5>
+                    <p class="card-text">test card text</p>
+                </div>
+            </div>
+        </div>
     }
-    else if (resourceUrl.EndsWith("mp4"))
-    {
-        <video width="1000" controls>
-            <source src="~/@resourceUrl" type="video/mp4">          
-        </video>
-    }
-}
+</div>
 
 <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId" class="btn btn-success">Back to Lectures</a>
 
-<br />
+<a asp-controller="Comments" asp-action="CreateComment" asp-route-id="@Model.Id" class="btn btn-success">Leave a comment</a>
+
+
+
+
+
