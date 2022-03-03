@@ -6,6 +6,7 @@ using E_LearningSystem.Data.Models;
 using E_LearningSystem.Services.Services;
 using E_LearningSystem.Services.Services.Statistics;
 using E_LearningSystem.Infrastructure.Seed;
+using Microsoft.AspNetCore.Http.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +41,13 @@ builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IIssueService, IssueService>();
 builder.Services.AddScoped<IStatisticService, StatisticService>();
 
-builder.Services.AddScoped<IDbInitializer, DbInitializer>();    
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
+builder.Services.Configure<FormOptions>(o => {
+    o.ValueLengthLimit = int.MaxValue;
+    o.MultipartBodyLengthLimit = int.MaxValue;
+    o.MemoryBufferThreshold = int.MaxValue;
+});
 
 var app = builder.Build();
 
@@ -61,6 +68,8 @@ SeedDatabase();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();

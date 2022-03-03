@@ -26,7 +26,8 @@
         }
 
 
-        [HttpPost]
+        [HttpPost, DisableRequestSizeLimit]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateLecture(
             int id,
             CreateLectureFormModel lectureModel,
