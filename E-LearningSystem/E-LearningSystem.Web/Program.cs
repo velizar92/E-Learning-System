@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http.Features;
 using E_LearningSystem.Data.Data;
 using E_LearningSystem.Data.Models;
+using E_LearningSystem.Infrastructure.Seed;
 using E_LearningSystem.Services.Services;
 using E_LearningSystem.Services.Services.Statistics;
-using E_LearningSystem.Infrastructure.Seed;
-using Microsoft.AspNetCore.Http.Features;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
