@@ -1,8 +1,10 @@
 ﻿namespace E_LearningSystem.Web.Controllers
 {
-    using E_LearningSystem.Services.Services;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using E_LearningSystem.Data.Models;
+    using E_LearningSystem.Services.Services;
 
     using static E_LearningSystem.Infrastructure.IdentityConstants;
 
@@ -10,11 +12,13 @@
     {
 
         private readonly IShoppingCartService shoppingCartService;
+        private readonly UserManager<User> userManagerService;
 
 
-        public CartsController(IShoppingCartService shoppingCartService)
+        public CartsController(IShoppingCartService shoppingCartService, UserManager<User> userManagerService)
         {
             this.shoppingCartService = shoppingCartService;
+            this.userManagerService = userManagerService;
         }
 
 
@@ -33,7 +37,10 @@
         {
             bool isAdded = await this.shoppingCartService.AddCourseToCart(shoppingCartId, courseId);
 
-            //TO DO Check...
+            if (isAdded == false)
+            {
+                return BadRequest();
+            }
 
             return RedirectToAction(nameof(Details), new { shoppingCartId });
         }
@@ -44,7 +51,10 @@
         {
             bool isDeleted = await this.shoppingCartService.DeleteCourseFromCart(shoppingCartId, courseId);
 
-            //TO DO Check...
+            if(isDeleted == false)
+            {
+                return BadRequest();
+            }
 
             return RedirectToAction(nameof(Details), new { shoppingCartId });
         }
@@ -54,9 +64,13 @@
         [Authorize(Roles = LearnerRole)]
         public async Task<IActionResult> BuyCourses(string shoppingCartId)
         {
-            bool areBuyed = await this.shoppingCartService.BuyCourses(shoppingCartId);
+            var user = await userManagerService.GetUserAsync(HttpContext.User);
+            bool areBuyed = await this.shoppingCartService.BuyCourses(shoppingCartId, user);
 
-            //TO DO Check...
+            if (areBuyed == false)
+            {
+                return BadRequest();
+            }
 
             return RedirectToAction(nameof(Details), new { shoppingCartId });
         }

@@ -1,13 +1,15 @@
 ﻿namespace E_LearningSystem.Services.Services
 {
-    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore;  
     using E_LearningSystem.Data.Data;
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services.Courses.Models;
+    
 
     public class ShoppingCartService : IShoppingCartService
     {
         private readonly ELearningSystemDbContext dbContext;
+       
 
         public ShoppingCartService(ELearningSystemDbContext dbContext)
         {
@@ -34,13 +36,18 @@
         }
 
 
-        public async Task<bool> BuyCourses(string shoppingCartId)
+        public async Task<bool> BuyCourses(string shoppingCartId, User user)
         {
             var shoppingCart = await GetCartById(shoppingCartId);
 
-            if (shoppingCart == null)
+            if (shoppingCart == null || user == null)
             {
                 return false;
+            }
+
+            foreach (var course in shoppingCart.Courses)
+            {
+                user.Courses.Add(course);
             }
 
             shoppingCart.Courses.Clear();

@@ -10,7 +10,7 @@
       
         Task<ShoppingCartDetailsServiceModel> GetCartDetails(string shoppingCartId);
 
-        Task<bool> BuyCourses(string shoppingCartId);
+        Task<bool> BuyCourses(string shoppingCartId, User user);
 
         Task<ShoppingCart> GetCartById(string shoppingCartId);
     }

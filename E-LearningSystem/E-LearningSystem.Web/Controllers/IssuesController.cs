@@ -1,14 +1,15 @@
 ﻿namespace E_LearningSystem.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Identity; 
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Authorization;
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Web.Models.Issue;
     using E_LearningSystem.Infrastructure.Extensions;
 
     using static E_LearningSystem.Infrastructure.IdentityConstants;
-    using Microsoft.AspNetCore.Authorization;
+    
 
     public class IssuesController : Controller
     {
@@ -24,6 +25,8 @@
 
 
         [HttpGet]
+        [Authorize(Roles = LearnerRole)]
+        [Authorize(Roles = AdminRole)]
         public IActionResult CreateIssue()
         {
             return View();
@@ -32,6 +35,7 @@
 
         [HttpPost]
         [Authorize(Roles = LearnerRole)]
+        [Authorize(Roles = AdminRole)]
         public async Task<IActionResult> CreateIssue(int id, IssueFormModel issueModel)
         {
             string userId = User.Id();
@@ -42,9 +46,9 @@
         }
 
 
-
         [HttpGet]
         [Authorize(Roles = LearnerRole)]
+        [Authorize(Roles = AdminRole)]
         public async Task<IActionResult> EditIssue(int issueId)
         {
             var issue = await this.issueService.GetIssueDetails(issueId);
@@ -61,22 +65,28 @@
 
         [HttpPost]
         [Authorize(Roles = LearnerRole)]
+        [Authorize(Roles = AdminRole)]
         public async Task<IActionResult> EditIssue(int issueId, IssueFormModel issueModel)
         {
             bool isEdited = await this.issueService.EditIssue(issueId, issueModel.Title, issueModel.Description);
 
-            //TO DO Checks...
+            if (isEdited == false)
+            {
+                return BadRequest();
+            }
 
             return RedirectToAction(nameof(MyIssues));
         }
 
 
-      
         public async Task<IActionResult> DeleteIssue(int issueId)
         {
             bool isDeleted = await this.issueService.DeleteIssue(issueId);
 
-            //TO DO Checks...
+            if (isDeleted == false)
+            {
+                return BadRequest();
+            }
 
             return RedirectToAction(nameof(MyIssues));
         }
