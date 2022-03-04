@@ -23,8 +23,7 @@
 
 
         [HttpGet]
-        [Authorize(Roles = AdminRole)]
-        [Authorize(Roles = TrainerRole)]
+        [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> CreateCourse()
         {       
             return View(new CourseFormModel
@@ -35,8 +34,7 @@
 
 
         [HttpPost]
-        [Authorize(Roles = AdminRole)]
-        [Authorize(Roles = TrainerRole)]
+        [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> CreateCourse(CourseFormModel courseModel, IFormFile pictureFile)
         {           
             string userId = User.Id();
@@ -69,8 +67,7 @@
 
         [HttpGet]
         [Authorize]
-        [Authorize(Roles = AdminRole)]
-        [Authorize(Roles = TrainerRole)]
+        [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> EditCourse(int id, IFormFile pictureFile)
         {
             var course = await this.courseService.GetCourseById(id);
@@ -93,8 +90,7 @@
 
         [HttpPost]
         [Authorize]
-        [Authorize(Roles = AdminRole)]
-        [Authorize(Roles = TrainerRole)]
+        [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> EditCourse(int id, CourseFormModel courseModel, IFormFile pictureFile)
         {           
             if (!this.courseService.CheckIfCourseCategoryExists(courseModel.CategoryId))

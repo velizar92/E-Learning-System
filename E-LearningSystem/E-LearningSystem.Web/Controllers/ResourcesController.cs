@@ -21,8 +21,7 @@
         }
 
 
-        [Authorize(Roles = AdminRole)]
-        [Authorize(Roles = TrainerRole)]
+        [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> DeleteResource(int resourceId)
         {
             int id = await this.lectureService.GetLectureIdByResourceId(resourceId);

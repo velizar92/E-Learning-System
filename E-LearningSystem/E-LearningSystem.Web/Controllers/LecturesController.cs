@@ -31,8 +31,7 @@
 
         [HttpPost, DisableRequestSizeLimit]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = AdminRole)]
-        [Authorize(Roles = TrainerRole)]
+        [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> CreateLecture(
             int id,
             CreateLectureFormModel lectureModel,
@@ -49,8 +48,7 @@
 
 
         [HttpGet]
-        [Authorize(Roles = AdminRole)]
-        [Authorize(Roles = TrainerRole)]
+        [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> EditLecture(int id)
         {
             var lecture = await lectureService.GetLectureById(id);
@@ -75,8 +73,7 @@
 
 
         [HttpPost]
-        [Authorize(Roles = AdminRole)]
-        [Authorize(Roles = TrainerRole)]
+        [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> EditLecture(int id, CreateLectureFormModel lectureModel, IEnumerable<IFormFile> files)
         {
             var lecture = await lectureService.GetLectureById(id);
@@ -103,8 +100,7 @@
         }
 
 
-        [Authorize(Roles = AdminRole)]
-        [Authorize(Roles = TrainerRole)]
+        [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> DeleteLecture(int id)
         {
             var (isDeleted, courseId) = await lectureService.DeleteLecture(id);

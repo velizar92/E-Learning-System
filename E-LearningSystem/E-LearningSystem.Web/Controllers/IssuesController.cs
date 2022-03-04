@@ -25,8 +25,7 @@
 
 
         [HttpGet]
-        [Authorize(Roles = LearnerRole)]
-        [Authorize(Roles = AdminRole)]
+        [Authorize(Roles = $"{AdminRole}, {LearnerRole}")]
         public IActionResult CreateIssue()
         {
             return View();
@@ -34,8 +33,7 @@
 
 
         [HttpPost]
-        [Authorize(Roles = LearnerRole)]
-        [Authorize(Roles = AdminRole)]
+        [Authorize(Roles = $"{AdminRole}, {LearnerRole}")]
         public async Task<IActionResult> CreateIssue(int id, IssueFormModel issueModel)
         {
             string userId = User.Id();
@@ -47,8 +45,7 @@
 
 
         [HttpGet]
-        [Authorize(Roles = LearnerRole)]
-        [Authorize(Roles = AdminRole)]
+        [Authorize(Roles = $"{AdminRole}, {LearnerRole}")]
         public async Task<IActionResult> EditIssue(int issueId)
         {
             var issue = await this.issueService.GetIssueDetails(issueId);
@@ -64,8 +61,7 @@
 
 
         [HttpPost]
-        [Authorize(Roles = LearnerRole)]
-        [Authorize(Roles = AdminRole)]
+        [Authorize(Roles = $"{AdminRole}, {LearnerRole}")]
         public async Task<IActionResult> EditIssue(int issueId, IssueFormModel issueModel)
         {
             bool isEdited = await this.issueService.EditIssue(issueId, issueModel.Title, issueModel.Description);
@@ -109,8 +105,7 @@
         }
 
 
-        [Authorize(Roles = TrainerRole)]
-        [Authorize(Roles = LearnerRole)]
+        [Authorize(Roles = $"{TrainerRole}, {LearnerRole}")]
         public async Task<IActionResult> MyIssues()
         {
             string userId = User.Id();
