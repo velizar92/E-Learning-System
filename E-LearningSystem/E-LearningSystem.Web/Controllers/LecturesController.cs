@@ -2,10 +2,13 @@
 {
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Authorization;
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Web.Models.Lecture;
 
+    using static E_LearningSystem.Infrastructure.IdentityConstants;
+  
     public class LecturesController : Controller
     {
         private readonly ILectureService lectureService;
@@ -28,6 +31,8 @@
 
         [HttpPost, DisableRequestSizeLimit]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = AdminRole)]
+        [Authorize(Roles = TrainerRole)]
         public async Task<IActionResult> CreateLecture(
             int id,
             CreateLectureFormModel lectureModel,
@@ -44,6 +49,8 @@
 
 
         [HttpGet]
+        [Authorize(Roles = AdminRole)]
+        [Authorize(Roles = TrainerRole)]
         public async Task<IActionResult> EditLecture(int id)
         {
             var lecture = await lectureService.GetLectureById(id);
@@ -68,6 +75,8 @@
 
 
         [HttpPost]
+        [Authorize(Roles = AdminRole)]
+        [Authorize(Roles = TrainerRole)]
         public async Task<IActionResult> EditLecture(int id, CreateLectureFormModel lectureModel, IEnumerable<IFormFile> files)
         {
             var lecture = await lectureService.GetLectureById(id);
@@ -93,7 +102,9 @@
 
         }
 
-    
+
+        [Authorize(Roles = AdminRole)]
+        [Authorize(Roles = TrainerRole)]
         public async Task<IActionResult> DeleteLecture(int id)
         {
             var (isDeleted, courseId) = await lectureService.DeleteLecture(id);

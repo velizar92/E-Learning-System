@@ -7,6 +7,9 @@
     using E_LearningSystem.Web.Models.Issue;
     using E_LearningSystem.Infrastructure.Extensions;
 
+    using static E_LearningSystem.Infrastructure.IdentityConstants;
+    using Microsoft.AspNetCore.Authorization;
+
     public class IssuesController : Controller
     {
         private readonly IIssueService issueService;
@@ -28,6 +31,7 @@
 
 
         [HttpPost]
+        [Authorize(Roles = LearnerRole)]
         public async Task<IActionResult> CreateIssue(int id, IssueFormModel issueModel)
         {
             string userId = User.Id();
@@ -40,6 +44,7 @@
 
 
         [HttpGet]
+        [Authorize(Roles = LearnerRole)]
         public async Task<IActionResult> EditIssue(int issueId)
         {
             var issue = await this.issueService.GetIssueDetails(issueId);
@@ -55,6 +60,7 @@
 
 
         [HttpPost]
+        [Authorize(Roles = LearnerRole)]
         public async Task<IActionResult> EditIssue(int issueId, IssueFormModel issueModel)
         {
             bool isEdited = await this.issueService.EditIssue(issueId, issueModel.Title, issueModel.Description);
@@ -65,7 +71,7 @@
         }
 
 
-       
+      
         public async Task<IActionResult> DeleteIssue(int issueId)
         {
             bool isDeleted = await this.issueService.DeleteIssue(issueId);
@@ -84,7 +90,7 @@
         }
 
 
-        //used only if the user role is "Admin"
+        [Authorize(Roles = AdminRole)]
         public async Task<IActionResult> AllIssues()
         {
             var allIssues = await this.issueService.GetAllReportedIssues();
@@ -93,6 +99,8 @@
         }
 
 
+        [Authorize(Roles = TrainerRole)]
+        [Authorize(Roles = LearnerRole)]
         public async Task<IActionResult> MyIssues()
         {
             string userId = User.Id();

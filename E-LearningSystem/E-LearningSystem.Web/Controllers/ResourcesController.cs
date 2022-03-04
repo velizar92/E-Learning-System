@@ -1,26 +1,28 @@
 ﻿namespace E_LearningSystem.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Identity;
-    using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Infrastructure.Extensions;
+
+    using static E_LearningSystem.Infrastructure.IdentityConstants;
+    using Microsoft.AspNetCore.Authorization;
 
     public class ResourcesController : Controller
     {
         private readonly IResourceService resourceService;
         private readonly ILectureService lectureService;
-        private readonly UserManager<User> userManagerService;
+       
 
 
-        public ResourcesController(IResourceService resourceService, ILectureService lectureService, UserManager<User> userManagerService)
+        public ResourcesController(IResourceService resourceService, ILectureService lectureService)
         {
             this.resourceService = resourceService;
-            this.lectureService = lectureService;
-            this.userManagerService = userManagerService;
+            this.lectureService = lectureService;          
         }
 
-       
+
+        [Authorize(Roles = AdminRole)]
+        [Authorize(Roles = TrainerRole)]
         public async Task<IActionResult> DeleteResource(int resourceId)
         {
             int id = await this.lectureService.GetLectureIdByResourceId(resourceId);

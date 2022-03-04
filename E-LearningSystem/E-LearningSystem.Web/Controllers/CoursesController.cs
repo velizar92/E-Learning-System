@@ -8,6 +8,8 @@
     using E_LearningSystem.Infrastructure.Extensions;
     using Microsoft.AspNetCore.Authorization;
 
+    using static E_LearningSystem.Infrastructure.IdentityConstants;
+
     public class CoursesController : Controller
     {
         private readonly ICourseService courseService;
@@ -21,7 +23,8 @@
 
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = AdminRole)]
+        [Authorize(Roles = TrainerRole)]
         public async Task<IActionResult> CreateCourse()
         {       
             return View(new CourseFormModel
@@ -32,8 +35,8 @@
 
 
         [HttpPost]
-        [Authorize]
-        //Will be permitted only for Admin and Trainer roles
+        [Authorize(Roles = AdminRole)]
+        [Authorize(Roles = TrainerRole)]
         public async Task<IActionResult> CreateCourse(CourseFormModel courseModel, IFormFile pictureFile)
         {           
             string userId = User.Id();
@@ -66,6 +69,8 @@
 
         [HttpGet]
         [Authorize]
+        [Authorize(Roles = AdminRole)]
+        [Authorize(Roles = TrainerRole)]
         public async Task<IActionResult> EditCourse(int id, IFormFile pictureFile)
         {
             var course = await this.courseService.GetCourseById(id);
@@ -88,6 +93,8 @@
 
         [HttpPost]
         [Authorize]
+        [Authorize(Roles = AdminRole)]
+        [Authorize(Roles = TrainerRole)]
         public async Task<IActionResult> EditCourse(int id, CourseFormModel courseModel, IFormFile pictureFile)
         {           
             if (!this.courseService.CheckIfCourseCategoryExists(courseModel.CategoryId))
