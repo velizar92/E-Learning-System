@@ -69,6 +69,7 @@
 
             foreach (var resource in lecture.Resources)
             {
+                File.Delete(Path.Combine(webHostEnvironment.WebRootPath, resource.Name));
                 dbContext.Resources.Remove(resource);
             }
 

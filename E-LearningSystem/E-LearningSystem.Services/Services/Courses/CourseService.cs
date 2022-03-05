@@ -76,9 +76,10 @@
             foreach (var lecture in lectures)
             {
                 var resources = dbContext.Resources.Where(r => r.LectureId == lecture.Id).ToList();
-                foreach (var resourse in resources)
+                foreach (var resource in resources)
                 {
-                    dbContext.Resources.Remove(resourse);
+                    File.Delete(Path.Combine(webHostEnvironment.WebRootPath, resource.Name));
+                    dbContext.Resources.Remove(resource);
                 }
 
                 dbContext.Lectures.Remove(lecture);
