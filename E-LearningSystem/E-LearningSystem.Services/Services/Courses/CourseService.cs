@@ -53,9 +53,7 @@
 
             var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
             
-            user.Courses.Add(course);
-
-            //await dbContext.Courses.AddAsync(course);
+            user.Courses.Add(course);           
             await dbContext.SaveChangesAsync();
 
             return course.Id;
@@ -207,7 +205,7 @@
         }
 
 
-        //Get my course as a normal user ("Learner")
+        
         public async Task<IEnumerable<AllCoursesServiceModel>> GetMyCourses(string userId)
         {
             return await dbContext

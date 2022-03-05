@@ -3,14 +3,16 @@
     using Microsoft.EntityFrameworkCore;
     using E_LearningSystem.Data.Data;
     using E_LearningSystem.Services.Services.Resources.Models;
+    using E_LearningSystem.Services.Services.Resources;
+    using E_LearningSystem.Data.Models;
 
     public class ResourceService : IResourceService
     {
         private readonly ELearningSystemDbContext dbContext;
-       
+
         public ResourceService(ELearningSystemDbContext dbContext)
         {
-            this.dbContext = dbContext;          
+            this.dbContext = dbContext;
         }
 
 
@@ -22,6 +24,15 @@
             }
 
             return true;
+        }
+
+        public async Task<IEnumerable<string>> GetAllResourceTypes()
+        {
+            return await dbContext
+                            .ResourceTypes
+                            .Select(c => c.Name)
+                            .Distinct()
+                           .ToListAsync();
         }
 
 
@@ -41,33 +52,72 @@
         }
 
 
-        public async Task<IEnumerable<AllResourcesServiceModel>> GetMyResources(string userId)
+        public async Task<ResourceQueryServiceModel> GetMyResources(
+            string userId,
+            string resourceType = null,
+            string searchTerm = null,
+            ResourceSorting resourceSorting = ResourceSorting.DateCreated,
+            int currentPage = 1,
+            int resourcesPerPage = int.MaxValue)
         {
-            List<AllResourcesServiceModel> myResources = new List<AllResourcesServiceModel>();
+
+            List<Resource> myResources = new List<Resource>();
 
             var myCourses = await dbContext
                                     .Courses
                                     .Where(c => c.UserId == userId)
                                     .Include(l => l.Lectures)
-                                    .ThenInclude(l => l.Resources)
+                                    .ThenInclude(l => l.Resources)                                
                                     .ToListAsync();
-            
-           
+                                    
+   
             foreach (var course in myCourses)
             {
                 foreach (var lecture in course.Lectures)
                 {
                     foreach (var resource in lecture.Resources)
-                    {                    
-                        myResources.Add(new AllResourcesServiceModel 
-                        {
-                            ResourceName = resource.Name,                           
-                        });
+                    {
+                        myResources.Add(resource);               
                     }
                 }
             }
 
-            return myResources;
+            if (!string.IsNullOrWhiteSpace(resourceType))
+            {
+                myResources = myResources.Where(r => r.Name == resourceType).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                myResources = myResources.Where(r =>
+                    (r.Name.ToLower()).Contains(searchTerm.ToLower())).ToList();
+            }
+
+            switch (resourceSorting)
+            {
+                case ResourceSorting.DateCreated:
+                    myResources = myResources.OrderByDescending(r => r.CreatedOn).ToList();
+                    break;
+                case ResourceSorting.ResourceType:
+                    myResources = myResources.OrderByDescending(r => r.ResourceType).ToList();
+                    break;
+                default:
+                    myResources = myResources.OrderByDescending(r => r.CreatedOn).ToList();
+                    break;
+            }
+
+            myResources = myResources
+                .Skip((currentPage - 1) * resourcesPerPage)
+                .Take(resourcesPerPage)
+                .ToList();
+
+            return new ResourceQueryServiceModel
+            {
+                Resources = myResources.Select(r => new AllResourcesServiceModel { ResourceName = r.Name }),
+                TotalResources = myResources.Count,
+                CurrentPage = currentPage,
+                CarsPerPage = resourcesPerPage
+            };
         }
 
 

@@ -1,11 +1,13 @@
 ﻿namespace E_LearningSystem.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Authorization;
+    using E_LearningSystem.Web.Models.Resource;
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Infrastructure.Extensions;
 
     using static E_LearningSystem.Infrastructure.IdentityConstants;
-    using Microsoft.AspNetCore.Authorization;
+   
 
     public class ResourcesController : Controller
     {
@@ -32,12 +34,25 @@
 
 
         
-        public async Task<IActionResult> MyResources()
+        public async Task<IActionResult> MyResources([FromQuery] AllResourcesQueryModel query)
         {
             string userId = User.Id();
-            var myResources =  await this.resourceService.GetMyResources(userId);
+            var myResourceServiceModel =  await this.resourceService.GetMyResources(
+                userId,
+                query.ResourceType,
+                query.SearchTerm,
+                query.SortingCriteria,
+                query.CurrentPage,
+                AllResourcesQueryModel.ResourcesPerPage);
 
-            return View(myResources);
+            var resourceTypes =  await this.resourceService.GetAllResourceTypes();
+
+            AllResourcesQueryModel queryModel = new AllResourcesQueryModel();
+            queryModel.Resources = myResourceServiceModel.Resources;
+            queryModel.ResourceTypes = resourceTypes;
+            queryModel.TotalResources = myResourceServiceModel.TotalResources;
+
+            return View(queryModel);
         }
 
 
