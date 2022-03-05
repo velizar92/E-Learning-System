@@ -81,11 +81,12 @@
 
                 var context = MigrateDatabase(services);
 
+                await SeedCourseCategories(services);
+                await SeedResourceTypes(services);
                 await SeedRoles(services);
                 await SeedAdminUsers(services);
                 await SeedTrainerUsers(services);
-                await SeedCourseCategories(services);
-                await SeedResourceTypes(services);              
+                          
             }
         }
 

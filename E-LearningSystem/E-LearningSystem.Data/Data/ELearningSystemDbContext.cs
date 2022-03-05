@@ -1,12 +1,11 @@
 ﻿namespace E_LearningSystem.Data.Data
 {
     using System.Threading;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using E_LearningSystem.Data.Models;  
    
-    public class ELearningSystemDbContext : IdentityDbContext<IdentityUser>
+    public class ELearningSystemDbContext : IdentityDbContext<User>
     {
 
         public ELearningSystemDbContext(DbContextOptions<ELearningSystemDbContext> options)

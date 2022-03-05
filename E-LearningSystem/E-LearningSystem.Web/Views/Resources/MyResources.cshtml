@@ -1,1 +1,37 @@
-﻿
+﻿@using E_LearningSystem.Services.Services.Resources.Models
+@model IEnumerable<AllResourcesServiceModel>
+
+
+<div class="row">
+    @foreach (var resource in @Model)
+    {
+        <div class="col-md-4">
+            <div class="card mb-3" style="width: 18rem;">
+                @if(resource.ResourceName.EndsWith(".pptx"))
+                {
+                    <img src="~/pptxIcon.png" width="290" height="290"/>
+                }
+                else if (resource.ResourceName.EndsWith(".pdf"))
+                {
+                    <iframe src="~/@resource.ResourceName" sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation" width="290" height="290">@resource.ResourceName</iframe>
+                }
+                else if (resource.ResourceName.EndsWith(".mp4"))
+                {
+                    <video width="290" height="290" controls>
+                        <source src="~/@resource.ResourceName" type="video/mp4">
+                    </video>
+                }
+                <div class="card-body">
+                    <h5 class="card-title"><a href="~/@resource.ResourceName">@resource.ResourceName</a></h5>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+
+
+
+

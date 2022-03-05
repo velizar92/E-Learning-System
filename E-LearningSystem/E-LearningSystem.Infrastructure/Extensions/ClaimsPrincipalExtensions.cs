@@ -6,6 +6,11 @@
     {
         public static string Id(this ClaimsPrincipal user)
         {
+            if(user == null)
+            {
+                return string.Empty;
+            }
+
            return user.FindFirst(ClaimTypes.NameIdentifier).Value;
         }
           

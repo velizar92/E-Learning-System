@@ -51,7 +51,11 @@
                 CourseCategoryId = categoryId
             };
 
-            await dbContext.Courses.AddAsync(course);
+            var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            
+            user.Courses.Add(course);
+
+            //await dbContext.Courses.AddAsync(course);
             await dbContext.SaveChangesAsync();
 
             return course.Id;

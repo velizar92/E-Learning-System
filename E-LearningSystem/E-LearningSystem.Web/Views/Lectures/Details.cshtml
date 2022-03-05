@@ -12,10 +12,13 @@
     {
         <div class="col-md-4">
             <div class="card mb-3" style="width: 18rem;">
-                @if (resourceUrl.EndsWith(".docx"))
+                @if(resourceUrl.EndsWith(".pptx"))
                 {
-                    <img src="../pdf.png" class="card-img-top" alt="Test" width="300" height="300">
-                    <a href="~/@resourceUrl">@resourceUrl</a>
+                    <img src="~/pptxIcon.png" width="290" height="290" />
+                }
+                else if (resourceUrl.EndsWith(".pdf"))
+                {
+                    <iframe src="~/@resourceUrl" sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation" width="290" height="290">@resourceUrl</iframe>
                 }
                 else if (resourceUrl.EndsWith(".mp4"))
                 {
@@ -24,8 +27,7 @@
                     </video>
                 }
                 <div class="card-body">
-                    <h5 class="card-title">test title</h5>
-                    <p class="card-text">test card text</p>
+                    <h5 class="card-title"><a href="~/@resourceUrl" frameborder='0'>@resourceUrl</a></h5>
                 </div>
             </div>
         </div>
