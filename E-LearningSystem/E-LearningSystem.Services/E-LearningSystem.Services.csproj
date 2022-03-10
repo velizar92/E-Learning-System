@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\E-LearningSystem.Data\E-LearningSystem.Data.csproj" />
+    <ProjectReference Include="..\E-LearningSystem.Infrastructure\E-LearningSystem.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,21 +1,18 @@
 ﻿namespace E_LearningSystem.Web.Models.Resource
 {
     using System.ComponentModel.DataAnnotations;
-    using E_LearningSystem.Services.Services.Resources;
     using E_LearningSystem.Services.Services.Resources.Models;
 
     public class AllResourcesQueryModel
     {
-        public const int ResourcesPerPage = 6;
+        public const int ResourcesPerPage = 3;
 
         [Display(Name = "Search by text")]
         public string SearchTerm { get; init; }
 
         public int ResourceTypeId { get; set; }
 
-        public string ResourceType { get; set; }
-
-        public ResourceSorting SortingCriteria { get; init; }
+        public string ResourceType { get; set; }        
 
         public int CurrentPage { get; init; } = 1;
 

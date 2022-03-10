@@ -7,5 +7,8 @@
         [Required]
         public string ResourceName { get; set; }
 
+        [Required]
+        public string LectureName { get; set; }
+
     }
 }

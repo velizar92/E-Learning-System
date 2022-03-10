@@ -2,9 +2,8 @@
 {
     using Microsoft.EntityFrameworkCore;
     using E_LearningSystem.Data.Data;
-    using E_LearningSystem.Services.Services.Resources.Models;
-    using E_LearningSystem.Services.Services.Resources;
     using E_LearningSystem.Data.Models;
+    using E_LearningSystem.Services.Services.Resources.Models;
 
     public class ResourceService : IResourceService
     {
@@ -55,8 +54,7 @@
         public async Task<ResourceQueryServiceModel> GetMyResources(
             string userId,
             string resourceType = null,
-            string searchTerm = null,
-            ResourceSorting resourceSorting = ResourceSorting.DateCreated,
+            string searchTerm = null,         
             int currentPage = 1,
             int resourcesPerPage = int.MaxValue)
         {
@@ -67,17 +65,16 @@
                                     .Courses
                                     .Where(c => c.UserId == userId)
                                     .Include(l => l.Lectures)
-                                    .ThenInclude(l => l.Resources)                                
+                                    .ThenInclude(l => l.Resources)
                                     .ToListAsync();
-                                    
-   
+
             foreach (var course in myCourses)
             {
                 foreach (var lecture in course.Lectures)
                 {
                     foreach (var resource in lecture.Resources)
                     {
-                        myResources.Add(resource);               
+                        myResources.Add(resource);
                     }
                 }
             }
@@ -93,18 +90,7 @@
                     (r.Name.ToLower()).Contains(searchTerm.ToLower())).ToList();
             }
 
-            switch (resourceSorting)
-            {
-                case ResourceSorting.DateCreated:
-                    myResources = myResources.OrderByDescending(r => r.CreatedOn).ToList();
-                    break;
-                case ResourceSorting.ResourceType:
-                    myResources = myResources.OrderByDescending(r => r.ResourceType).ToList();
-                    break;
-                default:
-                    myResources = myResources.OrderByDescending(r => r.CreatedOn).ToList();
-                    break;
-            }
+            int resourcesCount = myResources.Count;
 
             myResources = myResources
                 .Skip((currentPage - 1) * resourcesPerPage)
@@ -113,8 +99,13 @@
 
             return new ResourceQueryServiceModel
             {
-                Resources = myResources.Select(r => new AllResourcesServiceModel { ResourceName = r.Name }),
-                TotalResources = myResources.Count,
+                Resources = myResources.Select(r => new AllResourcesServiceModel
+                {
+                    ResourceName = r.Name,
+                    LectureName = r.Lecture.Name
+                }),
+
+                TotalResources = resourcesCount,
                 CurrentPage = currentPage,
                 CarsPerPage = resourcesPerPage
             };

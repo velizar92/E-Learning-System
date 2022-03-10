@@ -41,7 +41,6 @@
                 userId,
                 query.ResourceType,
                 query.SearchTerm,
-                query.SortingCriteria,
                 query.CurrentPage,
                 AllResourcesQueryModel.ResourcesPerPage);
 

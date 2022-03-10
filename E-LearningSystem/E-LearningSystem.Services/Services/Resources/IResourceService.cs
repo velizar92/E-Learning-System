@@ -15,9 +15,8 @@
             string userId,
             string resourceType,
             string searchTerm,
-            ResourceSorting resourceSorting,
             int currentPage,
-            int carsPerPage);
+            int resourcesPerPage);
 
     }
 }

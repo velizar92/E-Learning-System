@@ -5,6 +5,8 @@
     using E_LearningSystem.Data.Data;
     using E_LearningSystem.Data.Enums;
     using E_LearningSystem.Data.Models;
+    using Microsoft.AspNetCore.Authorization;
+    using static E_LearningSystem.Infrastructure.IdentityConstants;
 
     public class TrainerService : ITrainerService
     {
@@ -18,8 +20,9 @@
         }
 
 
+        [Authorize(Roles = AdminRole)]
         public async Task<int> CreateTrainer(string firstName, string lastName, string userName,
-            string email, string profileImageUrl, string cvUrl, TrainerStatus trainerStatus)
+            string password, string email, string profileImageUrl, string cvUrl, TrainerStatus trainerStatus)
         {
             var user = new User()
             {
@@ -30,7 +33,7 @@
                 ProfileImageUrl = profileImageUrl,
             };
 
-            await userManager.CreateAsync(user);
+            await userManager.CreateAsync(user, password);
 
             var trainer = new Trainer()
             {
@@ -47,6 +50,7 @@
         }
 
 
+        [Authorize(Roles = AdminRole)]
         public async Task<bool> DeleteTrainer(int trainerId)
         {
             var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainerId);
@@ -62,6 +66,7 @@
         }
 
 
+        [Authorize(Roles = AdminRole)]
         public async Task<bool> EditTrainer(int trainerId, string fullName, string cvUrl, TrainerStatus trainerStatus)
         {
             var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainerId);
@@ -82,7 +87,7 @@
 
         public async Task<IEnumerable<AllTrainersServiceModel>> GetAllTrainers()
         {
-            var trainerUsers = await userManager.GetUsersInRoleAsync("Trainer");
+            var trainerUsers = await userManager.GetUsersInRoleAsync(TrainerRole);
 
             return trainerUsers
                         .Select(t => new AllTrainersServiceModel
