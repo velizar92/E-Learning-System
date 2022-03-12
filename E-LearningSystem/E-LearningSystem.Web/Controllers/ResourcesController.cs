@@ -15,7 +15,6 @@
         private readonly ILectureService lectureService;
        
 
-
         public ResourcesController(IResourceService resourceService, ILectureService lectureService)
         {
             this.resourceService = resourceService;
@@ -32,8 +31,7 @@
             return RedirectToAction("Details", "Lectures", new { id });
         }
 
-
-        
+      
         public async Task<IActionResult> MyResources([FromQuery] AllResourcesQueryModel query)
         {
 

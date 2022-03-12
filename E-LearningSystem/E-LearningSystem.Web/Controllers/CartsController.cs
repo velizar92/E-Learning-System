@@ -22,11 +22,16 @@
         }
 
 
-        public IActionResult Details(string id)
-        {
-            var cartDetails = this.shoppingCartService.GetCartDetails(id);
+        //public IActionResult Details(string id)
+        //{
+        //    var cartDetails = this.shoppingCartService.GetCartDetails(id);
 
-            return View(cartDetails);
+        //    return View(cartDetails);
+        //}
+
+        public IActionResult Details()
+        {       
+            return View();
         }
 
 
