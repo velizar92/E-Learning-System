@@ -1,1 +1,32 @@
-﻿
+﻿@using E_LearningSystem.Services.Services
+@model IEnumerable<AllTrainersServiceModel>
+
+
+<main id="main" data-aos="fade-in">
+ 
+    <div class="breadcrumbs">
+        <div class="container">
+            <h2>Our Trainers</h2>
+            <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
+        </div>
+    </div>
+
+    <section id="trainers" class="trainers">
+        <div class="container" data-aos="fade-up">
+            <div class="row" data-aos="zoom-in" data-aos-delay="100">
+                @foreach (var trainer in Model)
+                {
+                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                        <div class="member">
+                            <img src="~/assets/img/trainers/@trainer.ProfileImageUrl" class="img-fluid" alt="" width="300" height="300" >
+                            <div class="member-content">
+                                <h4>@trainer.FullName</h4>                               
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+</main>

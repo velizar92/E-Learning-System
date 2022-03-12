@@ -35,8 +35,8 @@
         public async Task<int> CreateCourse(string userId, string name, string description, double price, int categoryId, IFormFile pictureFile)
         {
 
-            string fullpath = Path.Combine(webHostEnvironment.WebRootPath, pictureFile.FileName);
-            using (var stream = new FileStream(fullpath, FileMode.Create))
+            string detailPath = Path.Combine(@"\assets\img\courses", pictureFile.FileName);
+            using (var stream = new FileStream(webHostEnvironment.WebRootPath + detailPath, FileMode.Create))
             {
                 await pictureFile.CopyToAsync(stream);
             }

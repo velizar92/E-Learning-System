@@ -16,7 +16,7 @@
           
         public static bool IsAdmin(this ClaimsPrincipal user)
         {
-            return user.IsInRole("Administrator");
+            return user.IsInRole("Admin");
         }
     }         
 }

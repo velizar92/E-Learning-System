@@ -1,0 +1,32 @@
+﻿@using E_LearningSystem.Services.Services.Courses.Models
+@model IEnumerable<AllCoursesServiceModel>
+
+
+     <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs">
+      <div class="container">
+        <h2>Our Courses</h2>
+        <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
+      </div>
+    </div><!-- End Breadcrumbs -->
+
+    <div class="row">
+        <h1>@ViewData["Title"]</h1>
+        @foreach (var course in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-3" style="width: 18rem;">
+                    <img src="../@course.ImageUrl" class="card-img-top" alt="Test" width="300" height="300">
+                    <div class="card-body">
+                        <h5 class="card-title">@course.Name</h5>
+                        <p class="card-text">@course.Description</p>
+                        <p class="card-text">@course.Price $</p>
+                        <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id" class="btn btn-primary">Details</a>
+                        <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id" class="btn btn-success">Add to Cart</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+  

@@ -68,7 +68,7 @@
                         UserName = "hristo@example.com",
                         NormalizedUserName = "HRISTO@EXAMPLE.COM",
                         Email = "hristo@example.com",
-                        ProfileImageUrl = "trainer2.jpg"
+                        ProfileImageUrl = "trainer2.png"
                     }
              };
 
@@ -155,6 +155,7 @@
             var trainer1 = new Trainer
             {             
                 UserId = trainerUsers[0].Id,
+                FullName = trainerUsers[0].FirstName + " " + trainerUsers[0].LastName,
                 Status = TrainerStatus.Active,
                 CVUrl = "trainer1.pdf"
             };
@@ -162,6 +163,7 @@
             var trainer2 = new Trainer
             {               
                 UserId = trainerUsers[1].Id,
+                FullName = trainerUsers[1].FirstName + " " + trainerUsers[1].LastName,
                 Status = TrainerStatus.Active,
                 CVUrl = "trainer2.pdf"
             };
@@ -169,6 +171,7 @@
             var trainer3 = new Trainer
             {            
                 UserId = trainerUsers[2].Id,
+                FullName = trainerUsers[2].FirstName + " " + trainerUsers[2].LastName,
                 Status = TrainerStatus.Active,
                 CVUrl = "trainer3.pdf"
             };
@@ -176,6 +179,7 @@
             var trainer4 = new Trainer
             {
                 UserId = trainerUsers[3].Id,
+                FullName = trainerUsers[3].FirstName + " " + trainerUsers[3].LastName,
                 Status = TrainerStatus.Active,
                 CVUrl = "trainer4.pdf"
             };
@@ -183,6 +187,7 @@
             var trainer5 = new Trainer
             {
                 UserId = trainerUsers[4].Id,
+                FullName = trainerUsers[4].FirstName + " " + trainerUsers[4].LastName,
                 Status = TrainerStatus.Active,
                 CVUrl = "trainer5.pdf"
             };
@@ -190,6 +195,7 @@
             var trainer6 = new Trainer
             {
                 UserId = trainerUsers[5].Id,
+                FullName = trainerUsers[5].FirstName + " " + trainerUsers[5].LastName,
                 Status = TrainerStatus.Active,
                 CVUrl = "trainer6.pdf"
             };
