@@ -1,20 +1,48 @@
 ﻿@using E_LearningSystem.Services.Services.Courses.Models
 @model IEnumerable<AllCoursesServiceModel>
 
-<div class="row">
-    @foreach (var course in Model)
-    {
-        <div class="col-md-4">
-            <div class="card mb-3" style="width: 18rem;">
-                <img src="../@course.ImageUrl" class="card-img-top" alt="Test" width="300" height="300">
-                <div class="card-body">
-                    <h5 class="card-title">@course.Name</h5>
-                    <p class="card-text">@course.Description</p>
-                    <p class="card-text">@course.Price $</p>
-                    <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id" class="btn btn-primary">Details</a>
-                    <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id" class="btn btn-success">Add to Cart</a>
-                </div>
+<main id="main" data-aos="fade-in">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <h2>My Courses</h2>
+            <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
+        </div>
+    </div><!-- End Breadcrumbs -->
+
+    <!-- ======= Courses Section ======= -->
+    <section id="courses" class="courses">
+        <div class="container" data-aos="fade-up">
+            <div class="row" data-aos="zoom-in" data-aos-delay="100">
+                @foreach (var course in Model)
+                {
+                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                        <div class="course-item">
+                            <img src="~/assets/img/courses/@course.ImageUrl" class="img-fluid" alt="Course Image">
+                            <div class="course-content">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h4>@course.CategoryName</h4>
+                                    <p class="price">$@course.Price</p>
+                                </div>
+
+                                <h3><a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id">@course.Name</a></h3>
+                                <p>@course.Description</p>
+                                <div class="trainer d-flex justify-content-between align-items-center">
+                                    <div class="trainer-profile d-flex align-items-center">
+                                        <img src="~/assets/img/trainers/trainer-1.jpg" class="img-fluid" alt="">
+                                        <span>Antonio</span>
+                                    </div>                                
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- End Course Item-->
+                }
             </div>
         </div>
-    }
-</div>
+    </section><!-- End Courses Section -->
+
+</main><!-- End #main -->
+
+<div id="preloader"></div>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

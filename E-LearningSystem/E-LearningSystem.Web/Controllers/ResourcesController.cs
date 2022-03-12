@@ -36,15 +36,19 @@
         
         public async Task<IActionResult> MyResources([FromQuery] AllResourcesQueryModel query)
         {
+
+            //var myResources = await this.resourceService.GetMyResources(User.Id());
+            //return View(myResources);
+
             string userId = User.Id();
-            var myResourceServiceModel =  await this.resourceService.GetMyResources(
+            var myResourceServiceModel = await this.resourceService.GetAllMyResources(
                 userId,
                 query.ResourceType,
                 query.SearchTerm,
                 query.CurrentPage,
                 AllResourcesQueryModel.ResourcesPerPage);
 
-            var resourceTypes =  await this.resourceService.GetAllResourceTypes();
+            var resourceTypes = await this.resourceService.GetAllResourceTypes();
 
             AllResourcesQueryModel queryModel = new AllResourcesQueryModel();
             queryModel.Resources = myResourceServiceModel.Resources;

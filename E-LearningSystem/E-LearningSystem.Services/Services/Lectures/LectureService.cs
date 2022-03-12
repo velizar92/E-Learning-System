@@ -86,8 +86,8 @@
             
             foreach (var file in resourceFiles)
             {
-                string fullpath = Path.Combine(webHostEnvironment.WebRootPath, file.FileName);
-                using (var stream = new FileStream(fullpath, FileMode.Create))
+                string detailPath = Path.Combine(@"\assets\resources", file.FileName);
+                using (var stream = new FileStream(webHostEnvironment.WebRootPath + detailPath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }

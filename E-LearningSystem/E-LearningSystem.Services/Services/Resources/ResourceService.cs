@@ -51,7 +51,7 @@
         }
 
 
-        public async Task<ResourceQueryServiceModel> GetMyResources(
+        public async Task<ResourceQueryServiceModel> GetAllMyResources(
             string userId,
             string resourceType = null,
             string searchTerm = null,         
@@ -110,6 +110,42 @@
                 CarsPerPage = resourcesPerPage
             };
         }
+
+
+        public async Task<IEnumerable<AllResourcesServiceModel>> GetMyResources(string userId)
+        {
+            List<Resource> myResources = new List<Resource>();
+
+            var myCourses = await dbContext
+                                    .Courses
+                                    .Where(c => c.UserId == userId)
+                                    .Include(l => l.Lectures)
+                                    .ThenInclude(l => l.Resources)
+                                    .ToListAsync();
+
+            foreach (var course in myCourses)
+            {
+                foreach (var lecture in course.Lectures)
+                {
+                    foreach (var resource in lecture.Resources)
+                    {
+                        myResources.Add(resource);
+                    }
+                }
+            }
+
+            var resources = myResources.Select(r => new AllResourcesServiceModel
+            {
+                ResourceName = r.Name,
+                LectureName = r.Lecture.Name
+            });
+
+            return resources;
+        }
+
+
+
+
 
 
     }

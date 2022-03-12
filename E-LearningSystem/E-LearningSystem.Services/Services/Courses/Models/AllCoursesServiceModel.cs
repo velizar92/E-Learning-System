@@ -18,5 +18,11 @@
 
         [Required]
         public string ImageUrl { get; set; }
+
+        [Required]
+        public string CategoryName { get; set; }
+
+        [Required]
+        public int AssignedStudents { get; set; }
     }
 }

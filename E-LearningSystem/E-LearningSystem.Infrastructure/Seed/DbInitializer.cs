@@ -9,7 +9,7 @@
     using E_LearningSystem.Data.Enums;
 
     using static IdentityConstants;
-  
+
 
     public class DbInitializer : IDbInitializer
     {
@@ -78,15 +78,19 @@
             using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
             {
                 var services = serviceScope.ServiceProvider;
+                var userManager = services.GetRequiredService<UserManager<User>>();
 
                 var context = MigrateDatabase(services);
 
                 await SeedCourseCategories(services);
                 await SeedResourceTypes(services);
                 await SeedRoles(services);
-                await SeedAdminUsers(services);
-                await SeedTrainerUsers(services);
-                          
+
+                if (userManager.Users.Any() == false)
+                {
+                    await SeedAdminUsers(services);
+                    await SeedTrainerUsers(services);
+                }
             }
         }
 
@@ -132,6 +136,7 @@
             var userManager = services.GetRequiredService<UserManager<User>>();
             var dbContext = services.GetRequiredService<ELearningSystemDbContext>();
 
+
             await userManager.CreateAsync(trainerUsers[0], "Test1111");
             await userManager.AddToRoleAsync(trainerUsers[0], TrainerRole);
 
@@ -153,7 +158,7 @@
 
             //======================Seed trainers=====================
             var trainer1 = new Trainer
-            {             
+            {
                 UserId = trainerUsers[0].Id,
                 FullName = trainerUsers[0].FirstName + " " + trainerUsers[0].LastName,
                 Status = TrainerStatus.Active,
@@ -161,7 +166,7 @@
             };
 
             var trainer2 = new Trainer
-            {               
+            {
                 UserId = trainerUsers[1].Id,
                 FullName = trainerUsers[1].FirstName + " " + trainerUsers[1].LastName,
                 Status = TrainerStatus.Active,
@@ -169,7 +174,7 @@
             };
 
             var trainer3 = new Trainer
-            {            
+            {
                 UserId = trainerUsers[2].Id,
                 FullName = trainerUsers[2].FirstName + " " + trainerUsers[2].LastName,
                 Status = TrainerStatus.Active,

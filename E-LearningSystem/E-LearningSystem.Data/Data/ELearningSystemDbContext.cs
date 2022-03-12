@@ -3,8 +3,8 @@
     using System.Threading;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-    using E_LearningSystem.Data.Models;  
-   
+    using E_LearningSystem.Data.Models;
+
     public class ELearningSystemDbContext : IdentityDbContext<User>
     {
 
@@ -46,6 +46,7 @@
              .WithOne()
              .HasForeignKey<ShoppingCart>(d => d.UserId)
              .OnDelete(DeleteBehavior.Restrict);
+            
         }
 
         public override int SaveChanges()

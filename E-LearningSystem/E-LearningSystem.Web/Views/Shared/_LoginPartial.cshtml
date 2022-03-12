@@ -5,9 +5,8 @@
 
 <ul>
     @if (SignInManager.IsSignedIn(User))
-    {
+    {        
         <img src="~/assets/img/users/@UserManager.GetUserAsync(User).Result.ProfileImageUrl" width="30" height="30" />
-
         <li>
             <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
         </li>

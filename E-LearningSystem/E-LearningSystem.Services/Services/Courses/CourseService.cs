@@ -9,16 +9,19 @@
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services.Courses.Models;
     using E_LearningSystem.Services.Services.Lectures.Models;
+    using Microsoft.AspNetCore.Identity;
 
     public class CourseService : ICourseService
     {
         private readonly ELearningSystemDbContext dbContext;
-        private readonly IWebHostEnvironment webHostEnvironment;      
+        private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly UserManager<User> userManager;
 
-        public CourseService(ELearningSystemDbContext dbContext, IWebHostEnvironment webHostEnvironment)
+        public CourseService(ELearningSystemDbContext dbContext, IWebHostEnvironment webHostEnvironment, UserManager<User> userManager)
         {
             this.dbContext = dbContext;
-            this.webHostEnvironment = webHostEnvironment;       
+            this.webHostEnvironment = webHostEnvironment;
+            this.userManager = userManager;
         }
 
         public bool CheckIfCourseCategoryExists(int _categoryId)
@@ -132,6 +135,9 @@
 
         public async Task<IEnumerable<AllCoursesServiceModel>> GetAllCourses()
         {
+
+            var trainerUsers = await userManager.GetUsersInRoleAsync("Trainer");
+
             return await dbContext
                             .Courses
                             .Select(c => new AllCoursesServiceModel
@@ -141,6 +147,7 @@
                                 Description = c.Description,
                                 Price = c.Price,
                                 ImageUrl = c.ImageUrl,
+                                CategoryName = c.CourseCategory.Name
                             })
                             .ToListAsync();
 
@@ -199,6 +206,7 @@
                                Description = c.Description,
                                Price = c.Price,
                                ImageUrl = c.ImageUrl,
+                               CategoryName = c.CourseCategory.Name
                            })
                            .Take(count)
                            .ToListAsync();
@@ -218,9 +226,11 @@
                                  Description = c.Description,
                                  Price = c.Price,
                                  ImageUrl = c.ImageUrl,
+                                 CategoryName = c.CourseCategory.Name
                              })
                              .ToListAsync();          
         }
 
+       
     }
 }

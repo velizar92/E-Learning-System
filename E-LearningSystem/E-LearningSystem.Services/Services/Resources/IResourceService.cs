@@ -1,6 +1,5 @@
 ﻿namespace E_LearningSystem.Services.Services
 {
-    using E_LearningSystem.Services.Services.Resources;
     using E_LearningSystem.Services.Services.Resources.Models;
 
     public interface IResourceService
@@ -11,7 +10,9 @@
 
         Task<IEnumerable<string>> GetAllResourceTypes();
 
-        Task<ResourceQueryServiceModel> GetMyResources(
+        Task<IEnumerable<AllResourcesServiceModel>> GetMyResources(string userId);
+
+        Task<ResourceQueryServiceModel> GetAllMyResources(
             string userId,
             string resourceType,
             string searchTerm,

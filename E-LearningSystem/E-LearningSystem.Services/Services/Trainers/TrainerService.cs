@@ -7,6 +7,7 @@
     using E_LearningSystem.Data.Models;
     using Microsoft.AspNetCore.Authorization;
     using static E_LearningSystem.Infrastructure.IdentityConstants;
+    using E_LearningSystem.Services.Services.Trainers.Models;
 
     public class TrainerService : ITrainerService
     {
@@ -97,6 +98,7 @@
                         })
                         .ToList();
         }
+
 
     }
 }

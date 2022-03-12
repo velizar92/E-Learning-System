@@ -26,5 +26,6 @@
         public ICollection<Course> Courses { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
+     
     }
 }
