@@ -44,10 +44,10 @@ builder.Services.AddScoped<IStatisticService, StatisticService>();
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
-builder.Services.Configure<FormOptions>(o => {
-    o.ValueLengthLimit = int.MaxValue;
-    o.MultipartBodyLengthLimit = int.MaxValue;
-    o.MemoryBufferThreshold = int.MaxValue;
+builder.Services.Configure<FormOptions>(options => {
+    options.ValueLengthLimit = int.MaxValue;
+    options.MultipartBodyLengthLimit = int.MaxValue;
+    options.MemoryBufferThreshold = int.MaxValue;
 });
 
 var app = builder.Build();

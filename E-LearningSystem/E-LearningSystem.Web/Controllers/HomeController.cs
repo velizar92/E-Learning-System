@@ -6,44 +6,42 @@
     using E_LearningSystem.Web.Models.Index;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using static E_LearningSystem.Data.DataConstants;
+    using E_LearningSystem.Data.Models; 
     using static E_LearningSystem.Infrastructure.IdentityConstants;
+   
 
     public class HomeController : Controller
-    {
-        private readonly ILogger<HomeController> logger;
+    {     
         private readonly ITrainerService trainerService;
         private readonly ICourseService courseService;
         private readonly UserManager<User> userManagerService;
 
-        public HomeController(
-            ILogger<HomeController> logger,
-            UserManager<User> userManagerService,
+        public HomeController(                 
             ITrainerService trainerService,
-            ICourseService courseService)
-        {
-            this.logger = logger;
-            this.userManagerService = userManagerService;
+            ICourseService courseService,
+            UserManager<User> userManagerService)
+        {                  
             this.trainerService = trainerService;
             this.courseService = courseService;
+            this.userManagerService = userManagerService;
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var allLearners = this.userManagerService.GetUsersInRoleAsync(LearnerRole);
-            var allTrainers = this.trainerService.GetAllTrainers();
-            var topTrainers = this.trainerService.GetTopTrainers();
-            var latestCourses = this.courseService.GetLatestCourses(3);
-            var allCourses = this.courseService.GetAllCourses();
+            var allLearners = await this.userManagerService.GetUsersInRoleAsync(LearnerRole);
+            var allTrainers = await this.trainerService.GetAllTrainers();
+            var topTrainers = await this.trainerService.GetTopTrainers();
+            var latestCourses = await this.courseService.GetLatestCourses(3);
+            var allCourses = await this.courseService.GetAllCourses();
 
             var indexViewModel = new IndexViewModel
             {
-                CoursesCount = allCourses.Result.Count(),
-                TrainersCount = allTrainers.Result.Count(),
-                LearnersCount = allLearners.Result.Count(),
-                LatestCourses = latestCourses.Result,
-                TopTrainers = topTrainers.Result
+                CoursesCount = allCourses.Count(),
+                TrainersCount = allTrainers.Count(),
+                LearnersCount = allLearners.Count(),
+                LatestCourses = latestCourses,
+                TopTrainers = topTrainers
             };
 
             return View(indexViewModel);
