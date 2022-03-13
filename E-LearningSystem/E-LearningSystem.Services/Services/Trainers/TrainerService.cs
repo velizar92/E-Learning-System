@@ -7,7 +7,6 @@
     using E_LearningSystem.Data.Models;
     using Microsoft.AspNetCore.Authorization;
     using static E_LearningSystem.Infrastructure.IdentityConstants;
-    using E_LearningSystem.Services.Services.Trainers.Models;
 
     public class TrainerService : ITrainerService
     {
@@ -96,6 +95,22 @@
                             FullName = t.FirstName + " " + t.LastName,
                             ProfileImageUrl = t.ProfileImageUrl
                         })
+                        .ToList();
+        }
+
+
+        public async Task<IEnumerable<AllTrainersServiceModel>> GetTopTrainers()
+        {
+            var trainerUsers = await userManager.GetUsersInRoleAsync(TrainerRole);
+
+            return dbContext.Trainers
+                        .OrderByDescending(t => t.Rating)
+                        .Select(t => new AllTrainersServiceModel
+                        {
+                            FullName = t.FullName,
+                            ProfileImageUrl = t.ProfileImageUrl
+                        })
+                        .Take(3)
                         .ToList();
         }
 

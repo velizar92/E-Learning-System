@@ -13,5 +13,7 @@
 
         Task<IEnumerable<AllTrainersServiceModel>> GetAllTrainers();
 
+        Task<IEnumerable<AllTrainersServiceModel>> GetTopTrainers();
+
     }
 }

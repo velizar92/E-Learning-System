@@ -161,6 +161,7 @@
             {
                 UserId = trainerUsers[0].Id,
                 FullName = trainerUsers[0].FirstName + " " + trainerUsers[0].LastName,
+                ProfileImageUrl = trainerUsers[0].ProfileImageUrl,
                 Status = TrainerStatus.Active,
                 CVUrl = "trainer1.pdf"
             };
@@ -169,6 +170,7 @@
             {
                 UserId = trainerUsers[1].Id,
                 FullName = trainerUsers[1].FirstName + " " + trainerUsers[1].LastName,
+                ProfileImageUrl = trainerUsers[1].ProfileImageUrl,
                 Status = TrainerStatus.Active,
                 CVUrl = "trainer2.pdf"
             };
@@ -177,6 +179,7 @@
             {
                 UserId = trainerUsers[2].Id,
                 FullName = trainerUsers[2].FirstName + " " + trainerUsers[2].LastName,
+                ProfileImageUrl = trainerUsers[2].ProfileImageUrl,
                 Status = TrainerStatus.Active,
                 CVUrl = "trainer3.pdf"
             };
@@ -185,6 +188,7 @@
             {
                 UserId = trainerUsers[3].Id,
                 FullName = trainerUsers[3].FirstName + " " + trainerUsers[3].LastName,
+                ProfileImageUrl = trainerUsers[3].ProfileImageUrl,
                 Status = TrainerStatus.Active,
                 CVUrl = "trainer4.pdf"
             };
@@ -193,6 +197,7 @@
             {
                 UserId = trainerUsers[4].Id,
                 FullName = trainerUsers[4].FirstName + " " + trainerUsers[4].LastName,
+                ProfileImageUrl = trainerUsers[4].ProfileImageUrl,
                 Status = TrainerStatus.Active,
                 CVUrl = "trainer5.pdf"
             };
@@ -201,6 +206,7 @@
             {
                 UserId = trainerUsers[5].Id,
                 FullName = trainerUsers[5].FirstName + " " + trainerUsers[5].LastName,
+                ProfileImageUrl = trainerUsers[5].ProfileImageUrl,
                 Status = TrainerStatus.Active,
                 CVUrl = "trainer6.pdf"
             };
