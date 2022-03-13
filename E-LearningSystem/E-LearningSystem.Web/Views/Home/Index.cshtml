@@ -1,4 +1,4 @@
-﻿@using E_LearningSystem.Web.Models.Index
+﻿@using E_LearningSystem.Web.Models.Home
 @model IndexViewModel
 
 
@@ -7,7 +7,7 @@
     <div class="container position-relative" data-aos="zoom-in" data-aos-delay="100">
         <h1>Learning Today,<br>Leading Tomorrow</h1>
         <h2>We are team of trainers that will give you the best knowledge.</h2>
-        <a class="active" asp-area="" asp-controller="Courses" asp-action="AllCourses" class="btn-get-started">>Get Started</a>
+        <a asp-area="" asp-controller="Courses" asp-action="AllCourses" class="btn-get-started">Get Started</a>
     </div>
 </section><!-- End Hero -->
 
@@ -125,35 +125,41 @@
 
             <div class="row" data-aos="zoom-in" data-aos-delay="100">
 
-                @foreach (var course in Model.LatestCourses)
+                @if (Model.CoursesCount > 0)
                 {
-                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0">
-                        <div class="course-item">
-                            <img src="~/assets/img/courses/@course.ImageUrl" width="300" height="300" alt="Course Image">
-                            <div class="course-content">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h4>@course.Description</h4>
-                                    <p class="price">$@course.Price</p>
-                                </div>
-
-                                <h3><a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id">@course.Name</a></h3>
-                                <p>@course.Description</p>
-                                <div class="trainer d-flex justify-content-between align-items-center">
-                                    <div class="trainer-profile d-flex align-items-center">
-                                        <img src="assets/img/trainers/trainer-3.jpg" class="img-fluid" alt="">
-                                        <span>Brandon</span>
+                    @foreach (var course in Model.LatestCourses)
+                    {
+                        <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0">
+                            <div class="course-item">
+                                <img src="~/assets/img/courses/@course.ImageUrl" width="300" height="300" alt="Course Image">
+                                <div class="course-content">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h4>@course.Description</h4>
+                                        <p class="price">$@course.Price</p>
                                     </div>
-                                    <div class="trainer-rank d-flex align-items-center">
-                                        <i class="bx bx-user"></i>&nbsp;20
-                                        &nbsp;&nbsp;
-                                        <i class="bx bx-heart"></i>&nbsp;85
+
+                                    <h3><a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id">@course.Name</a></h3>
+                                    <p>@course.Description</p>
+                                    <div class="trainer d-flex justify-content-between align-items-center">
+                                        <div class="trainer-profile d-flex align-items-center">
+                                            <img src="assets/img/trainers/trainer-3.jpg" class="img-fluid" alt="">
+                                            <span>Brandon</span>
+                                        </div>
+                                        <div class="trainer-rank d-flex align-items-center">
+                                            <i class="bx bx-user"></i>&nbsp;20
+                                            &nbsp;&nbsp;
+                                            <i class="bx bx-heart"></i>&nbsp;85
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div> <!-- End Course Item-->
+                        </div> <!-- End Course Item-->
+                    }
                 }
-
+                else
+                {
+                     <h2>There are no registered courses in the system.</h2>
+                }
 
             </div>
 
@@ -162,19 +168,25 @@
     <!-- ======= Trainers Section ======= -->
     <section id="trainers" class="trainers">
         <div class="container" data-aos="fade-up">
+
+            <div class="section-title">
+                <h2>Trainers</h2>
+                <p>Our Top Trainers</p>
+            </div>
+
             <div class="row" data-aos="zoom-in" data-aos-delay="100">
 
                 @foreach (var trainer in Model.TopTrainers)
                 {
                     <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
-                    <div class="member">
-                        <img src="~/assets/img/trainers/@trainer.ProfileImageUrl" class="img-fluid" width="300" height="300" alt="Trainer Profile Image">
-                        <div class="member-content">
-                            <h4>@trainer.FullName</h4>                                                  
+                        <div class="member">
+                            <img src="~/assets/img/trainers/@trainer.ProfileImageUrl" class="img-fluid" width="300" height="300" alt="Trainer Profile Image">
+                            <div class="member-content">
+                                <h4>@trainer.FullName</h4>
+                            </div>
                         </div>
                     </div>
-                </div>
-                }            
+                }
             </div>
 
         </div>

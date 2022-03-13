@@ -1,29 +1,52 @@
 ﻿@using E_LearningSystem.Services.Services.Courses.Models
 @model CourseDetailsServiceModel
 
-    <h1>@Model.Name</h1>
-    <img src="~/@Model.ImageUrl" width="100%" height="500">
-    <p>@Model.Name</p>
-    <p>@Model.Description</p>
-     <a asp-controller="Courses" asp-action="DeleteCourse" asp-route-id="@Model.Id" class="btn btn-danger">Delete Course</a>
-     <a asp-controller="Issues" asp-action="CreateIssue" asp-route-id="@Model.Id" class="btn btn-danger">Report Issue</a>
 
+<main id="main">
 
-<a asp-controller="Lectures" asp-action="CreateLecture" asp-route-id="@Model.Id" class="btn btn-primary">Add Lecture</a>
-<p></p>
-    <ol class="list-group list-group-numbered col-md-12">
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs" data-aos="fade-in">
+        <div class="container">
+            <h2>Course Details</h2>
+            <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
+        </div>
+    </div><!-- End Breadcrumbs -->
+    <!-- ======= Cource Details Section ======= -->
+    <section id="course-details" class="course-details">
+        <div class="container" data-aos="fade-up">
 
-        @foreach (var lecture in Model.Lectures)
-        {
-            <li class="list-group-item d-flex justify-content-between align-items-start">
-                <div class="ms-2 me-auto">
-                    <div class="fw-bold">@lecture.Name</div>
-                    @lecture.Description
+            <div class="row">
+                <div class="col-lg-8">
+                    <img src="~/assets/img/course-details.jpg" class="img-fluid" alt="">
+                    <h3>@Model.Name</h3>
+                    <p>
+                        @Model.Description
+                    </p>
                 </div>
-                
-                <a asp-controller="Lectures" asp-action="EditLecture" asp-route-id="@lecture.Id" asp-route-courseId="@Model.Id" class="btn btn-secondary">Edit Lecture</a>
-                <a asp-controller="Lectures" asp-action="DeleteLecture" asp-route-id="@lecture.Id" class="btn btn-danger">Delete Lecture</a>
-                <a asp-controller="Lectures" asp-action="Details" asp-route-id="@lecture.Id" class="btn btn-primary">View More</a>
-            </li>
-        }
-    </ol>
+                <div class="col-lg-4">
+                    <div class="course-info d-flex justify-content-between align-items-center">
+                        <h5>Trainer</h5>
+                        <p><a href="#">Walter White</a></p>
+                    </div>
+
+                    <div class="course-info d-flex justify-content-between align-items-center">
+                        <h5>Course Fee</h5>
+                        <p>$@Model.Price</p>
+                    </div>
+                    <div class="course-info d-flex justify-content-between align-items-center">
+                        <h5>Assigned Students</h5>
+                        @if (Model.AssignedStudents == null)
+                        {
+                            <p>0</p>
+                        }
+                        else
+                        {
+                            <p>Model.AssignedStudents</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section><!-- End Cource Details Section -->
+</main><!-- End #main -->

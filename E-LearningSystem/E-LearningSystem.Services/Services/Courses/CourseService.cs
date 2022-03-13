@@ -182,6 +182,8 @@
                                Name = x.Name,
                                Description = x.Description,
                                ImageUrl = x.ImageUrl,
+                               AssignedStudents = x.AssignedStudents,
+                               Price = x.Price,
                                Lectures = x.Lectures.Select(x => new LectureServiceModel
                                {
                                    Id = x.Id,

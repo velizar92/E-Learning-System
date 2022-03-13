@@ -17,6 +17,12 @@
         [Required]
         public string ImageUrl { get; set; }
 
+        [Required]
+        public int? AssignedStudents { get; set; }
+
+        [Required]
+        public double Price { get; set; }
+
         public IEnumerable<LectureServiceModel> Lectures { get; set; }
     }
 }

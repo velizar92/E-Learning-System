@@ -22,6 +22,7 @@
         public DbSet<Issue> Issues { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<Testimonial> Testimonials { get; set; }
       
       
         protected override void OnModelCreating(ModelBuilder builder)

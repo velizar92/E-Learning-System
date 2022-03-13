@@ -1,4 +1,4 @@
-﻿namespace E_LearningSystem.Web.Models.Index
+﻿namespace E_LearningSystem.Web.Models.Home
 {
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Services.Services.Courses.Models;

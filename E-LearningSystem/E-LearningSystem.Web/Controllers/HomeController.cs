@@ -3,12 +3,11 @@
     using System.Diagnostics;
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Web.Models;
-    using E_LearningSystem.Web.Models.Index;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using E_LearningSystem.Data.Models; 
     using static E_LearningSystem.Infrastructure.IdentityConstants;
-   
+    using E_LearningSystem.Web.Models.Home;
 
     public class HomeController : Controller
     {     
@@ -45,6 +44,23 @@
             };
 
             return View(indexViewModel);
+        }
+
+
+        public async Task<IActionResult> About()
+        {
+            var allLearners = await this.userManagerService.GetUsersInRoleAsync(LearnerRole);
+            var allTrainers = await this.trainerService.GetAllTrainers();
+            var allCourses = await this.courseService.GetAllCourses();
+
+            var aboutViewModel = new AboutViewModel
+            {
+                CoursesCount = allCourses.Count(),
+                TrainersCount = allTrainers.Count(),
+                LearnersCount = allLearners.Count(),
+            };
+
+            return View(aboutViewModel);
         }
 
 
