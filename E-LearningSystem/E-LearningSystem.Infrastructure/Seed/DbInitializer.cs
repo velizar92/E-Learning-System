@@ -23,7 +23,7 @@
                         UserName ="mario@example.com",
                         NormalizedUserName = "MARIO@EXAMPLE.COM",
                         Email = "mario@example.com",
-                        ProfileImageUrl = "trainer1.jpg"
+                        ProfileImageUrl = "trainer-1.jpg"
                     },
                new User
                     {
@@ -32,7 +32,7 @@
                         UserName = "emil@example.com",
                         NormalizedUserName = "EMIL@EXAMPLE.COM",
                         Email = "emil@example.com",
-                        ProfileImageUrl = "trainer2.png"
+                        ProfileImageUrl = "trainer-3.jpg"
                     },
                new User
                     {
@@ -41,7 +41,7 @@
                         UserName = "victoria@example.com",
                         NormalizedUserName = "VICTORIA@EXAMPLE.COM",
                         Email = "victoria@example.com",
-                        ProfileImageUrl = "trainer3.jpg"
+                        ProfileImageUrl = "trainer-2.jpg"
                     },
                new User
                     {
@@ -50,7 +50,7 @@
                         UserName = "denislav@example.com",
                         NormalizedUserName = "DENISLAV@EXAMPLE.COM",
                         Email = "denislav@example.com",
-                        ProfileImageUrl = "trainer1.jpg"
+                        ProfileImageUrl = "trainer-6.jpg"
                     },
                new User
                     {
@@ -59,16 +59,16 @@
                         UserName = "natalia@example.com",
                         NormalizedUserName = "NATALIA@EXAMPLE.COM",
                         Email = "natalia@example.com",
-                        ProfileImageUrl = "trainer3.jpg"
+                        ProfileImageUrl = "trainer-5.jpg"
                     },
                 new User
                     {
-                        FirstName = "Hristo",
-                        LastName = "Petkov",
-                        UserName = "hristo@example.com",
-                        NormalizedUserName = "HRISTO@EXAMPLE.COM",
-                        Email = "hristo@example.com",
-                        ProfileImageUrl = "trainer2.png"
+                        FirstName = "Silvia",
+                        LastName = "Stancheva",
+                        UserName = "silvia@example.com",
+                        NormalizedUserName = "SILVIA@EXAMPLE.COM",
+                        Email = "silvia@example.com",
+                        ProfileImageUrl = "trainer-4.jpg"
                     }
              };
 
