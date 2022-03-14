@@ -83,7 +83,6 @@ app.MapRazorPages();
 app.Run();
 
 
-
 void SeedDatabase()
 {
     using (var scope = app.Services.CreateScope())

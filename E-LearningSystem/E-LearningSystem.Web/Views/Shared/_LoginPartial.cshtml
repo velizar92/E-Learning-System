@@ -3,16 +3,17 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
-<ul>
+
     @if (SignInManager.IsSignedIn(User))
-    {        
-        <img src="~/assets/img/users/@UserManager.GetUserAsync(User).Result.ProfileImageUrl" width="30" height="30" />
+    {
         <li>
-            <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+            <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                <img style="border-radius: 50%" src="~/assets/img/users/@UserManager.GetUserAsync(User).Result.ProfileImageUrl" width="30" height="30" />
+            </a>
         </li>
         <li>
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit">Logout</button>
+                <button type="submit" class="get-started-btn">Logout</button>
             </form>
         </li>
     }
@@ -25,4 +26,4 @@
             <a asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }
-</ul>
+

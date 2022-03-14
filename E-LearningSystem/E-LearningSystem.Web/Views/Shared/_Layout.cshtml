@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using E_LearningSystem.Data.Models;
+@using static E_LearningSystem.Infrastructure.IdentityConstants;
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<!DOCTYPE html>
+s
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -40,7 +47,6 @@
 
             <h1 class="logo me-auto"><a asp-area="" asp-controller="Home" asp-action="Index">E-Learning System</a></h1>
             <!-- Uncomment below if you prefer to use an image logo -->
-            <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
             <nav id="navbar" class="navbar order-last order-lg-0">
                 <ul>
@@ -48,16 +54,36 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Courses" asp-action="AllCourses">Courses</a></li>
                     <li><a asp-area="" asp-controller="Trainers" asp-action="AllTrainers">Trainers</a></li>
-                    <li><a asp-area="" asp-controller="Resources" asp-action="MyResources">My Resources</a></li>
-                    <li><a asp-area="" asp-controller="Courses" asp-action="CreateCourse">Create Course</a></li>
+
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        if (User.IsInRole(AdminRole))
+                        {
+                            <li><a asp-area="" asp-controller="Admin" asp-action="ApproveTrainer">Approve Trainer</a></li>
+                            <li><a asp-area="" asp-controller="Admin" asp-action="RemoveTrainer">Remove Trainer</a></li>
+                        }
+                        if (User.IsInRole(TrainerRole))
+                        {
+                            <li><a asp-area="" asp-controller="Resources" asp-action="MyResources">My Resources</a></li>
+                            <li><a asp-area="" asp-controller="Courses" asp-action="CreateCourse">Create Course</a></li>
+                        }
+                        if (User.IsInRole(LearnerRole))
+                        {
+                            <li><a asp-area="" asp-controller="Resources" asp-action="MyResources">My Resources</a></li>
+                            <li><a asp-area="" asp-controller="Trainers" asp-action="ApplyForTrainer">Become a Trainer</a></li>
+                        }
+                    }
 
                     <partial name="_LoginPartial" />
                 </ul>
-
+              
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
+             @if (SignInManager.IsSignedIn(User) && User.IsInRole(LearnerRole))
+                {
+                    <a asp-area="" asp-controller="Carts" asp-action="Details" class="get-started-btn"><i class="fas fa-shopping-cart"></i></a>
+                }
 
-            <a asp-area="" asp-controller="Courses" asp-action="AllCourses" class="get-started-btn">Get Started</a>
         </div>
     </header><!-- End Header -->
 
