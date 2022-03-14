@@ -1,5 +1,11 @@
-﻿@using E_LearningSystem.Services.Services.Courses.Models
-@model CourseDetailsServiceModel
+﻿@using E_LearningSystem.Web.Models.Course
+@using Microsoft.AspNetCore.Identity
+@using E_LearningSystem.Data.Models;
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@using static E_LearningSystem.Infrastructure.IdentityConstants;
+
+@model CourseDetailsViewModel
 
 <main id="main">
 
@@ -17,9 +23,9 @@
             <div class="row">
                 <div class="col-lg-8">
                     <img src="~/assets/img/course-details.jpg" class="img-fluid" alt="">
-                    <h3>@Model.Name</h3>
+                    <h3>@Model.CourseServiceModel.Name</h3>
                     <p>
-                        @Model.Description
+                        @Model.CourseServiceModel.Description
                     </p>
                 </div>
                 <div class="col-lg-4">
@@ -30,11 +36,11 @@
 
                     <div class="course-info d-flex justify-content-between align-items-center">
                         <h5>Course Fee</h5>
-                        <p>$@Model.Price</p>
+                        <p>$@Model.CourseServiceModel.Price</p>
                     </div>
                     <div class="course-info d-flex justify-content-between align-items-center">
                         <h5>Assigned Students</h5>
-                        @if (Model.AssignedStudents == null)
+                        @if (Model.CourseServiceModel.AssignedStudents == null)
                         {
                             <p>0</p>
                         }
@@ -44,13 +50,38 @@
                         }
                     </div>
 
-                    <a asp-controller="Courses" asp-action="DeleteCourse" asp-route-id="@Model.Id" class="btn btn-danger">Delete Course</a>
-                    <a asp-controller="Issues" asp-action="CreateIssue" asp-route-id="@Model.Id" class="btn btn-danger">Report Issue</a>
-                    <a asp-controller="Lectures" asp-action="CreateLecture" asp-route-id="@Model.Id" class="btn btn-primary">Add Lecture</a>
+                    <a asp-controller="Issues" asp-action="CreateIssue" asp-route-id="@Model.CourseServiceModel.Id" class="btn btn-danger">Report Issue</a>
+                    @if (User.IsInRole(AdminRole) || User.IsInRole(TrainerRole))
+                    {
+                        <a asp-controller="Courses" asp-action="DeleteCourse" asp-route-id="@Model.CourseServiceModel.Id" class="btn btn-danger">Delete Course</a>
+                        <a asp-controller="Lectures" asp-action="CreateLecture" asp-route-id="@Model.CourseServiceModel.Id" class="btn btn-primary">Add Lecture</a>
+                    }
+                    @if (User.IsInRole(LearnerRole))
+                    {
+                        <a asp-controller="Carts" asp-action="AddCourseToCart" asp-route-shoppingCartId="@Model.ShoppingCartId" asp-route-courseId="@Model.CourseServiceModel.Id" class="get-started-btn">Add to Cart</a>
+                    }
                 </div>
-
-
             </div>
+
+            <ol class="list-group list-group-numbered col-md-12">
+
+                @foreach (var lecture in Model.CourseServiceModel.Lectures)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">@lecture.Name</div>
+                            @lecture.Description
+                        </div>
+                        @if (User.IsInRole(AdminRole) || User.IsInRole(TrainerRole))
+                        {
+                            <a asp-controller="Lectures" asp-action="EditLecture" asp-route-id="@lecture.Id" asp-route-courseId="@Model.CourseServiceModel.Id" class="btn btn-secondary">Edit Lecture</a>
+                            <a asp-controller="Lectures" asp-action="DeleteLecture" asp-route-id="@lecture.Id" class="btn btn-danger">Delete Lecture</a>
+                        }
+
+                       <a asp-controller="Lectures" asp-action="Details" asp-route-id="@lecture.Id" class="btn btn-primary">View More</a>
+                    </li>
+                }
+            </ol>
 
         </div>
     </section><!-- End Cource Details Section -->

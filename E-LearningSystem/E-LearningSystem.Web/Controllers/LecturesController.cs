@@ -23,6 +23,7 @@
 
 
         [HttpGet]
+        [Authorize]
         public IActionResult CreateLecture()
         {
             return View();
@@ -91,6 +92,7 @@
 
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Details(int id)
         {
             var lectureDetails = await lectureService.GetLectureDetails(id);

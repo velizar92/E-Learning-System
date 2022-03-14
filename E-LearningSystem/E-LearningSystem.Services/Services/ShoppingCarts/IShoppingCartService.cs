@@ -13,5 +13,7 @@
         Task<bool> BuyCourses(string shoppingCartId, User user);
 
         Task<ShoppingCart> GetCartById(string shoppingCartId);
+
+        Task<string> GetCartIdByUserId(string userId);
     }
 }

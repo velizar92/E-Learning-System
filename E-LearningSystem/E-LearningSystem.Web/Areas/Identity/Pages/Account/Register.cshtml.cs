@@ -5,6 +5,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
+using E_LearningSystem.Data.Data;
 using E_LearningSystem.Data.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -26,6 +27,7 @@ namespace E_LearningSystem.Web.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly ELearningSystemDbContext _dbContext;
 
         public RegisterModel(
             UserManager<User> userManager,
@@ -33,7 +35,8 @@ namespace E_LearningSystem.Web.Areas.Identity.Pages.Account
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IWebHostEnvironment webHostEnvironment)
+            IWebHostEnvironment webHostEnvironment,
+            ELearningSystemDbContext dbContext)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -42,6 +45,7 @@ namespace E_LearningSystem.Web.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _webHostEnvironment = webHostEnvironment;
+            _dbContext = dbContext;
         }
 
         /// <summary>
@@ -84,7 +88,7 @@ namespace E_LearningSystem.Web.Areas.Identity.Pages.Account
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
-        
+
             [Display(Name = "Profile Image")]
             public string ProfileImageUrl { get; set; }
 
@@ -132,7 +136,8 @@ namespace E_LearningSystem.Web.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
                 user.ProfileImageUrl = file.FileName;
-               
+                _dbContext.ShoppingCarts.Add(new ShoppingCart() { UserId = user.Id });
+
                 string fullpath = Path.Combine(_webHostEnvironment.WebRootPath, file.FileName);
                 using (var stream = new FileStream(fullpath, FileMode.Create))
                 {
@@ -143,7 +148,7 @@ namespace E_LearningSystem.Web.Areas.Identity.Pages.Account
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 await _userManager.AddToRoleAsync(user, LearnerRole);
- 
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");

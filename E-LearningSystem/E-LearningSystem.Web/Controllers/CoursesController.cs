@@ -13,11 +13,17 @@
     public class CoursesController : Controller
     {
         private readonly ICourseService courseService;
+        private readonly IShoppingCartService shoppingCartService;
         private readonly UserManager<User> userManagerService;
 
-        public CoursesController(ICourseService courseService, UserManager<User> userManager)
+
+        public CoursesController(
+            ICourseService courseService,
+            IShoppingCartService shoppingCartService,
+            UserManager<User> userManager)
         {
             this.courseService = courseService;
+            this.shoppingCartService = shoppingCartService;
             this.userManagerService = userManager;
         }
 
@@ -25,7 +31,7 @@
         [HttpGet]
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> CreateCourse()
-        {       
+        {
             return View(new CourseFormModel
             {
                 Categories = await this.courseService.GetAllCourseCategories()
@@ -36,7 +42,7 @@
         [HttpPost]
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> CreateCourse(CourseFormModel courseModel, IFormFile pictureFile)
-        {           
+        {
             string userId = User.Id();
             ModelState.Remove("Categories");
 
@@ -57,7 +63,7 @@
                                  courseModel.Name,
                                  courseModel.Description,
                                  courseModel.Price,
-                                 courseModel.CategoryId,                               
+                                 courseModel.CategoryId,
                                  pictureFile);
 
 
@@ -72,7 +78,7 @@
         {
             var course = await this.courseService.GetCourseById(id);
 
-            if(course == null)
+            if (course == null)
             {
                 return NotFound();
             }
@@ -81,7 +87,7 @@
             {
                 Name = course.Name,
                 Description = course.Description,
-                CategoryId = course.CategoryId,              
+                CategoryId = course.CategoryId,
             };
 
             return View(courseFormModel);
@@ -92,7 +98,7 @@
         [Authorize]
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> EditCourse(int id, CourseFormModel courseModel, IFormFile pictureFile)
-        {           
+        {
             if (!this.courseService.CheckIfCourseCategoryExists(courseModel.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(courseModel.CategoryId), "Category does not exist.");
@@ -139,12 +145,24 @@
         [Authorize]
         public async Task<IActionResult> Details(int id)
         {
+            string shoppingCartId = null;
             var courseDetails = await courseService.GetCourseDetails(id);
 
-            return View(courseDetails);
+            if (User.IsInRole("Learner"))
+            {
+                shoppingCartId = await this.shoppingCartService.GetCartIdByUserId(User.Id());
+            }       
+
+            var courseDetailsViewModel = new CourseDetailsViewModel
+            {
+                CourseServiceModel = courseDetails,
+                ShoppingCartId = shoppingCartId
+            };
+
+            return View(courseDetailsViewModel);
         }
 
-      
+
         [Authorize]
         public async Task<IActionResult> DeleteCourse(int id)
         {
