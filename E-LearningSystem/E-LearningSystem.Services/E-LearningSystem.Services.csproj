@@ -16,8 +16,4 @@
     <ProjectReference Include="..\E-LearningSystem.Infrastructure\E-LearningSystem.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\Statistics\Models\" />
-  </ItemGroup>
-
 </Project>

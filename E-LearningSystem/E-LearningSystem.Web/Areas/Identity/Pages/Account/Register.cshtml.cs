@@ -135,8 +135,7 @@ namespace E_LearningSystem.Web.Areas.Identity.Pages.Account
 
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
-                user.ProfileImageUrl = file.FileName;
-                _dbContext.ShoppingCarts.Add(new ShoppingCart() { UserId = user.Id });
+                user.ProfileImageUrl = file.FileName;               
 
                 string fullpath = Path.Combine(_webHostEnvironment.WebRootPath, file.FileName);
                 using (var stream = new FileStream(fullpath, FileMode.Create))

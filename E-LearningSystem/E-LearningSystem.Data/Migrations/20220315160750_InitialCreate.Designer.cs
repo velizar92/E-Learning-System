@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_LearningSystem.Data.Migrations
 {
     [DbContext(typeof(ELearningSystemDbContext))]
-    [Migration("20220315131545_Initial-Create")]
+    [Migration("20220315160750_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,41 @@ namespace E_LearningSystem.Data.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("CourseUser");
+                });
+
+            modelBuilder.Entity("E_LearningSystem.Data.Data.Models.ShoppingCartItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShoppingCartId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("ShoppingCartItems");
                 });
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.Comment", b =>
@@ -107,9 +142,6 @@ namespace E_LearningSystem.Data.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<string>("ShoppingCartId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("datetime2");
 
@@ -120,8 +152,6 @@ namespace E_LearningSystem.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CourseCategoryId");
-
-                    b.HasIndex("ShoppingCartId");
 
                     b.ToTable("Courses");
                 });
@@ -266,29 +296,6 @@ namespace E_LearningSystem.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ResourceTypes");
-                });
-
-            modelBuilder.Entity("E_LearningSystem.Data.Models.ShoppingCart", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.Trainer", b =>
@@ -566,6 +573,17 @@ namespace E_LearningSystem.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("E_LearningSystem.Data.Data.Models.ShoppingCartItem", b =>
+                {
+                    b.HasOne("E_LearningSystem.Data.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("E_LearningSystem.Data.Models.Comment", b =>
                 {
                     b.HasOne("E_LearningSystem.Data.Models.Lecture", "Lecture")
@@ -590,10 +608,6 @@ namespace E_LearningSystem.Data.Migrations
                         .HasForeignKey("CourseCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("E_LearningSystem.Data.Models.ShoppingCart", null)
-                        .WithMany("Courses")
-                        .HasForeignKey("ShoppingCartId");
 
                     b.Navigation("CourseCategory");
                 });
@@ -637,15 +651,6 @@ namespace E_LearningSystem.Data.Migrations
                     b.Navigation("Lecture");
 
                     b.Navigation("ResourceType");
-                });
-
-            modelBuilder.Entity("E_LearningSystem.Data.Models.ShoppingCart", b =>
-                {
-                    b.HasOne("E_LearningSystem.Data.Models.User", null)
-                        .WithOne()
-                        .HasForeignKey("E_LearningSystem.Data.Models.ShoppingCart", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.Trainer", b =>
@@ -730,11 +735,6 @@ namespace E_LearningSystem.Data.Migrations
             modelBuilder.Entity("E_LearningSystem.Data.Models.ResourceType", b =>
                 {
                     b.Navigation("Resources");
-                });
-
-            modelBuilder.Entity("E_LearningSystem.Data.Models.ShoppingCart", b =>
-                {
-                    b.Navigation("Courses");
                 });
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.User", b =>

@@ -6,7 +6,6 @@ using E_LearningSystem.Data.Data;
 using E_LearningSystem.Data.Models;
 using E_LearningSystem.Infrastructure.Seed;
 using E_LearningSystem.Services.Services;
-using E_LearningSystem.Services.Services.Statistics;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,7 +39,6 @@ builder.Services.AddScoped<ITrainerService, TrainerService>();
 builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IIssueService, IssueService>();
-builder.Services.AddScoped<IStatisticService, StatisticService>();
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
@@ -48,6 +46,15 @@ builder.Services.Configure<FormOptions>(options => {
     options.ValueLengthLimit = int.MaxValue;
     options.MultipartBodyLengthLimit = int.MaxValue;
     options.MemoryBufferThreshold = int.MaxValue;
+});
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
 });
 
 var app = builder.Build();
@@ -75,9 +82,12 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseSession();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapRazorPages();
 
 app.Run();

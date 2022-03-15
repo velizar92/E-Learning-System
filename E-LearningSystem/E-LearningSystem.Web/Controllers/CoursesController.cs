@@ -126,10 +126,7 @@
             string shoppingCartId = null;
             var courses = await courseService.GetAllCourses();
 
-            if (User.IsInRole(LearnerRole))
-            {
-                shoppingCartId = await this.shoppingCartService.GetCartIdByUserId(User.Id());
-            }
+           
 
             var allCoursesViewModel = new AllCoursesViewModel
             {
@@ -147,11 +144,7 @@
             string shoppingCartId = null;           
             var myCourses = await courseService.GetMyCourses(User.Id());
 
-            if (User.IsInRole(LearnerRole))
-            {
-                shoppingCartId = await this.shoppingCartService.GetCartIdByUserId(User.Id());
-            }
-
+            
             var myCoursesViewModel = new AllCoursesViewModel
             {
                 ShoppingCartId = shoppingCartId,
@@ -168,10 +161,7 @@
             string shoppingCartId = null;
             var courseDetails = await courseService.GetCourseDetails(id);
 
-            if (User.IsInRole(LearnerRole))
-            {
-                shoppingCartId = await this.shoppingCartService.GetCartIdByUserId(User.Id());
-            }       
+                  
 
             var courseDetailsViewModel = new CourseDetailsViewModel
             {

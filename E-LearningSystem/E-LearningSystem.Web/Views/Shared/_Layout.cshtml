@@ -1,8 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using E_LearningSystem.Data.Models;
+@using E_LearningSystem.Services.Services;
+@using E_LearningSystem.Infrastructure.Extensions;
 @using static E_LearningSystem.Infrastructure.IdentityConstants;
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
+@inject IShoppingCartService ShoppingCart;
 
 <!DOCTYPE html>
 <html lang="en">

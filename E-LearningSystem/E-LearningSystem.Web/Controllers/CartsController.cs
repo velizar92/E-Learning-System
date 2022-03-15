@@ -5,72 +5,114 @@
     using Microsoft.AspNetCore.Mvc;
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services;
+    using E_LearningSystem.Infrastructure.Helpers;
+    using E_LearningSystem.Services.Services.ShoppingCarts.Models;
 
     using static E_LearningSystem.Infrastructure.IdentityConstants;
-
+ 
     public class CartsController : Controller
     {
 
         private readonly IShoppingCartService shoppingCartService;
+        private readonly ICourseService courseService;
         private readonly UserManager<User> userManagerService;
 
 
-        public CartsController(IShoppingCartService shoppingCartService, UserManager<User> userManagerService)
+        public CartsController(
+            IShoppingCartService shoppingCartService,
+            ICourseService courseService,
+            UserManager<User> userManagerService)
         {
             this.shoppingCartService = shoppingCartService;
+            this.courseService = courseService;
             this.userManagerService = userManagerService;
         }
 
 
-        public IActionResult Details(string id)
-        {
-            var cartDetails = this.shoppingCartService.GetCartDetails(id);
-
-            return View(cartDetails);
+        [Authorize]
+        public async Task<IActionResult> Details(string shoppingCartId)
+        {        
+            var cart = SessionHelper.GetObjectFromJson<List<ItemServiceModel>>(HttpContext.Session, "cart");
+            ViewBag.cart = cart;
+            ViewBag.total = cart.Sum(item => item.Course.Price * item.Quantity);
+         
+            return View();
         }
 
-      
-        [HttpPost]
+
         [Authorize(Roles = LearnerRole)]
         public async Task<IActionResult> AddCourseToCart(string shoppingCartId, int courseId)
-        {
-            bool isAdded = await this.shoppingCartService.AddCourseToCart(shoppingCartId, courseId);
+        {          
+            var course = await this.courseService.GetCourseById(courseId);
 
-            if (isAdded == false)
+            if (SessionHelper.GetObjectFromJson<List<ItemServiceModel>>(HttpContext.Session, "cart") == null)
             {
-                return BadRequest();
+                List<ItemServiceModel> cart = new List<ItemServiceModel>();
+                cart.Add(new ItemServiceModel { Course = course, Quantity = 1 });
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+            }
+            else
+            {
+                List<ItemServiceModel> cart = SessionHelper.GetObjectFromJson<List<ItemServiceModel>>(HttpContext.Session, "cart");
+                int index = isExist(courseId);
+                if (index != -1)
+                {
+                    cart[index].Quantity++;
+                }
+                else
+                {
+                    cart.Add(new ItemServiceModel { Course = course, Quantity = 1 });
+                }
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
 
             return RedirectToAction(nameof(Details), new { shoppingCartId });
         }
 
 
-        [Authorize(Roles = LearnerRole)]
-        public async Task<IActionResult> DeleteCourseFromCart(string shoppingCartId, int courseId)
-        {
-            bool isDeleted = await this.shoppingCartService.DeleteCourseFromCart(shoppingCartId, courseId);
 
-            if(isDeleted == false)
-            {
-                return BadRequest();
-            }
+        [Authorize(Roles = LearnerRole)]
+        public IActionResult RemoveCourseFromCart(string shoppingCartId, int courseId)
+        {
+            List<ItemServiceModel> cart = SessionHelper.GetObjectFromJson<List<ItemServiceModel>>(HttpContext.Session, "cart");
+            int index = isExist(courseId);
+            cart.RemoveAt(index);
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
 
             return RedirectToAction(nameof(Details), new { shoppingCartId });
         }
 
 
+
         [Authorize(Roles = LearnerRole)]
-        public async Task<IActionResult> BuyCourses(string shoppingCartId)
+        public async Task<IActionResult> BuyCourses()
         {
-            var user = await userManagerService.GetUserAsync(HttpContext.User);
-            bool areBuyed = await this.shoppingCartService.BuyCourses(shoppingCartId, user);
+            var user = await userManagerService.GetUserAsync(HttpContext.User);        
+
+            List<ItemServiceModel> cartItems = SessionHelper.GetObjectFromJson<List<ItemServiceModel>>(HttpContext.Session, "cart");
+            bool areBuyed  = await this.shoppingCartService.BuyCourses(cartItems, user);
 
             if (areBuyed == false)
             {
                 return BadRequest();
             }
 
-            return RedirectToAction(nameof(Details), new { shoppingCartId });
+            return RedirectToAction("Index", "Home");
+
+        }
+
+
+        private int isExist(int id)
+        {
+            List<Course> cart = SessionHelper.GetObjectFromJson<List<Course>>(HttpContext.Session, "cart");
+            for (int courseIndex = 0; courseIndex < cart.Count; courseIndex++)
+            {
+                if (cart[courseIndex].Id.Equals(id))
+                {
+                    return courseIndex;
+                }
+            }
+            return -1;
         }
     }
 }

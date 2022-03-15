@@ -163,6 +163,7 @@
                                 Name = c.Name,
                                 Description= c.Description,
                                 ImageUrl = c.ImageUrl,
+                                Price = c.Price,
                                 CategoryId = c.CourseCategoryId
                             })
                             .FirstOrDefaultAsync();

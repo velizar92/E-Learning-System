@@ -184,26 +184,6 @@ namespace E_LearningSystem.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShoppingCarts",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ShoppingCarts_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Trainers",
                 columns: table => new
                 {
@@ -242,7 +222,6 @@ namespace E_LearningSystem.Data.Migrations
                     AssignedStudents = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CourseCategoryId = table.Column<int>(type: "int", nullable: false),
-                    ShoppingCartId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -255,11 +234,6 @@ namespace E_LearningSystem.Data.Migrations
                         principalTable: "CourseCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Courses_ShoppingCarts_ShoppingCartId",
-                        column: x => x.ShoppingCartId,
-                        principalTable: "ShoppingCarts",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -327,6 +301,30 @@ namespace E_LearningSystem.Data.Migrations
                     table.PrimaryKey("PK_Lectures", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Lectures_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShoppingCartItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CourseId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    ShoppingCartId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCartItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCartItems_Courses_CourseId",
                         column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "Id",
@@ -446,11 +444,6 @@ namespace E_LearningSystem.Data.Migrations
                 column: "CourseCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Courses_ShoppingCartId",
-                table: "Courses",
-                column: "ShoppingCartId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CourseUser_UsersId",
                 table: "CourseUser",
                 column: "UsersId");
@@ -476,10 +469,9 @@ namespace E_LearningSystem.Data.Migrations
                 column: "ResourceTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ShoppingCarts_UserId",
-                table: "ShoppingCarts",
-                column: "UserId",
-                unique: true);
+                name: "IX_ShoppingCartItems_CourseId",
+                table: "ShoppingCartItems",
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trainers_UserId",
@@ -518,6 +510,9 @@ namespace E_LearningSystem.Data.Migrations
                 name: "Resources");
 
             migrationBuilder.DropTable(
+                name: "ShoppingCartItems");
+
+            migrationBuilder.DropTable(
                 name: "Trainers");
 
             migrationBuilder.DropTable(
@@ -530,16 +525,13 @@ namespace E_LearningSystem.Data.Migrations
                 name: "ResourceTypes");
 
             migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
                 name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "CourseCategories");
-
-            migrationBuilder.DropTable(
-                name: "ShoppingCarts");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
         }
     }
 }

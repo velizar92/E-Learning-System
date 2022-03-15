@@ -11,7 +11,7 @@
         {
             this.Lectures = new HashSet<Lecture>();
             this.Users = new HashSet<User>();
-            this.Issues = new HashSet<Issue>();
+            this.Issues = new HashSet<Issue>();         
         }
 
         [Key]
@@ -47,7 +47,7 @@
 
         public ICollection<Lecture> Lectures { get; set; }
 
-        public ICollection<Issue> Issues { get; set; }
+        public ICollection<Issue> Issues { get; set; }    
 
     }
 }
