@@ -204,29 +204,6 @@ namespace E_LearningSystem.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Testimonials",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Author = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Testimonials", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Testimonials_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Trainers",
                 columns: table => new
                 {
@@ -505,11 +482,6 @@ namespace E_LearningSystem.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Testimonials_UserId",
-                table: "Testimonials",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Trainers_UserId",
                 table: "Trainers",
                 column: "UserId",
@@ -544,9 +516,6 @@ namespace E_LearningSystem.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Resources");
-
-            migrationBuilder.DropTable(
-                name: "Testimonials");
 
             migrationBuilder.DropTable(
                 name: "Trainers");

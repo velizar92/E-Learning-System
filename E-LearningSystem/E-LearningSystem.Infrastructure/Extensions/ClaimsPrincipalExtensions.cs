@@ -6,7 +6,7 @@
     {
         public static string Id(this ClaimsPrincipal user)
         {
-            if(user == null)
+            if(user.Claims.Count() == 0)
             {
                 return string.Empty;
             }

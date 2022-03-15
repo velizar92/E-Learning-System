@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_LearningSystem.Data.Migrations
 {
     [DbContext(typeof(ELearningSystemDbContext))]
-    [Migration("20220313144238_InitialCreate")]
+    [Migration("20220315131545_Initial-Create")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -289,39 +289,6 @@ namespace E_LearningSystem.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("ShoppingCarts");
-                });
-
-            modelBuilder.Entity("E_LearningSystem.Data.Models.Testimonial", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Author")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Testimonials");
                 });
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.Trainer", b =>
@@ -681,15 +648,6 @@ namespace E_LearningSystem.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("E_LearningSystem.Data.Models.Testimonial", b =>
-                {
-                    b.HasOne("E_LearningSystem.Data.Models.User", null)
-                        .WithMany("Testimonials")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("E_LearningSystem.Data.Models.Trainer", b =>
                 {
                     b.HasOne("E_LearningSystem.Data.Models.User", null)
@@ -782,8 +740,6 @@ namespace E_LearningSystem.Data.Migrations
             modelBuilder.Entity("E_LearningSystem.Data.Models.User", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Testimonials");
                 });
 #pragma warning restore 612, 618
         }

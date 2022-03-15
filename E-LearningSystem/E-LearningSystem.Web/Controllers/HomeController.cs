@@ -33,13 +33,17 @@
 
         public async Task<IActionResult> Index()
         {
+            string shoppingCartId = null;
             var allLearners = await this.userManagerService.GetUsersInRoleAsync(LearnerRole);
             var allTrainers = await this.trainerService.GetAllTrainers();
             var topTrainers = await this.trainerService.GetTopTrainers();
             var latestCourses = await this.courseService.GetLatestCourses(3);
             var allCourses = await this.courseService.GetAllCourses();
-          
-            var shoppingCartId = await this.shoppingCartService.GetCartIdByUserId(User.Id());
+
+            if (User.IsInRole(LearnerRole))
+            {
+                shoppingCartId = await this.shoppingCartService.GetCartIdByUserId(User.Id());
+            }
 
             var indexViewModel = new IndexViewModel
             {
@@ -57,11 +61,15 @@
 
         public async Task<IActionResult> About()
         {
+            string shoppingCartId = null;
             var allLearners = await this.userManagerService.GetUsersInRoleAsync(LearnerRole);
             var allTrainers = await this.trainerService.GetAllTrainers();
             var allCourses = await this.courseService.GetAllCourses();
 
-            var shoppingCartId = await this.shoppingCartService.GetCartIdByUserId(User.Id());
+            if (User.IsInRole(LearnerRole))
+            {
+                shoppingCartId = await this.shoppingCartService.GetCartIdByUserId(User.Id());
+            }
 
             var aboutViewModel = new AboutViewModel
             {
