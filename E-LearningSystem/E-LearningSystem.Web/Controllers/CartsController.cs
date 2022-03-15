@@ -22,21 +22,16 @@
         }
 
 
-        //public IActionResult Details(string id)
-        //{
-        //    var cartDetails = this.shoppingCartService.GetCartDetails(id);
+        public IActionResult Details(string id)
+        {
+            var cartDetails = this.shoppingCartService.GetCartDetails(id);
 
-        //    return View(cartDetails);
-        //}
-
-        public IActionResult Details()
-        {       
-            return View();
+            return View(cartDetails);
         }
 
-
+      
         [HttpPost]
-        [Authorize(Roles = $"{AdminRole}, {LearnerRole}")]
+        [Authorize(Roles = LearnerRole)]
         public async Task<IActionResult> AddCourseToCart(string shoppingCartId, int courseId)
         {
             bool isAdded = await this.shoppingCartService.AddCourseToCart(shoppingCartId, courseId);
@@ -49,7 +44,8 @@
             return RedirectToAction(nameof(Details), new { shoppingCartId });
         }
 
-        [Authorize(Roles = $"{AdminRole}, {LearnerRole}")]
+
+        [Authorize(Roles = LearnerRole)]
         public async Task<IActionResult> DeleteCourseFromCart(string shoppingCartId, int courseId)
         {
             bool isDeleted = await this.shoppingCartService.DeleteCourseFromCart(shoppingCartId, courseId);
@@ -63,7 +59,7 @@
         }
 
 
-        [Authorize(Roles = $"{AdminRole}, {LearnerRole}")]
+        [Authorize(Roles = LearnerRole)]
         public async Task<IActionResult> BuyCourses(string shoppingCartId)
         {
             var user = await userManagerService.GetUserAsync(HttpContext.User);

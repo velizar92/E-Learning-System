@@ -4,7 +4,8 @@
     using E_LearningSystem.Services.Services.Courses.Models;
 
     public class IndexViewModel
-    {      
+    {
+        public string ShoppingCartId { get; set; }
         public int CoursesCount { get; set; }
         public int TrainersCount { get; set; }
         public int LearnersCount { get; set; }

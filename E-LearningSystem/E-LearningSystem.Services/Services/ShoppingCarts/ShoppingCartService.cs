@@ -108,7 +108,6 @@
         }
 
 
-
         public async Task<string> GetCartIdByUserId(string userId)
         {
             var cart = await dbContext.ShoppingCarts.Where(sc => sc.UserId == userId).FirstOrDefaultAsync();

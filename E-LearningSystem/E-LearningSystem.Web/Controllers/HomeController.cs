@@ -5,23 +5,28 @@
     using E_LearningSystem.Web.Models;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using E_LearningSystem.Data.Models; 
-    using static E_LearningSystem.Infrastructure.IdentityConstants;
+    using E_LearningSystem.Data.Models;
     using E_LearningSystem.Web.Models.Home;
+    using E_LearningSystem.Infrastructure.Extensions;
 
+    using static E_LearningSystem.Infrastructure.IdentityConstants;
+  
     public class HomeController : Controller
-    {     
+    {
         private readonly ITrainerService trainerService;
         private readonly ICourseService courseService;
+        private readonly IShoppingCartService shoppingCartService;
         private readonly UserManager<User> userManagerService;
 
-        public HomeController(                 
+        public HomeController(
             ITrainerService trainerService,
             ICourseService courseService,
+            IShoppingCartService shoppingCartService,
             UserManager<User> userManagerService)
-        {                  
+        {
             this.trainerService = trainerService;
             this.courseService = courseService;
+            this.shoppingCartService = shoppingCartService;
             this.userManagerService = userManagerService;
         }
 
@@ -33,14 +38,17 @@
             var topTrainers = await this.trainerService.GetTopTrainers();
             var latestCourses = await this.courseService.GetLatestCourses(3);
             var allCourses = await this.courseService.GetAllCourses();
+          
+            var shoppingCartId = await this.shoppingCartService.GetCartIdByUserId(User.Id());
 
             var indexViewModel = new IndexViewModel
             {
+                ShoppingCartId = shoppingCartId,
                 CoursesCount = allCourses.Count(),
                 TrainersCount = allTrainers.Count(),
                 LearnersCount = allLearners.Count(),
                 LatestCourses = latestCourses,
-                TopTrainers = topTrainers
+                TopTrainers = topTrainers,
             };
 
             return View(indexViewModel);
@@ -53,8 +61,11 @@
             var allTrainers = await this.trainerService.GetAllTrainers();
             var allCourses = await this.courseService.GetAllCourses();
 
+            var shoppingCartId = await this.shoppingCartService.GetCartIdByUserId(User.Id());
+
             var aboutViewModel = new AboutViewModel
             {
+                ShoppingCartId = shoppingCartId,
                 CoursesCount = allCourses.Count(),
                 TrainersCount = allTrainers.Count(),
                 LearnersCount = allLearners.Count(),
@@ -63,11 +74,6 @@
             return View(aboutViewModel);
         }
 
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

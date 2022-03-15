@@ -71,8 +71,7 @@
         }
 
 
-        [HttpGet]
-        [Authorize]
+        [HttpGet]      
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> EditCourse(int id, IFormFile pictureFile)
         {
@@ -94,8 +93,7 @@
         }
 
 
-        [HttpPost]
-        [Authorize]
+        [HttpPost]       
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> EditCourse(int id, CourseFormModel courseModel, IFormFile pictureFile)
         {
@@ -118,7 +116,6 @@
                                 courseModel.CategoryId,
                                 pictureFile);
 
-
             return RedirectToAction(nameof(MyCourses));
         }
 
@@ -126,19 +123,42 @@
 
         public async Task<IActionResult> AllCourses()
         {
+            string shoppingCartId = null;
             var courses = await courseService.GetAllCourses();
 
-            return View(courses);
+            if (User.IsInRole(LearnerRole))
+            {
+                shoppingCartId = await this.shoppingCartService.GetCartIdByUserId(User.Id());
+            }
+
+            var allCoursesViewModel = new AllCoursesViewModel
+            {
+                ShoppingCartId = shoppingCartId,
+                AllCoursesServiceModel = courses
+            };
+
+            return View(allCoursesViewModel);
         }
 
 
         [Authorize]
         public async Task<IActionResult> MyCourses()
         {
-            string userId = User.Id();
-            var myCourses = await courseService.GetMyCourses(userId);
+            string shoppingCartId = null;           
+            var myCourses = await courseService.GetMyCourses(User.Id());
 
-            return View(myCourses);
+            if (User.IsInRole(LearnerRole))
+            {
+                shoppingCartId = await this.shoppingCartService.GetCartIdByUserId(User.Id());
+            }
+
+            var myCoursesViewModel = new AllCoursesViewModel
+            {
+                ShoppingCartId = shoppingCartId,
+                AllCoursesServiceModel = myCourses
+            };
+
+            return View(myCoursesViewModel);
         }
 
 
@@ -148,7 +168,7 @@
             string shoppingCartId = null;
             var courseDetails = await courseService.GetCourseDetails(id);
 
-            if (User.IsInRole("Learner"))
+            if (User.IsInRole(LearnerRole))
             {
                 shoppingCartId = await this.shoppingCartService.GetCartIdByUserId(User.Id());
             }       
