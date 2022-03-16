@@ -1,5 +1,9 @@
-﻿@using E_LearningSystem.Services.Services;
-@model ShoppingCartDetailsServiceModel
+﻿@using E_LearningSystem.Services.Services.ShoppingCarts.Models
+@model List<ItemServiceModel>
+
+@{
+    int itemsCount = 0;
+}
 
 
 <!-- ======= Breadcrumbs ======= -->
@@ -16,7 +20,14 @@
             <div class="col-lg-12 col-md-12 col-12">
                 <h3 class="display-5 mb-2 text-center">Shopping Cart</h3>
                 <p class="mb-5 text-center">
-                    <i class="text-info font-weight-bold">3</i> items in your cart
+                    <i class="text-info font-weight-bold">
+                        @if(Model != null)
+                        {
+                            itemsCount = @Model.Count;
+                        }                      
+                    </i>
+
+                    @itemsCount items in your cart
                 </p>
                 <table id="shoppingCart" class="table table-condensed table-responsive">
                     <thead>
@@ -28,42 +39,46 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var course in Model.Courses)
+                        @if (Model != null)
                         {
-                            <tr>
-                                <td data-th="Product">
-                                    <div class="row">
-                                        <div class="col-md-3 text-left">
-                                            <img src="~/assets/img/course/@course.ImageUrl" alt="Course Image" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                            @foreach (var itemModel in Model)
+                            {
+                                <tr>
+                                    <td data-th="Product">
+                                        <div class="row">
+                                            <div class="col-md-3 text-left">
+                                                <img src="~/assets/img/courses/@itemModel.Course.ImageUrl" alt="Course Image" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                            </div>
+                                            <div class="col-md-9 text-left mt-sm-2">
+                                                <h4>@itemModel.Course.Name</h4>
+                                                <p class="font-weight-light">Brand &amp; Name</p>
+                                            </div>
                                         </div>
-                                        <div class="col-md-9 text-left mt-sm-2">
-                                            <h4>@course.Name</h4>
-                                            <p class="font-weight-light">Brand &amp; Name</p>
+                                    </td>
+                                    <td data-th="Price">$@itemModel.Course.Price</td>
+                                    <td data-th="Quantity">
+                                        <input type="number" class="form-control form-control-lg text-center" value="@itemModel.Quantity">
+                                    </td>
+                                    <td class="actions" data-th="">
+                                        <div class="text-right">
+                                            <button class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                                <i class="fas fa-sync"></i>
+                                            </button>
+                                            <a asp-area="" asp-controller="Carts" asp-action="RemoveCourseFromCart" asp-route-courseId="@itemModel.Course.Id" class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
                                         </div>
-                                    </div>
-                                </td>
-                                <td data-th="Price">$@course.Price</td>
-                                <td data-th="Quantity">
-                                    <input type="number" class="form-control form-control-lg text-center" value="1">
-                                </td>
-                                <td class="actions" data-th="">
-                                    <div class="text-right">
-                                        <button class="btn btn-white border-secondary bg-white btn-md mb-2">
-                                            <i class="fas fa-sync"></i>
-                                        </button>
-                                        <button class="btn btn-white border-secondary bg-white btn-md mb-2">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            }
                         }
-
                     </tbody>
                 </table>
                 <div class="float-right text-right">
-                    <h4>Subtotal:</h4>
-                    <h1>$99.00</h1>
+                    <h4>Final Sum:</h4>
+                    <h1>
+                       $@ViewBag.totalItemsSum
+                    </h1>
                 </div>
             </div>
         </div>
@@ -72,7 +87,7 @@
                 <a href="catalog.html" class="get-started-btn mb-4 btn-lg pl-5 pr-5">Checkout</a>
             </div>
             <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
-                <a href="catalog.html">
+                <a asp-area="" asp-controller="Courses" asp-action="AllCourses">
                     <i class="fas fa-arrow-left mr-2"></i> Continue Shopping
                 </a>
             </div>

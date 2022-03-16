@@ -30,18 +30,20 @@
 
 
         [Authorize]
-        public async Task<IActionResult> Details(string shoppingCartId)
+        public IActionResult Details()
         {        
-            var cart = SessionHelper.GetObjectFromJson<List<ItemServiceModel>>(HttpContext.Session, "cart");
-            ViewBag.cart = cart;
-            ViewBag.total = cart.Sum(item => item.Course.Price * item.Quantity);
-         
-            return View();
+            var cartItems = SessionHelper.GetObjectFromJson<List<ItemServiceModel>>(HttpContext.Session, "cart");
+            if (cartItems != null)
+            {
+                ViewBag.totalItemsSum = cartItems.Sum(item => item.Course.Price * item.Quantity);
+            }
+              
+            return View(cartItems);
         }
 
 
         [Authorize(Roles = LearnerRole)]
-        public async Task<IActionResult> AddCourseToCart(string shoppingCartId, int courseId)
+        public async Task<IActionResult> AddCourseToCart(int courseId)
         {          
             var course = await this.courseService.GetCourseById(courseId);
 
@@ -66,20 +68,20 @@
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
 
-            return RedirectToAction(nameof(Details), new { shoppingCartId });
+            return RedirectToAction(nameof(Details));
         }
 
 
 
         [Authorize(Roles = LearnerRole)]
-        public IActionResult RemoveCourseFromCart(string shoppingCartId, int courseId)
+        public IActionResult RemoveCourseFromCart(int courseId)
         {
             List<ItemServiceModel> cart = SessionHelper.GetObjectFromJson<List<ItemServiceModel>>(HttpContext.Session, "cart");
             int index = isExist(courseId);
             cart.RemoveAt(index);
             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
 
-            return RedirectToAction(nameof(Details), new { shoppingCartId });
+            return RedirectToAction(nameof(Details));
         }
 
 
@@ -104,10 +106,10 @@
 
         private int isExist(int id)
         {
-            List<Course> cart = SessionHelper.GetObjectFromJson<List<Course>>(HttpContext.Session, "cart");
+            List<ItemServiceModel> cart = SessionHelper.GetObjectFromJson<List<ItemServiceModel>>(HttpContext.Session, "cart");
             for (int courseIndex = 0; courseIndex < cart.Count; courseIndex++)
             {
-                if (cart[courseIndex].Id.Equals(id))
+                if (cart[courseIndex].Course.Id.Equals(id))
                 {
                     return courseIndex;
                 }

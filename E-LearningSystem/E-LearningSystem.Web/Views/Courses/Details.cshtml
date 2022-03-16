@@ -58,7 +58,7 @@
                     }
                     @if (User.IsInRole(LearnerRole))
                     {
-                        <a asp-controller="Carts" asp-action="AddCourseToCart" asp-route-shoppingCartId="@Model.ShoppingCartId" asp-route-courseId="@Model.CourseServiceModel.Id" class="get-started-btn">Add to Cart</a>
+                        <a asp-controller="Carts" asp-action="AddCourseToCart" asp-route-courseId="@Model.CourseServiceModel.Id" class="get-started-btn">Add to Cart</a>
                     }
                 </div>
             </div>

@@ -4,7 +4,6 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using E_LearningSystem.Data.Models;
-    using E_LearningSystem.Data.Data.Models;
 
     public class ELearningSystemDbContext : IdentityDbContext<User>
     {
@@ -21,8 +20,7 @@
         public DbSet<ResourceType> ResourceTypes { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
         public DbSet<Issue> Issues { get; set; }
-        public DbSet<Comment> Comments { get; set; }
-        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }    
+        public DbSet<Comment> Comments { get; set; }          
       
       
         protected override void OnModelCreating(ModelBuilder builder)

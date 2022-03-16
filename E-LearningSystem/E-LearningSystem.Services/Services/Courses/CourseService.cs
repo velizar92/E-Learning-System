@@ -160,6 +160,7 @@
                             .Where(c => c.Id == id)
                             .Select(c => new CourseServiceModel
                             { 
+                                Id = c.Id,
                                 Name = c.Name,
                                 Description= c.Description,
                                 ImageUrl = c.ImageUrl,
