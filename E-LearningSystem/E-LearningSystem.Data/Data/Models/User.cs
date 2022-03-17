@@ -1,5 +1,6 @@
 ﻿namespace E_LearningSystem.Data.Models
 {
+    using E_LearningSystem.Data.Data.Models;
     using Microsoft.AspNetCore.Identity;
     using System.ComponentModel.DataAnnotations;
     using static DataConstants.User;
@@ -8,7 +9,7 @@
     {
         public User()
         {
-            this.Courses = new HashSet<Course>();
+            this.CourseUsers = new HashSet<CourseUser>();
             this.Comments = new HashSet<Comment>();
         }
 
@@ -23,7 +24,7 @@
         [Required]
         public string ProfileImageUrl { get; set; }
 
-        public ICollection<Course> Courses { get; set; }
+        public ICollection<CourseUser> CourseUsers { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
      

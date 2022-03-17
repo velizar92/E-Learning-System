@@ -1,5 +1,6 @@
 ﻿namespace E_LearningSystem.Data.Models
 {
+    using E_LearningSystem.Data.Data.Models;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     
@@ -10,7 +11,7 @@
         public Course()
         {
             this.Lectures = new HashSet<Lecture>();
-            this.Users = new HashSet<User>();
+            this.CourseUsers = new HashSet<CourseUser>();
             this.Issues = new HashSet<Issue>();         
         }
 
@@ -34,8 +35,6 @@
 
         public int? AssignedStudents { get; set; }
 
-        public string UserId { get; set; }
-
 
         [ForeignKey(nameof(CourseCategory))]
         public int CourseCategoryId { get; set; }
@@ -43,7 +42,13 @@
         public CourseCategory CourseCategory { get; set; }
 
 
-        public ICollection<User> Users { get; set; }
+        [ForeignKey(nameof(Trainer))]
+        public int TrainerId { get; set; }
+
+        public int Trainer { get; set; }
+
+
+        public ICollection<CourseUser> CourseUsers { get; set; }
 
         public ICollection<Lecture> Lectures { get; set; }
 

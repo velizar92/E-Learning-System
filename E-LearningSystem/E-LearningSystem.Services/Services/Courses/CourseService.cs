@@ -10,6 +10,7 @@
     using E_LearningSystem.Services.Services.Courses.Models;
     using E_LearningSystem.Services.Services.Lectures.Models;
     using Microsoft.AspNetCore.Identity;
+    using E_LearningSystem.Data.Data.Models;
 
     public class CourseService : ICourseService
     {
@@ -35,9 +36,8 @@
         }
 
 
-        public async Task<int> CreateCourse(string userId, string name, string description, double price, int categoryId, IFormFile pictureFile)
+        public async Task<int> CreateCourse(string userId, int trainerId, string name, string description, double price, int categoryId, IFormFile pictureFile)
         {
-
             string detailPath = Path.Combine(@"\assets\img\courses", pictureFile.FileName);
             using (var stream = new FileStream(webHostEnvironment.WebRootPath + detailPath, FileMode.Create))
             {
@@ -46,7 +46,7 @@
 
             Course course = new Course()
             {
-                UserId = userId,
+                TrainerId = trainerId,
                 Name = name,
                 Description = description,
                 ImageUrl = pictureFile.FileName,
@@ -54,12 +54,16 @@
                 CourseCategoryId = categoryId
             };
 
-            var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
-            
-            user.Courses.Add(course);           
+            dbContext.Courses.Add(course);
             await dbContext.SaveChangesAsync();
 
-            return course.Id;
+            var courseData = dbContext.Courses.FirstOrDefault(c => c.TrainerId == trainerId && c.Name == name);                     
+            var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);      
+            user.CourseUsers.Add(new CourseUser {CourseId = courseData.Id, UserId = userId});
+
+            await dbContext.SaveChangesAsync();
+
+            return courseData.Id;
         }
 
 
@@ -132,7 +136,6 @@
         } 
 
                  
-
         public async Task<IEnumerable<AllCoursesServiceModel>> GetAllCourses()
         {
 
@@ -222,7 +225,7 @@
         {
             return await dbContext
                              .Courses
-                             .Where(c => c.UserId == userId)
+                             .Where(c => c.CourseUsers.Any(cu => cu.UserId == userId))
                              .Select(c => new AllCoursesServiceModel
                              {
                                  Id = c.Id,
@@ -232,9 +235,27 @@
                                  ImageUrl = c.ImageUrl,
                                  CategoryName = c.CourseCategory.Name
                              })
-                             .ToListAsync();          
+                             .ToListAsync();
         }
 
-       
+        public async Task<IEnumerable<AllCoursesServiceModel>> GetMyCourses(int trainerId)
+        {
+            return await dbContext
+                             .Courses
+                             .Where(c => c.TrainerId == trainerId)
+                             .Select(c => new AllCoursesServiceModel
+                             {
+                                 Id = c.Id,
+                                 Name = c.Name,
+                                 Description = c.Description,
+                                 Price = c.Price,
+                                 ImageUrl = c.ImageUrl,
+                                 CategoryName = c.CourseCategory.Name
+                             })
+                             .ToListAsync();
+          
+        }
+
+
     }
 }

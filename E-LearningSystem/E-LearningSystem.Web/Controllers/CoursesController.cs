@@ -9,21 +9,25 @@
     using Microsoft.AspNetCore.Authorization;
 
     using static E_LearningSystem.Infrastructure.IdentityConstants;
+    using E_LearningSystem.Services.Services.Courses.Models;
 
     public class CoursesController : Controller
     {
         private readonly ICourseService courseService;
         private readonly IShoppingCartService shoppingCartService;
+        private readonly ITrainerService trainerService;
         private readonly UserManager<User> userManagerService;
 
 
         public CoursesController(
             ICourseService courseService,
             IShoppingCartService shoppingCartService,
+            ITrainerService trainerService,
             UserManager<User> userManager)
         {
             this.courseService = courseService;
             this.shoppingCartService = shoppingCartService;
+            this.trainerService = trainerService;
             this.userManagerService = userManager;
         }
 
@@ -42,8 +46,7 @@
         [HttpPost]
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> CreateCourse(CourseFormModel courseModel, IFormFile pictureFile)
-        {
-            string userId = User.Id();
+        {                 
             ModelState.Remove("Categories");
 
             if (!this.courseService.CheckIfCourseCategoryExists(courseModel.CategoryId))
@@ -58,8 +61,11 @@
                 return View(courseModel);
             }
 
+            int trainerId = await this.trainerService.GetTrainerIdByUserId(User.Id());
+
             int courseId = await this.courseService.CreateCourse(
-                                 userId,
+                                 User.Id(),
+                                 trainerId,
                                  courseModel.Name,
                                  courseModel.Description,
                                  courseModel.Price,
@@ -122,15 +128,11 @@
 
 
         public async Task<IActionResult> AllCourses()
-        {
-            string shoppingCartId = null;
+        {         
             var courses = await courseService.GetAllCourses();
-
-           
-
+       
             var allCoursesViewModel = new AllCoursesViewModel
-            {
-                ShoppingCartId = shoppingCartId,
+            {           
                 AllCoursesServiceModel = courses
             };
 
@@ -140,14 +142,21 @@
 
         [Authorize]
         public async Task<IActionResult> MyCourses()
-        {
-            string shoppingCartId = null;           
-            var myCourses = await courseService.GetMyCourses(User.Id());
+        {           
+            IEnumerable<AllCoursesServiceModel> myCourses = null;
 
-            
-            var myCoursesViewModel = new AllCoursesViewModel
+            if (User.IsInRole(TrainerRole))
             {
-                ShoppingCartId = shoppingCartId,
+                int trainerId = await this.trainerService.GetTrainerIdByUserId(User.Id());
+                myCourses = await courseService.GetMyCourses(trainerId);
+            }
+            else
+            {
+                myCourses = await courseService.GetMyCourses(User.Id());
+            }
+      
+            var myCoursesViewModel = new AllCoursesViewModel
+            {              
                 AllCoursesServiceModel = myCourses
             };
 
@@ -157,16 +166,12 @@
 
         [Authorize]
         public async Task<IActionResult> Details(int id)
-        {
-            string shoppingCartId = null;
+        {         
             var courseDetails = await courseService.GetCourseDetails(id);
-
-                  
-
+                 
             var courseDetailsViewModel = new CourseDetailsViewModel
             {
-                CourseServiceModel = courseDetails,
-                ShoppingCartId = shoppingCartId
+                CourseServiceModel = courseDetails,              
             };
 
             return View(courseDetailsViewModel);

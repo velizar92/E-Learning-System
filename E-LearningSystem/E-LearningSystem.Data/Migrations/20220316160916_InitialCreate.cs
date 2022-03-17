@@ -220,8 +220,9 @@ namespace E_LearningSystem.Data.Migrations
                     Price = table.Column<double>(type: "float", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AssignedStudents = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CourseCategoryId = table.Column<int>(type: "int", nullable: false),
+                    TrainerId = table.Column<int>(type: "int", nullable: false),
+                    Trainer = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -234,27 +235,33 @@ namespace E_LearningSystem.Data.Migrations
                         principalTable: "CourseCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Courses_Trainers_TrainerId",
+                        column: x => x.TrainerId,
+                        principalTable: "Trainers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CourseUser",
+                name: "CourseUsers",
                 columns: table => new
                 {
-                    CoursesId = table.Column<int>(type: "int", nullable: false),
-                    UsersId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CourseUser", x => new { x.CoursesId, x.UsersId });
+                    table.PrimaryKey("PK_CourseUsers", x => new { x.UserId, x.CourseId });
                     table.ForeignKey(
-                        name: "FK_CourseUser_AspNetUsers_UsersId",
-                        column: x => x.UsersId,
+                        name: "FK_CourseUsers_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CourseUser_Courses_CoursesId",
-                        column: x => x.CoursesId,
+                        name: "FK_CourseUsers_Courses_CourseId",
+                        column: x => x.CourseId,
                         principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -420,9 +427,14 @@ namespace E_LearningSystem.Data.Migrations
                 column: "CourseCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CourseUser_UsersId",
-                table: "CourseUser",
-                column: "UsersId");
+                name: "IX_Courses_TrainerId",
+                table: "Courses",
+                column: "TrainerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseUsers_CourseId",
+                table: "CourseUsers",
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Issues_CourseId",
@@ -472,16 +484,13 @@ namespace E_LearningSystem.Data.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "CourseUser");
+                name: "CourseUsers");
 
             migrationBuilder.DropTable(
                 name: "Issues");
 
             migrationBuilder.DropTable(
                 name: "Resources");
-
-            migrationBuilder.DropTable(
-                name: "Trainers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -493,13 +502,16 @@ namespace E_LearningSystem.Data.Migrations
                 name: "ResourceTypes");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "CourseCategories");
+
+            migrationBuilder.DropTable(
+                name: "Trainers");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

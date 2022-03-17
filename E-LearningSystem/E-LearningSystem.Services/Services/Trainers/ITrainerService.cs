@@ -15,5 +15,7 @@
 
         Task<IEnumerable<AllTrainersServiceModel>> GetTopTrainers();
 
+        Task<int> GetTrainerIdByUserId(string userId);
+
     }
 }

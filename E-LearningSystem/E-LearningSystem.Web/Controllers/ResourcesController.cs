@@ -33,11 +33,7 @@
 
       
         public async Task<IActionResult> MyResources([FromQuery] AllResourcesQueryModel query)
-        {
-
-            //var myResources = await this.resourceService.GetMyResources(User.Id());
-            //return View(myResources);
-
+        {          
             string userId = User.Id();
             var myResourceServiceModel = await this.resourceService.GetAllMyResources(
                 userId,

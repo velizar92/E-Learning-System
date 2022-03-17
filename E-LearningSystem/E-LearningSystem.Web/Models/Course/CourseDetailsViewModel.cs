@@ -4,7 +4,6 @@
     public class CourseDetailsViewModel
     {
         public CourseDetailsServiceModel CourseServiceModel { get; set; }
-
-        public string ShoppingCartId { get; set; }
+     
     }
 }

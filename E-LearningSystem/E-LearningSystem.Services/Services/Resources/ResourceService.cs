@@ -31,7 +31,7 @@
                             .ResourceTypes
                             .Select(c => c.Name)
                             .Distinct()
-                           .ToListAsync();
+                            .ToListAsync();
         }
 
 
@@ -63,7 +63,7 @@
 
             var myCourses = await dbContext
                                     .Courses
-                                    .Where(c => c.UserId == userId)
+                                    .Where(c => c.CourseUsers.Any(cu => cu.UserId == userId))
                                     .Include(l => l.Lectures)
                                     .ThenInclude(l => l.Resources)
                                     .ToListAsync();
@@ -108,7 +108,7 @@
                 TotalResources = resourcesCount,
                 CurrentPage = currentPage,
                 CarsPerPage = resourcesPerPage
-            };
+            };        
         }
 
 
@@ -118,7 +118,7 @@
 
             var myCourses = await dbContext
                                     .Courses
-                                    .Where(c => c.UserId == userId)
+                                    .Where(c => c.CourseUsers.Any(cu => cu.UserId == userId))
                                     .Include(l => l.Lectures)
                                     .ThenInclude(l => l.Resources)
                                     .ToListAsync();
@@ -141,6 +141,8 @@
             });
 
             return resources;
+
+           
         }
 
 

@@ -115,5 +115,12 @@
         }
 
 
+
+        public async Task<int> GetTrainerIdByUserId(string userId)
+        {
+           var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.UserId == userId);
+
+            return trainer.Id;
+        }
     }
 }

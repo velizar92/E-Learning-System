@@ -1,6 +1,7 @@
 ﻿namespace E_LearningSystem.Services.Services
 {
     using E_LearningSystem.Data.Data;
+    using E_LearningSystem.Data.Data.Models;
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services.ShoppingCarts.Models;
 
@@ -15,26 +16,32 @@
         }
 
 
-
         public async Task<bool> BuyCourses(List<ItemServiceModel> cartItems, User user)
         {
-            
-            foreach (var courseItem in cartItems)
-            {
-                var course = new Course
-                {
-                    Name = courseItem.Course.Name,
-                    Description = courseItem.Course.Description,
-                    Price = courseItem.Course.Price,
-                    CourseCategoryId = courseItem.Course.CategoryId,
-                    ImageUrl = courseItem.Course.ImageUrl
-                };
+            bool isBuyed = false;
 
-                user.Courses.Add(course);
+            foreach (var cartItem in cartItems)
+            {
+                if (dbContext.CourseUsers.FirstOrDefault(c => (c.CourseId == cartItem.Course.Id) && (c.UserId == user.Id)) == null)
+                {
+                    var course = new Course
+                    {
+                        Id = cartItem.Course.Id,
+                        Name = cartItem.Course.Name,
+                        Description = cartItem.Course.Description,
+                        Price = cartItem.Course.Price,
+                        CourseCategoryId = cartItem.Course.CategoryId,
+                        ImageUrl = cartItem.Course.ImageUrl,
+                        AssignedStudents = cartItem.Course.AssignedStudents + 1
+                    };
+
+                    dbContext.CourseUsers.Add(new CourseUser { CourseId = course.Id, UserId = user.Id });
+                    isBuyed = true;
+                }
             }
-         
+
             await dbContext.SaveChangesAsync();
-            return true;
+            return isBuyed;
         }
 
 
