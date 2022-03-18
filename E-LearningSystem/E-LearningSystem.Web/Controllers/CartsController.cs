@@ -11,6 +11,8 @@
 
     using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
     using static E_LearningSystem.Infrastructure.Constants.MessageConstants;
+    using static E_LearningSystem.Infrastructure.Messages.Messages;
+    using static E_LearningSystem.Infrastructure.Messages.ErrorMessages;
 
     public class CartsController : Controller
     {
@@ -48,7 +50,7 @@
            
             if (cartItems != null)
             {
-                ViewBag.totalItemsSum = cartItems.Sum(item => item.Course.Price * item.Quantity);
+                ViewBag.totalItemsSum = cartItems.Sum(item => item.Course.Price);
             }
 
             return View(cartItems);
@@ -63,7 +65,7 @@
             if (SessionHelper.GetObjectFromJson<List<ItemServiceModel>>(HttpContext.Session, sessionKey) == null)
             {
                 List<ItemServiceModel> cart = new List<ItemServiceModel>();
-                cart.Add(new ItemServiceModel { Course = course, Quantity = 1 });
+                cart.Add(new ItemServiceModel { Course = course });
                 SessionHelper.SetObjectAsJson(HttpContext.Session, sessionKey, cart);
             }
             else
@@ -72,16 +74,18 @@
                 int index = isExist(courseId);
                 if (index != -1)
                 {
-                    cart[index].Quantity++;
+                    TempData[ErrorMessage] = string.Format(CourseAlreadyAdded, course.Name);
+                    return RedirectToAction(nameof(Details));
                 }
                 else
                 {
-                    cart.Add(new ItemServiceModel { Course = course, Quantity = 1 });
+                    cart.Add(new ItemServiceModel { Course = course });
                 }
+
                 SessionHelper.SetObjectAsJson(HttpContext.Session, sessionKey, cart);
             }
 
-            TempData[SuccessMessage] = "Course has been added to cart.";
+            TempData[SuccessMessage] = CourseAddedToCart;
 
             return RedirectToAction(nameof(Details));
         }
@@ -118,7 +122,15 @@
 
             SessionHelper.SetObjectAsJson(HttpContext.Session, sessionKey, null);
 
-            TempData[SuccessMessage] = "You successfuly buy all courses.";
+            if (cartItems.Count == 1)
+            {
+                TempData[SuccessMessage] = CourseBuyedSuccessfuly;
+            }
+            else
+            {
+                TempData[SuccessMessage] = CoursesBuyedSuccessfuly;
+            }
+           
             return RedirectToAction("Index", "Home");
         }
 

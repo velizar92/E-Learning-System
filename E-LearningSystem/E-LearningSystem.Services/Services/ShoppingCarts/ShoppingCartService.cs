@@ -5,6 +5,8 @@
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services.ShoppingCarts.Models;
 
+    using static E_LearningSystem.Infrastructure.Messages.ErrorMessages;
+
     public class ShoppingCartService : IShoppingCartService
     {
         private readonly ELearningSystemDbContext dbContext;
@@ -20,7 +22,7 @@
         {
             List<string> errors = new List<string>();
 
-            if (cartItems != null)
+            if (cartItems != null && cartItems.Count > 0)
             {
                 foreach (var cartItem in cartItems)
                 {
@@ -41,13 +43,13 @@
                     }
                     else
                     {
-                        errors.Add($"You have already purchased course {cartItem.Course.Name}.\n");
+                        errors.Add(string.Format(CourseAlreadyAdded, cartItem.Course.Name));
                     }
                 }
             }
             else
             {
-                errors.Add($"Your shopping cart is empty.");
+                errors.Add(EmptyShoppingCart);
             }
          
             await dbContext.SaveChangesAsync();

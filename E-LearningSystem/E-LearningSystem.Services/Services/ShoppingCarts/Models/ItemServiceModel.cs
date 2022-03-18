@@ -5,6 +5,5 @@
     public class ItemServiceModel
     {
         public CourseServiceModel Course { get; set; }
-        public int Quantity { get; set; }
     }
 }
