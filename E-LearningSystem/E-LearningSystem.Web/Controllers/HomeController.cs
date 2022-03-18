@@ -1,44 +1,46 @@
 ﻿namespace E_LearningSystem.Web.Controllers
 {
     using System.Diagnostics;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Identity;
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Web.Models;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc;
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Web.Models.Home;
-    using E_LearningSystem.Infrastructure.Extensions;
 
     using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
-    using E_LearningSystem.Infrastructure;
-    using AspNetCoreHero.ToastNotification.Abstractions;
+    using static E_LearningSystem.Infrastructure.Constants.MessageConstants;
+   
 
     public class HomeController : Controller
     {
         private readonly ITrainerService trainerService;
         private readonly ICourseService courseService;
-        private readonly INotyfService notyfService;
-        private readonly IShoppingCartService shoppingCartService;
+        private readonly INotyfService notyfService;     
         private readonly UserManager<User> userManagerService;
 
         public HomeController(
             ITrainerService trainerService,
             ICourseService courseService,
-            INotyfService notyfService,
-            IShoppingCartService shoppingCartService,
+            INotyfService notyfService,          
             UserManager<User> userManagerService)
         {
             this.trainerService = trainerService;
             this.courseService = courseService;
-            this.notyfService = notyfService;
-            this.shoppingCartService = shoppingCartService;
+            this.notyfService = notyfService;         
             this.userManagerService = userManagerService;
         }
 
 
         public async Task<IActionResult> Index()
         {
-            string shoppingCartId = null;
+
+            if (TempData[SuccessMessage] != null)
+            {
+                this.notyfService.Success($"{TempData[SuccessMessage]}");
+            }
+          
             var allLearners = await this.userManagerService.GetUsersInRoleAsync(LearnerRole);
             var allTrainers = await this.trainerService.GetAllTrainers();
             var topTrainers = await this.trainerService.GetTopTrainers();
@@ -46,8 +48,7 @@
             var allCourses = await this.courseService.GetAllCourses();
 
             var indexViewModel = new IndexViewModel
-            {
-                ShoppingCartId = shoppingCartId,
+            {              
                 CoursesCount = allCourses.Count(),
                 TrainersCount = allTrainers.Count(),
                 LearnersCount = allLearners.Count(),
