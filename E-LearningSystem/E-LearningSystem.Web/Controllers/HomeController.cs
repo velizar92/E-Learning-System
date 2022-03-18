@@ -9,23 +9,28 @@
     using E_LearningSystem.Web.Models.Home;
     using E_LearningSystem.Infrastructure.Extensions;
 
-    using static E_LearningSystem.Infrastructure.IdentityConstants;
-  
+    using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
+    using E_LearningSystem.Infrastructure;
+    using AspNetCoreHero.ToastNotification.Abstractions;
+
     public class HomeController : Controller
     {
         private readonly ITrainerService trainerService;
         private readonly ICourseService courseService;
+        private readonly INotyfService notyfService;
         private readonly IShoppingCartService shoppingCartService;
         private readonly UserManager<User> userManagerService;
 
         public HomeController(
             ITrainerService trainerService,
             ICourseService courseService,
+            INotyfService notyfService,
             IShoppingCartService shoppingCartService,
             UserManager<User> userManagerService)
         {
             this.trainerService = trainerService;
             this.courseService = courseService;
+            this.notyfService = notyfService;
             this.shoppingCartService = shoppingCartService;
             this.userManagerService = userManagerService;
         }
@@ -39,8 +44,6 @@
             var topTrainers = await this.trainerService.GetTopTrainers();
             var latestCourses = await this.courseService.GetLatestCourses(3);
             var allCourses = await this.courseService.GetAllCourses();
-
-           
 
             var indexViewModel = new IndexViewModel
             {

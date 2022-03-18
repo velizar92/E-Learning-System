@@ -2,7 +2,7 @@
 @using E_LearningSystem.Data.Models;
 @using E_LearningSystem.Services.Services;
 @using E_LearningSystem.Infrastructure.Extensions;
-@using static E_LearningSystem.Infrastructure.IdentityConstants;
+@using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 @inject IShoppingCartService ShoppingCart;
@@ -29,10 +29,9 @@
     <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="~/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
     <link href="~/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet"> 
 
-
-    <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.css">
 
     <!-- Template Main CSS File -->
     <link href="~/assets/css/style.css" rel="stylesheet">
@@ -40,6 +39,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/E_LearningSystem.Web.styles.css" asp-append-version="true" />
+   
 </head>
 
 <body>
@@ -166,6 +166,7 @@
     <!-- Template Main JS File -->
     <script src="~/assets/js/main.js"></script>
 
+    @await Component.InvokeAsync("Notyf") 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

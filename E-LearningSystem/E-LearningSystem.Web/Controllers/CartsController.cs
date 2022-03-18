@@ -7,14 +7,17 @@
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Infrastructure.Helpers;
     using E_LearningSystem.Services.Services.ShoppingCarts.Models;
+    using AspNetCoreHero.ToastNotification.Abstractions;
 
-    using static E_LearningSystem.Infrastructure.IdentityConstants;
- 
+    using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
+    using static E_LearningSystem.Infrastructure.Constants.MessageConstants;
+
     public class CartsController : Controller
     {
 
         private readonly IShoppingCartService shoppingCartService;
         private readonly ICourseService courseService;
+        private readonly INotyfService notyfService;
         private readonly UserManager<User> userManagerService;
 
         private const string sessionKey = "cart";
@@ -23,30 +26,38 @@
         public CartsController(
             IShoppingCartService shoppingCartService,
             ICourseService courseService,
+            INotyfService notyfService,
             UserManager<User> userManagerService)
         {
             this.shoppingCartService = shoppingCartService;
             this.courseService = courseService;
+            this.notyfService = notyfService;
             this.userManagerService = userManagerService;
         }
 
 
         [Authorize]
         public IActionResult Details()
-        {        
+        {
             var cartItems = SessionHelper.GetObjectFromJson<List<ItemServiceModel>>(HttpContext.Session, sessionKey);
+
+            if (TempData[SuccessMessage] != null)
+            {
+                this.notyfService.Success($"{TempData[SuccessMessage]}");
+            }
+           
             if (cartItems != null)
             {
                 ViewBag.totalItemsSum = cartItems.Sum(item => item.Course.Price * item.Quantity);
             }
-              
+
             return View(cartItems);
         }
 
 
         [Authorize(Roles = LearnerRole)]
         public async Task<IActionResult> AddCourseToCart(int courseId)
-        {          
+        {
             var course = await this.courseService.GetCourseById(courseId);
 
             if (SessionHelper.GetObjectFromJson<List<ItemServiceModel>>(HttpContext.Session, sessionKey) == null)
@@ -70,6 +81,8 @@
                 SessionHelper.SetObjectAsJson(HttpContext.Session, sessionKey, cart);
             }
 
+            TempData[SuccessMessage] = "Course has been added to cart.";
+
             return RedirectToAction(nameof(Details));
         }
 
@@ -87,22 +100,25 @@
         }
 
 
-
         [Authorize(Roles = LearnerRole)]
         public async Task<IActionResult> BuyCourses()
         {
-            var user = await userManagerService.GetUserAsync(HttpContext.User);        
+            var user = await userManagerService.GetUserAsync(HttpContext.User);
 
             List<ItemServiceModel> cartItems = SessionHelper.GetObjectFromJson<List<ItemServiceModel>>(HttpContext.Session, sessionKey);
-            bool areBuyed  = await this.shoppingCartService.BuyCourses(cartItems, user);
+            var errors = await this.shoppingCartService.BuyCourses(cartItems, user);
+
+            if (errors.Count() > 0)
+            {
+                var errorsModel = string.Join('\n', errors);
+                TempData[ErrorMessage] = errorsModel;
+
+                return RedirectToAction(nameof(Details));
+            }
 
             SessionHelper.SetObjectAsJson(HttpContext.Session, sessionKey, null);
 
-            if (areBuyed == false)
-            {
-                return BadRequest();
-            }
-
+            TempData[SuccessMessage] = "You successfuly buy all courses.";
             return RedirectToAction("Index", "Home");
         }
 

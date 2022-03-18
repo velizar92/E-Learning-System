@@ -7,7 +7,7 @@
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Web.Models.Lecture;
 
-    using static E_LearningSystem.Infrastructure.IdentityConstants;
+    using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
   
     public class LecturesController : Controller
     {

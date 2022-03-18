@@ -6,7 +6,8 @@ using E_LearningSystem.Data.Data;
 using E_LearningSystem.Data.Models;
 using E_LearningSystem.Infrastructure.Seed;
 using E_LearningSystem.Services.Services;
-
+using AspNetCoreHero.ToastNotification;
+using AspNetCoreHero.ToastNotification.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +58,12 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+builder.Services.AddNotyf(config => { 
+    config.DurationInSeconds = 5;
+    config.IsDismissable = true; 
+    config.Position = NotyfPosition.TopCenter; 
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -89,6 +96,8 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
+
+app.UseNotyf();
 
 app.Run();
 

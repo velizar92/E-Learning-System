@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 
-using static E_LearningSystem.Infrastructure.IdentityConstants;
+using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
 
 namespace E_LearningSystem.Web.Areas.Identity.Pages.Account
 {

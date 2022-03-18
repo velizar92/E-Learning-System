@@ -16,9 +16,9 @@
         }
 
 
-        public async Task<bool> BuyCourses(List<ItemServiceModel> cartItems, User user)
+        public async Task<IEnumerable<string>> BuyCourses(List<ItemServiceModel> cartItems, User user)
         {
-            bool isBuyed = false;
+            List<string> errors = new List<string>();
 
             foreach (var cartItem in cartItems)
             {
@@ -35,13 +35,16 @@
                         AssignedStudents = cartItem.Course.AssignedStudents + 1
                     };
 
-                    dbContext.CourseUsers.Add(new CourseUser { CourseId = course.Id, UserId = user.Id });
-                    isBuyed = true;
+                    dbContext.CourseUsers.Add(new CourseUser { CourseId = course.Id, UserId = user.Id });                   
                 }
+                else
+                {
+                    errors.Add($"You have already purchased course {cartItem.Course.Name}.\n");
+                }        
             }
 
             await dbContext.SaveChangesAsync();
-            return isBuyed;
+            return errors;
         }
 
 

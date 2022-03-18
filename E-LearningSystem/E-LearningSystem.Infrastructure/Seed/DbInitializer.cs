@@ -8,7 +8,7 @@
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Data.Enums;
 
-    using static IdentityConstants;
+    using static Constants.IdentityConstants;
 
 
     public class DbInitializer : IDbInitializer

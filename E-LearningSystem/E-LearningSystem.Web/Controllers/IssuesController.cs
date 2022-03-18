@@ -8,7 +8,7 @@
     using E_LearningSystem.Web.Models.Issue;
     using E_LearningSystem.Infrastructure.Extensions;
 
-    using static E_LearningSystem.Infrastructure.IdentityConstants;
+    using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
     
 
     public class IssuesController : Controller

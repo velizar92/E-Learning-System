@@ -8,7 +8,7 @@
     using E_LearningSystem.Infrastructure.Extensions;
     using Microsoft.AspNetCore.Authorization;
 
-    using static E_LearningSystem.Infrastructure.IdentityConstants;
+    using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
     using E_LearningSystem.Services.Services.Courses.Models;
 
     public class CoursesController : Controller

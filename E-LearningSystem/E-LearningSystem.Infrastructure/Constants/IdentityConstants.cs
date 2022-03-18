@@ -1,4 +1,4 @@
-﻿namespace E_LearningSystem.Infrastructure
+﻿namespace E_LearningSystem.Infrastructure.Constants
 {
     public static class IdentityConstants
     {

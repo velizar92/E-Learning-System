@@ -6,7 +6,7 @@
     using E_LearningSystem.Data.Enums;
     using E_LearningSystem.Data.Models;
     using Microsoft.AspNetCore.Authorization;
-    using static E_LearningSystem.Infrastructure.IdentityConstants;
+    using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
 
     public class TrainerService : ITrainerService
     {

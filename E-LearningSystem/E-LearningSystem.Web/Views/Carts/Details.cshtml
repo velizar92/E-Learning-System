@@ -1,4 +1,5 @@
 ﻿@using E_LearningSystem.Services.Services.ShoppingCarts.Models
+@using static E_LearningSystem.Infrastructure.Constants.MessageConstants;
 @model List<ItemServiceModel>
 
 @{
@@ -14,6 +15,13 @@
     </div>
 </div><!-- End Breadcrumbs -->
 
+@if (@TempData[ErrorMessage] != null)
+{
+    <div class="alert alert-warning" role="alert">
+        @TempData[ErrorMessage]
+    </div>
+}
+
 <section class="pt-5 pb-5">
     <div class="container">
         <div class="row w-100">
@@ -21,10 +29,10 @@
                 <h3 class="display-5 mb-2 text-center">Shopping Cart</h3>
                 <p class="mb-5 text-center">
                     <i class="text-info font-weight-bold">
-                        @if(Model != null)
+                        @if (Model != null)
                         {
                             itemsCount = @Model.Count;
-                        }                      
+                        }
                     </i>
 
                     @itemsCount items in your cart
@@ -77,7 +85,7 @@
                 <div class="float-right text-right">
                     <h4>Final Sum:</h4>
                     <h1>
-                       $@ViewBag.totalItemsSum
+                        $@ViewBag.totalItemsSum
                     </h1>
                 </div>
             </div>
@@ -94,4 +102,5 @@
         </div>
     </div>
 </section>
+
 

@@ -5,8 +5,6 @@
 
     public interface IShoppingCartService
     {
-      
-        Task<bool> BuyCourses(List<ItemServiceModel> cartItems, User user);
-   
+        Task<IEnumerable<string>> BuyCourses(List<ItemServiceModel> cartItems, User user);
     }
 }
