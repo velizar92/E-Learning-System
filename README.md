@@ -4,17 +4,17 @@ This is a web project that represents E-Learning system that contains many cours
 
 Project Views:
   - All Courses View
+  
     ![AllCoursesLoggedIn](https://user-images.githubusercontent.com/40525254/159135700-e9e72a7e-fd3c-4066-b936-d22765555616.jpg)
 
   - My Courses View (Trainer Role)
-    
+  
+    ![MyCoursesTrainerView](https://user-images.githubusercontent.com/40525254/159135873-051146ca-d2f7-412e-a92b-2c46ee14c083.jpg)
+
 
   - Course Details
+  
     ![CourseDetailsView](https://user-images.githubusercontent.com/40525254/159135730-b5ef3655-94aa-463f-aeeb-8b96d25d8051.jpg)
 
 
-  - Register
 
-  - Login
-
-  - My Resources
