@@ -41,6 +41,7 @@
         [Authorize]
         public IActionResult Details()
         {
+            ViewBag.totalItemsSum = 0;
             var cartItems = SessionHelper.GetObjectFromJson<List<ItemServiceModel>>(HttpContext.Session, sessionKey);
             
             if (cartItems != null && cartItems.Count > 0)
@@ -48,8 +49,6 @@
                 this.notyfService.Success($"{TempData[SuccessMessage]}");
                 ViewBag.totalItemsSum = cartItems.Sum(item => item.Course.Price);
             }
-
-            ViewBag.totalItemsSum = 0;
 
             return View(cartItems);
         }
