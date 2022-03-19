@@ -35,12 +35,6 @@
 
         public async Task<IActionResult> Index()
         {
-
-            if (TempData[SuccessMessage] != null)
-            {
-                this.notyfService.Success($"{TempData[SuccessMessage]}");
-            }
-          
             var allLearners = await this.userManagerService.GetUsersInRoleAsync(LearnerRole);
             var allTrainers = await this.trainerService.GetAllTrainers();
             var topTrainers = await this.trainerService.GetTopTrainers();

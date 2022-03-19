@@ -55,7 +55,7 @@
                 <ul>
                     <li><a class="active" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Courses" asp-action="AllCourses">Courses</a></li>
+                    <li><a asp-area="" asp-controller="Courses" asp-action="AllCourses">All Courses</a></li>
                     <li><a asp-area="" asp-controller="Trainers" asp-action="AllTrainers">Trainers</a></li>
 
                     @if (SignInManager.IsSignedIn(User))
@@ -73,7 +73,7 @@
                         if (User.IsInRole(LearnerRole))
                         {
                             <li><a asp-area="" asp-controller="Resources" asp-action="MyResources">My Resources</a></li>
-                            <li><a asp-area="" asp-controller="Trainers" asp-action="ApplyForTrainer">Become a Trainer</a></li>
+                            <li><a asp-area="" asp-controller="Courses" asp-action="MyCourses">My Courses</a></li>                          
                         }
                     }
 

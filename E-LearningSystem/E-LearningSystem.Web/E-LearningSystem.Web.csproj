@@ -72,7 +72,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\assets\img\courses\" />
-    <Folder Include="wwwroot\assets\resources\" />
   </ItemGroup>
 
 </Project>

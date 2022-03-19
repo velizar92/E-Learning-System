@@ -42,16 +42,14 @@
         public IActionResult Details()
         {
             var cartItems = SessionHelper.GetObjectFromJson<List<ItemServiceModel>>(HttpContext.Session, sessionKey);
-
-            if (TempData[SuccessMessage] != null)
+            
+            if (cartItems != null && cartItems.Count > 0)
             {
                 this.notyfService.Success($"{TempData[SuccessMessage]}");
-            }
-           
-            if (cartItems != null)
-            {
                 ViewBag.totalItemsSum = cartItems.Sum(item => item.Course.Price);
             }
+
+            ViewBag.totalItemsSum = 0;
 
             return View(cartItems);
         }
@@ -99,7 +97,7 @@
             int index = isExist(courseId);
             cart.RemoveAt(index);
             SessionHelper.SetObjectAsJson(HttpContext.Session, sessionKey, cart);
-
+         
             return RedirectToAction(nameof(Details));
         }
 
@@ -122,16 +120,17 @@
 
             SessionHelper.SetObjectAsJson(HttpContext.Session, sessionKey, null);
 
+            
             if (cartItems.Count == 1)
             {
                 TempData[SuccessMessage] = CourseBuyedSuccessfuly;
             }
-            else
+            else if(cartItems.Count > 1)
             {
                 TempData[SuccessMessage] = CoursesBuyedSuccessfuly;
             }
            
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("MyCourses", "Courses");
         }
 
 
