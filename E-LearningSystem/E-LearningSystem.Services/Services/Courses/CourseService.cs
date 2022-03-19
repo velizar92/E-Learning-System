@@ -106,15 +106,18 @@
                 return false;
             }
 
-            string fullpath = Path.Combine(webHostEnvironment.WebRootPath, pictureFile.FileName);
-            using (var stream = new FileStream(fullpath, FileMode.Create))
+            if(pictureFile != null)
             {
-                await pictureFile.CopyToAsync(stream);
+                string detailPath = Path.Combine(@"\assets\img\courses", pictureFile.FileName);
+                using (var stream = new FileStream(webHostEnvironment.WebRootPath + detailPath, FileMode.Create))
+                {
+                    await pictureFile.CopyToAsync(stream);
+                }
+                course.ImageUrl = pictureFile.FileName;
             }
-
+          
             course.Name = name;
-            course.Description = description;
-            course.ImageUrl = pictureFile.FileName;
+            course.Description = description;         
             course.CourseCategoryId = categoryId;
 
             await dbContext.SaveChangesAsync();
@@ -146,6 +149,7 @@
                             .Select(c => new AllCoursesServiceModel
                             {
                                 Id = c.Id,
+                                TrainerId = c.TrainerId,
                                 Name = c.Name,
                                 Description = c.Description,
                                 Price = c.Price,
@@ -174,6 +178,16 @@
 
             return course;
         }
+
+
+
+        public async Task<int> GetCourseCreatorId(int courseId)
+        {
+            var course = await dbContext.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync();
+
+            return course.TrainerId;
+        }
+
 
 
         public async Task<CourseDetailsServiceModel> GetCourseDetails(int courseId)
@@ -229,6 +243,7 @@
                              .Select(c => new AllCoursesServiceModel
                              {
                                  Id = c.Id,
+                                 TrainerId = c.TrainerId,
                                  Name = c.Name,
                                  Description = c.Description,
                                  Price = c.Price,
@@ -246,6 +261,7 @@
                              .Select(c => new AllCoursesServiceModel
                              {
                                  Id = c.Id,
+                                 TrainerId = c.TrainerId,
                                  Name = c.Name,
                                  Description = c.Description,
                                  Price = c.Price,

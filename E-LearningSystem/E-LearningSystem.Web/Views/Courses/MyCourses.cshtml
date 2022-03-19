@@ -1,5 +1,5 @@
 ﻿@using E_LearningSystem.Web.Models.Course
-@model AllCoursesViewModel
+@model IEnumerable<AllCoursesViewModel>
 
 <main id="main" data-aos="fade-in">
 
@@ -15,7 +15,7 @@
     <section id="courses" class="courses">
         <div class="container" data-aos="fade-up">
             <div class="row" data-aos="zoom-in" data-aos-delay="100">
-                @foreach (var course in Model.AllCoursesServiceModel)
+                @foreach (var course in Model)
                 {
                     <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
                         <div class="course-item">
@@ -30,8 +30,8 @@
                                 <p>@course.Description</p>
                                 <div class="trainer d-flex justify-content-between align-items-center">
                                     <div class="trainer-profile d-flex align-items-center">
-                                        <img src="~/assets/img/trainers/trainer-1.jpg" class="img-fluid" alt="">
-                                        <span>Antonio</span>
+                                        <img src="~/assets/img/trainers/@course.ProfileImageUrl" class="img-fluid" alt="">
+                                        <span>@course.TrainerName</span>
                                     </div>                                
                                 </div>
                             </div>

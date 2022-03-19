@@ -15,6 +15,8 @@
 
         Task<CourseServiceModel> GetCourseById(int id);
 
+        Task<int> GetCourseCreatorId(int courseId);
+
         Task<CourseDetailsServiceModel> GetCourseDetails(int courseId);
 
         Task<IEnumerable<CourseCategoriesServiceModel>> GetAllCourseCategories();

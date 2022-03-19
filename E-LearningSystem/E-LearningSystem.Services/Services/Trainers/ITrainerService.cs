@@ -1,6 +1,7 @@
 ﻿namespace E_LearningSystem.Services.Services
 {
     using E_LearningSystem.Data.Enums;
+    using E_LearningSystem.Data.Models;
 
     public interface ITrainerService
     {
@@ -16,6 +17,8 @@
         Task<IEnumerable<AllTrainersServiceModel>> GetTopTrainers();
 
         Task<int> GetTrainerIdByUserId(string userId);
+
+        Task<Trainer> GetTrainerByTrainerId(int trainerId);
 
     }
 }

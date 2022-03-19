@@ -53,6 +53,7 @@
                     @if (User.IsInRole(AdminRole) || User.IsInRole(TrainerRole))
                     {
                         <a asp-controller="Courses" asp-action="DeleteCourse" asp-route-id="@Model.CourseServiceModel.Id" class="btn btn-danger">Delete Course</a>
+                        <a asp-controller="Courses" asp-action="EditCourse" asp-route-id="@Model.CourseServiceModel.Id" class="btn btn-warning">Edit Course</a>
                         <a asp-controller="Lectures" asp-action="CreateLecture" asp-route-id="@Model.CourseServiceModel.Id" class="btn btn-primary">Add Lecture</a>
                     }
                     @if (User.IsInRole(LearnerRole))
