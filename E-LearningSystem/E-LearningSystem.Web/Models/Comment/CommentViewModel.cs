@@ -1,9 +1,9 @@
-﻿namespace E_LearningSystem.Services.Services
+﻿namespace E_LearningSystem.Web.Models.Comment
 {
     using System.ComponentModel.DataAnnotations;
-    
-    public class AllLectureCommentsServiceModel
+    public class CommentViewModel
     {
+
         [Required]
         public int Id { get; set; }
 
@@ -14,12 +14,21 @@
         public string Content { get; set; }
 
         [Required]
-        public string UserId { get; set; }
+        public string ProfileImageUrl { get; set; }
 
+        [Required]
+        public string FirstName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
 
         public DateTime? CreatedOn { get; set; }
 
         public DateTime? UpdatedOn { get; set; }
+
+
+
+
 
 
     }

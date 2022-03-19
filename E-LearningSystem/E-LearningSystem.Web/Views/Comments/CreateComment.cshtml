@@ -2,11 +2,11 @@
 @model CommentFormModel
 
 <div class="breadcrumbs">
-        <div class="container">
-            <h2>Comments section</h2>
-            <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
-        </div>
+    <div class="container">
+        <h2>Comments section</h2>
+        <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
     </div>
+</div>
 
 <form method="post"
       asp-controller="Comments" asp-action="CreateComment">
@@ -16,18 +16,20 @@
             <div class="col-md-12">
                 <div class="d-flex flex-column comment-section">
                     <div class="bg-white p-2">
-                        <div class="d-flex flex-row user-info"><img class="rounded-circle" src="~/assets/img/users/@Model.ProfileImageUrl" width="40">
-                            <div class="d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold name">@Model.FirstName @Model.LastName</span>
-                                <span class="date text-black-50">Shared publicly - Jan 2020</span></div>
+                        <div class="d-flex flex-row user-info">
+                            <img class="rounded-circle" src="~/assets/img/users/@Model.ProfileImageUrl" width="40">
+                            <div class="d-flex flex-column justify-content-start ml-2">
+                                <span class="d-block font-weight-bold name">@Model.FirstName @Model.LastName</span>
+                            </div>
                         </div>
                     </div>
                     <div class="bg-light p-2">
-                        <div class="d-flex flex-row align-items-start"><img class="rounded-circle" src="~/admin_avatar.jpg" width="40">
+                        <div class="d-flex flex-row align-items-start">
                             <textarea asp-for="Content" class="form-control ml-1 shadow-none textarea"></textarea>
                         </div>
-                            <span asp-validation-for="Content" class="small text-danger"></span>
+                        <span asp-validation-for="Content" class="small text-danger"></span>
                         <div class="mt-2 text-right">
-                            <button class="btn btn-primary btn-sm shadow-none" type="submit">Post comment</button>                          
+                            <button asp-controller="Comments" asp-action="CreateComment" asp-route-lectureId="@Model.LectureId" class="btn btn-primary btn-sm shadow-none" type="submit">Post comment</button>
                         </div>
                     </div>
                 </div>

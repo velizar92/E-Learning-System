@@ -15,5 +15,8 @@
 
         [Required]
         public string ProfileImageUrl { get; set; }
+
+        [Required]
+        public int LectureId { get; set; }
     }
 }

@@ -52,9 +52,10 @@
 
 @if (User.IsInRole(LearnerRole))
 {
-    <a asp-controller="Comments" asp-action="CreateComment" asp-route-id="@Model.Id" class="btn btn-success">Leave a comment</a>
+    <a asp-controller="Comments" asp-action="CreateComment" asp-route-lectureId="@Model.Id" class="btn btn-success">Leave a comment</a>
 }
 
+<a asp-controller="Comments" asp-action="AllComments" asp-route-lectureId="@Model.Id">See all comments</a>
 
 
 

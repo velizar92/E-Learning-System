@@ -92,19 +92,23 @@
 
         public async Task<IEnumerable<AllLectureCommentsServiceModel>> GetLectureComments(int lectureId)
         {
-            return await dbContext
-                      .Comments
-                      .Where(c => c.LectureId == lectureId)
-                      .Select(c => new AllLectureCommentsServiceModel
-                      {
-                          Id = c.Id,
-                          LectureId = c.LectureId,
-                          Content = c.Content
-                      })
-                      .ToListAsync();
 
+           var result = await dbContext
+                                   .Comments
+                                   .Where(c => c.LectureId == lectureId)                             
+                                   .Select(c => new AllLectureCommentsServiceModel
+                                   {
+                                       Id = c.Id,
+                                       LectureId = lectureId,
+                                       Content = c.Content,      
+                                       UserId = c.UserId,
+                                       CreatedOn = c.CreatedOn,
+                                       UpdatedOn = c.UpdatedOn
+                                   })
+                                   .ToListAsync();
+
+            return result;    
         }
-
 
     }
 }

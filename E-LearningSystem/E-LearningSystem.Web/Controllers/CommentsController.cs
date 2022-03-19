@@ -7,6 +7,7 @@
     using E_LearningSystem.Web.Models.Comment;
     using E_LearningSystem.Infrastructure.Extensions;
 
+    //var user = await userManagerService.GetUserAsync(HttpContext.User);
 
     public class CommentsController : Controller
     {
@@ -14,7 +15,9 @@
         private readonly UserManager<User> userManagerService;
 
 
-        public CommentsController(ICommentService commentService, UserManager<User> userManagerService)
+        public CommentsController(
+            ICommentService commentService,
+            UserManager<User> userManagerService)
         {
             this.commentService = commentService;
             this.userManagerService = userManagerService;
@@ -22,7 +25,7 @@
 
 
         [HttpGet]
-        public async Task<IActionResult> CreateComment()
+        public async Task<IActionResult> CreateComment(int lectureId)
         {
             var user = await userManagerService.GetUserAsync(HttpContext.User);
 
@@ -31,6 +34,7 @@
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 ProfileImageUrl = user.ProfileImageUrl,
+                LectureId = lectureId
             });
         }
 
@@ -40,9 +44,9 @@
         {
             string userId = User.Id();
 
-            int commentId = await this.commentService.CreateComment(id, userId, commentModel.Content);
+            int commentId = await this.commentService.CreateComment(commentModel.LectureId, userId, commentModel.Content);
 
-            return RedirectToAction(nameof(AllComments));
+            return RedirectToAction(nameof(AllComments), new { commentModel.LectureId });
         }
 
 
@@ -51,7 +55,7 @@
         public async Task<IActionResult> EditComment(int commentId)
         {
             var comment = await this.commentService.GetCommentById(commentId);
-           
+
             return View(comment);
         }
 
@@ -67,7 +71,7 @@
         }
 
 
-       
+
         public async Task<IActionResult> DeleteComment(int commentId)
         {
             bool isDeleted = await this.commentService.DeleteComment(commentId);
@@ -79,11 +83,31 @@
 
 
 
-        public async Task<IActionResult> AllComments(int _lectureId) 
+        public async Task<IActionResult> AllComments(int lectureId)
         {
-            var allComments = await this.commentService.GetLectureComments(_lectureId);
+            var allCommentsServiceModel = await this.commentService.GetLectureComments(lectureId);
+            List<CommentViewModel> comments = new List<CommentViewModel>();
 
-            return View(allComments);
+            foreach (var commentModel in allCommentsServiceModel)
+            {
+                var user = await userManagerService.FindByIdAsync(commentModel.UserId);
+
+                CommentViewModel commentsViewModel = new CommentViewModel
+                {
+                    Id = commentModel.Id,
+                    LectureId = commentModel.LectureId,
+                    Content = commentModel.Content,
+                    CreatedOn = commentModel.CreatedOn,
+                    UpdatedOn = commentModel.UpdatedOn,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    ProfileImageUrl = user.ProfileImageUrl,           
+                };
+
+                comments.Add(commentsViewModel);
+            }
+
+            return View(comments);
         }
 
     }

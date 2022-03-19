@@ -31,6 +31,7 @@
 
 
         public ICollection<Resource> Resources { get; set; }
+
         public ICollection<Comment> Comments { get; set; }
 
     }
