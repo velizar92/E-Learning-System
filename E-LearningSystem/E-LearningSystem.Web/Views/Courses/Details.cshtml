@@ -22,7 +22,7 @@
 
             <div class="row">
                 <div class="col-lg-8">
-                    <img src="~/assets/img/course-details.jpg" class="img-fluid" alt="">
+                    <img src="~/assets/img/courses/@Model.CourseServiceModel.ImageUrl" class="img-fluid" alt="">
                     <h3>@Model.CourseServiceModel.Name</h3>
                     <p>
                         @Model.CourseServiceModel.Description
@@ -49,8 +49,7 @@
                             <p>Model.AssignedStudents</p>
                         }
                     </div>
-
-                    <a asp-controller="Issues" asp-action="CreateIssue" asp-route-id="@Model.CourseServiceModel.Id" class="btn btn-danger">Report Issue</a>
+                  
                     @if (User.IsInRole(AdminRole) || User.IsInRole(TrainerRole))
                     {
                         <a asp-controller="Courses" asp-action="DeleteCourse" asp-route-id="@Model.CourseServiceModel.Id" class="btn btn-danger">Delete Course</a>
@@ -58,6 +57,7 @@
                     }
                     @if (User.IsInRole(LearnerRole))
                     {
+                        <a asp-controller="Issues" asp-action="CreateIssue" asp-route-id="@Model.CourseServiceModel.Id" class="btn btn-danger">Report Issue</a>
                         <a asp-controller="Carts" asp-action="AddCourseToCart" asp-route-courseId="@Model.CourseServiceModel.Id" class="get-started-btn">Add to Cart</a>
                     }
                 </div>

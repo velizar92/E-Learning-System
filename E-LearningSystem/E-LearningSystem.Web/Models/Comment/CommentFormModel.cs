@@ -12,5 +12,8 @@
 
         [Required]
         public string LastName { get; set; }
+
+        [Required]
+        public string ProfileImageUrl { get; set; }
     }
 }

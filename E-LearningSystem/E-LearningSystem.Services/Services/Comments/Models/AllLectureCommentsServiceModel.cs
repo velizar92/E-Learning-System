@@ -1,5 +1,4 @@
-﻿
-namespace E_LearningSystem.Services.Services
+﻿namespace E_LearningSystem.Services.Services
 {
     using System.ComponentModel.DataAnnotations;
 
@@ -13,5 +12,6 @@ namespace E_LearningSystem.Services.Services
 
         [Required]
         public string Content { get; set; }
+      
     }
 }

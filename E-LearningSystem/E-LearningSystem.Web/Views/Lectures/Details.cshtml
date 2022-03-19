@@ -1,13 +1,20 @@
-﻿@using E_LearningSystem.Services.Services.Lectures.Models
+﻿@using Microsoft.AspNetCore.Identity
+@using E_LearningSystem.Data.Models;
+@using E_LearningSystem.Services.Services.Lectures.Models
+@using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+
 @model LectureDetailsServiceModel
 
- <!-- ======= Breadcrumbs ======= -->
-    <div class="breadcrumbs">
-        <div class="container">
-            <h2>Lecture Details</h2>
-            <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
-        </div>
-    </div><!-- End Breadcrumbs -->
+<!-- ======= Breadcrumbs ======= -->
+<div class="breadcrumbs">
+    <div class="container">
+        <h2>Lecture Details</h2>
+        <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
+    </div>
+</div><!-- End Breadcrumbs -->
 
 
 <p>@Model.Name</p>
@@ -19,7 +26,7 @@
     {
         <div class="col-md-4">
             <div class="card mb-3" style="width: 18rem;">
-                @if(resourceUrl.EndsWith(".pptx"))
+                @if (resourceUrl.EndsWith(".pptx"))
                 {
                     <img src="~/pptxIcon.png" width="290" height="290" />
                 }
@@ -43,7 +50,10 @@
 
 <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId" class="btn btn-success">Back to Lectures</a>
 
-<a asp-controller="Comments" asp-action="CreateComment" asp-route-id="@Model.Id" class="btn btn-success">Leave a comment</a>
+@if (User.IsInRole(LearnerRole))
+{
+    <a asp-controller="Comments" asp-action="CreateComment" asp-route-id="@Model.Id" class="btn btn-success">Leave a comment</a>
+}
 
 
 

@@ -30,6 +30,7 @@
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                ProfileImageUrl = user.ProfileImageUrl,
             });
         }
 
