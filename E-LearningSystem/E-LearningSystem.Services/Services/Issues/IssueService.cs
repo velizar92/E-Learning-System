@@ -79,6 +79,24 @@
                             .Issues
                             .Select(i => new AllIssuesServiceModel
                             {
+                                CourseId = i.CourseId,
+                                IssueId = i.Id,
+                                Title = i.Title,
+                                Description = i.Description,
+                            })
+                            .ToListAsync();
+        }
+
+
+        public async Task<IEnumerable<AllIssuesServiceModel>> GetAllReportedIssuesForCourse(int courseId)
+        {
+            return await dbContext
+                            .Issues
+                            .Where(i => i.CourseId == courseId)
+                            .Select(i => new AllIssuesServiceModel
+                            {
+                                CourseId = i.CourseId,
+                                IssueId = i.Id,
                                 Title = i.Title,
                                 Description = i.Description,
                             })
@@ -107,6 +125,7 @@
                             .Where(i => i.UserId == userId)
                             .Select(i => new AllIssuesServiceModel
                             {
+                                IssueId=i.Id,
                                 Title = i.Title,
                                 Description = i.Description,
                             })

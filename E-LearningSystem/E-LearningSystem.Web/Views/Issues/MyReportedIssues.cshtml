@@ -6,7 +6,7 @@
 <div class="breadcrumbs">
     <div class="container">
         <h2>My issues</h2>
-        <p>Here you can see all reported issues for your course.</p>
+        <p>Here you can report an issue found by you in the course itself.</p>
     </div>
 </div><!-- End Breadcrumbs -->
 
@@ -17,11 +17,7 @@
             <div class="ms-2 me-auto">
                 <div class="fw-bold">@issue.Title</div>
                @issue.Description
-            </div>
-            @if (User.IsInRole(AdminRole) || User.IsInRole(TrainerRole))
-            {
-                <a asp-controller="Issues" asp-action="FixIssue" asp-route-issueId="@issue.IssueId" asp-route-courseId="@issue.CourseId" class="btn btn-secondary">Fix Issue</a>              
-            }
+            </div>          
         </li>
     }
 </ol>

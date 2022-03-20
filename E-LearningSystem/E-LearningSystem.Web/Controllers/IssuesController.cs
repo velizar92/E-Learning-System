@@ -9,7 +9,6 @@
     using E_LearningSystem.Infrastructure.Extensions;
 
     using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
-    
 
     public class IssuesController : Controller
     {
@@ -34,13 +33,13 @@
 
         [HttpPost]
         [Authorize(Roles = $"{AdminRole}, {LearnerRole}")]
-        public async Task<IActionResult> CreateIssue(int id, IssueFormModel issueModel)
+        public async Task<IActionResult> CreateIssue(int courseId, IssueFormModel issueModel)
         {
             string userId = User.Id();
 
-            int issueId = await this.issueService.CreateIssue(userId, id, issueModel.Title, issueModel.Description);
+            int issueId = await this.issueService.CreateIssue(userId, courseId, issueModel.Title, issueModel.Description);
 
-            return RedirectToAction(nameof(MyIssues));
+            return RedirectToAction(nameof(MyReportedIssues));
         }
 
 
@@ -71,10 +70,11 @@
                 return BadRequest();
             }
 
-            return RedirectToAction(nameof(MyIssues));
+            return RedirectToAction(nameof(MyReportedIssues));
         }
 
 
+        [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> DeleteIssue(int issueId)
         {
             bool isDeleted = await this.issueService.DeleteIssue(issueId);
@@ -96,22 +96,36 @@
         }
 
 
-        [Authorize(Roles = AdminRole)]
-        public async Task<IActionResult> AllIssues()
+        [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
+        public async Task<IActionResult> MyIssues(int courseId)
         {
-            var allIssues = await this.issueService.GetAllReportedIssues();
+            var allIssues = await this.issueService.GetAllReportedIssuesForCourse(courseId);
 
             return View(allIssues);
         }
 
 
         [Authorize(Roles = $"{TrainerRole}, {LearnerRole}")]
-        public async Task<IActionResult> MyIssues()
+        public async Task<IActionResult> MyReportedIssues()
         {
             string userId = User.Id();
             var myIssues = await this.issueService.GetMyReportedIssues(userId);
 
             return View(myIssues);
+        }
+
+
+        [Authorize(Roles = $"{TrainerRole}, {LearnerRole}")]
+        public async Task<IActionResult> FixIssue(int issueId, int courseId)
+        {
+            bool isDeleted = await this.issueService.DeleteIssue(issueId);
+
+            if (isDeleted == false)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(MyIssues));
         }
 
     }

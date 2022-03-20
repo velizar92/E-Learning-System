@@ -12,6 +12,8 @@
 
         Task<IEnumerable<AllIssuesServiceModel>> GetAllReportedIssues();
 
+        Task<IEnumerable<AllIssuesServiceModel>> GetAllReportedIssuesForCourse(int courseId);
+
         Task<IEnumerable<AllIssuesServiceModel>> GetMyReportedIssues(string userId);
     }
 }
