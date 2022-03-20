@@ -220,6 +220,7 @@
             return await dbContext
                            .Courses
                            .OrderByDescending(c => c.CreatedOn)
+                           .Include(c => c.Trainer)
                            .Select(c => new LatestCoursesServiceModel
                            {
                                Id = c.Id,
@@ -227,7 +228,9 @@
                                Description = c.Description,
                                Price = c.Price,
                                ImageUrl = c.ImageUrl,
-                               CategoryName = c.CourseCategory.Name
+                               CategoryName = c.CourseCategory.Name,
+                               Trainer = c.Trainer,
+                               AssignedStudents = c.AssignedStudents,
                            })
                            .Take(count)
                            .ToListAsync();
@@ -248,7 +251,8 @@
                                  Description = c.Description,
                                  Price = c.Price,
                                  ImageUrl = c.ImageUrl,
-                                 CategoryName = c.CourseCategory.Name
+                                 CategoryName = c.CourseCategory.Name,
+                                 AssignedStudents = c.AssignedStudents
                              })
                              .ToListAsync();
         }
@@ -266,7 +270,8 @@
                                  Description = c.Description,
                                  Price = c.Price,
                                  ImageUrl = c.ImageUrl,
-                                 CategoryName = c.CourseCategory.Name
+                                 CategoryName = c.CourseCategory.Name,
+                                 AssignedStudents = c.AssignedStudents
                              })
                              .ToListAsync();
           

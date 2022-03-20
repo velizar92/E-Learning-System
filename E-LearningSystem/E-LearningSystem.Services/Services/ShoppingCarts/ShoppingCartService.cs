@@ -28,18 +28,15 @@
                 {
                     if (dbContext.CourseUsers.FirstOrDefault(c => (c.CourseId == cartItem.Course.Id) && (c.UserId == user.Id)) == null)
                     {
-                        var course = new Course
-                        {
-                            Id = cartItem.Course.Id,
-                            Name = cartItem.Course.Name,
-                            Description = cartItem.Course.Description,
-                            Price = cartItem.Course.Price,
-                            CourseCategoryId = cartItem.Course.CategoryId,
-                            ImageUrl = cartItem.Course.ImageUrl,
-                            AssignedStudents = cartItem.Course.AssignedStudents + 1
-                        };
-
+                        var course = dbContext.Courses.FirstOrDefault(c => c.Id == cartItem.Course.Id);
                         dbContext.CourseUsers.Add(new CourseUser { CourseId = course.Id, UserId = user.Id });
+                        
+                        if(course.AssignedStudents == null)
+                        {
+                            course.AssignedStudents = 0;
+                        }
+
+                        course.AssignedStudents = course.AssignedStudents + 1;       
                     }
                     else
                     {

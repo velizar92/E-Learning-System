@@ -9,10 +9,8 @@
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Web.Models.Home;
 
-    using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
-    using static E_LearningSystem.Infrastructure.Constants.MessageConstants;
+    using static E_LearningSystem.Infrastructure.Constants.IdentityConstants; 
    
-
     public class HomeController : Controller
     {
         private readonly ITrainerService trainerService;

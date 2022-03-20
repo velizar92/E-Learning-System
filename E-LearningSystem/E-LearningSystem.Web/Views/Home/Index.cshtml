@@ -6,7 +6,7 @@
 <section id="hero" class="d-flex justify-content-center align-items-center">
     <div class="container position-relative" data-aos="zoom-in" data-aos-delay="100">
         <h1>Learning Today,<br>Leading Tomorrow</h1>
-        <h2>We are team of trainers that will give you the best knowledge.</h2>
+        <h2>We are team of trainers that will give you the best knowledge in IT industry.</h2>
         <a asp-area="" asp-controller="Courses" asp-action="AllCourses" class="btn-get-started">Get Started</a>
     </div>
 </section><!-- End Hero -->
@@ -22,23 +22,17 @@
                     <img src="assets/img/about.jpg" class="img-fluid" alt="">
                 </div>
                 <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content">
-                    <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.</h3>
+                    <h3>We are team of talented technical trainers ready to give you the best from the modern technologies.</h3>
                     <p class="fst-italic">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua.
+                        Our courses are in different categories: Programming, Networking and Algorithms.
                     </p>
                     <ul>
-                        <li><i class="bi bi-check-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-                        <li><i class="bi bi-check-circle"></i> Duis aute irure dolor in reprehenderit in voluptate velit.</li>
-                        <li><i class="bi bi-check-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</li>
-                    </ul>
-                    <p>
-                        Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                    </p>
-
+                        <li><i class="bi bi-check-circle"></i> Learn all about modern technologies.</li>
+                        <li><i class="bi bi-check-circle"></i> Develop new skills and become part of the technology community.</li>
+                        <li><i class="bi bi-check-circle"></i> Improve and be creative with us. Here you will learn everything you need as professional skills for the field in which you want to develop.</li>
+                    </ul>                   
                 </div>
             </div>
-
         </div>
     </section><!-- End About Section -->
     <!-- ======= Counts Section ======= -->
@@ -73,13 +67,14 @@
             <div class="row">
                 <div class="col-lg-4 d-flex align-items-stretch">
                     <div class="content">
-                        <h3>Why Choose Mentor?</h3>
+                        <h3>Why Choose Us?</h3>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit
-                            Asperiores dolores sed et. Tenetur quia eos. Autem tempore quibusdam vel necessitatibus optio ad corporis.
+                            We are team of great professionals with passion for teaching. With our courses you will get the best from current IT tech industry.
+                            Our main purpose is to teach you and to prepare you for the IT market. The courses that we offer are designed to give you 
+                            the best knowledge that will help you to start job in IT industry.
                         </p>
                         <div class="text-center">
-                            <a href="about.html" class="more-btn">Learn More <i class="bx bx-chevron-right"></i></a>
+                            <a asp-area="" asp-controller="Home" asp-action="About" class="more-btn">Learn More<i class="bx bx-chevron-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -89,22 +84,23 @@
                             <div class="col-xl-4 d-flex align-items-stretch">
                                 <div class="icon-box mt-4 mt-xl-0">
                                     <i class="bx bx-receipt"></i>
-                                    <h4>Corporis voluptates sit</h4>
-                                    <p>Consequuntur sunt aut quasi enim aliquam quae harum pariatur laboris nisi ut aliquip</p>
+                                    <h4>The best trainers</h4>
+                                    <p>Our trainers are great professionals and you can get best experianece from them.</p>
                                 </div>
                             </div>
                             <div class="col-xl-4 d-flex align-items-stretch">
                                 <div class="icon-box mt-4 mt-xl-0">
                                     <i class="bx bx-cube-alt"></i>
-                                    <h4>Ullamco laboris ladore pan</h4>
-                                    <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt</p>
+                                    <h4>Learning of new technologies</h4>
+                                    <p>With us you will learn new technoligies which are part of today information revolution.
+                                        You will learn the fundamentals of Programming, Networks and Algorithms. </p>
                                 </div>
                             </div>
                             <div class="col-xl-4 d-flex align-items-stretch">
                                 <div class="icon-box mt-4 mt-xl-0">
                                     <i class="bx bx-images"></i>
-                                    <h4>Labore consequatur</h4>
-                                    <p>Aut suscipit aut cum nemo deleniti aut omnis. Doloribus ut maiores omnis facere</p>
+                                    <h4>We are family</h4>
+                                    <p>You will get help from us in every moment that you need such.</p>
                                 </div>
                             </div>
                         </div>
@@ -142,13 +138,12 @@
                                     <p>@course.Description</p>
                                     <div class="trainer d-flex justify-content-between align-items-center">
                                         <div class="trainer-profile d-flex align-items-center">
-                                            <img src="assets/img/trainers/trainer-3.jpg" class="img-fluid" alt="">
-                                            <span>Brandon</span>
+                                            <img src="~/assets/img/trainers/@course.Trainer.ProfileImageUrl" class="img-fluid" alt="">
+                                            <span>@course.Trainer.FullName</span>
                                         </div>
                                         <div class="trainer-rank d-flex align-items-center">
-                                            <i class="bx bx-user"></i>&nbsp;20
-                                            &nbsp;&nbsp;
-                                            <i class="bx bx-heart"></i>&nbsp;85
+                                            <i class="bx bx-user"></i>&nbsp;@(course.AssignedStudents == null ? 0 : @course.AssignedStudents)
+                                            &nbsp;&nbsp;                                          
                                         </div>
                                     </div>
                                 </div>

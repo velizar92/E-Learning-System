@@ -1,7 +1,8 @@
 ﻿namespace E_LearningSystem.Services.Services.Courses.Models
 {
     using System.ComponentModel.DataAnnotations;
-
+    using E_LearningSystem.Data.Models;
+    
     public class LatestCoursesServiceModel
     {
         [Required]
@@ -23,7 +24,10 @@
         public string CategoryName { get; set; }
 
         [Required]
-        public int AssignedStudents { get; set; }
+        public int? AssignedStudents { get; set; }
+
+        [Required]
+        public Trainer Trainer { get; set; }
 
 
     }

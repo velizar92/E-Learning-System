@@ -24,7 +24,7 @@
         public string CategoryName { get; set; }
 
         [Required]
-        public int AssignedStudents { get; set; }
+        public int? AssignedStudents { get; set; }
 
         [Required]
         public string ProfileImageUrl { get; set; }

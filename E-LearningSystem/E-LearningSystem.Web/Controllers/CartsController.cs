@@ -118,7 +118,6 @@
             }
 
             SessionHelper.SetObjectAsJson(HttpContext.Session, sessionKey, null);
-
             
             if (cartItems.Count == 1)
             {
