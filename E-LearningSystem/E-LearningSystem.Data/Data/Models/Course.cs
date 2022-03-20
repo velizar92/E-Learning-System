@@ -45,7 +45,7 @@
         [ForeignKey(nameof(Trainer))]
         public int TrainerId { get; set; }
 
-        public int Trainer { get; set; }
+        public Trainer Trainer { get; set; }
 
 
         public ICollection<CourseUser> CourseUsers { get; set; }

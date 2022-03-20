@@ -4,6 +4,7 @@ using E_LearningSystem.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_LearningSystem.Data.Migrations
 {
     [DbContext(typeof(ELearningSystemDbContext))]
-    partial class ELearningSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220320103615_FixTrainerNavPropertyInCourseModel")]
+    partial class FixTrainerNavPropertyInCourseModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace E_LearningSystem.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("CourseUsers", (string)null);
+                    b.ToTable("CourseUsers");
                 });
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.Comment", b =>
@@ -68,7 +70,7 @@ namespace E_LearningSystem.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.Course", b =>
@@ -117,7 +119,7 @@ namespace E_LearningSystem.Data.Migrations
 
                     b.HasIndex("TrainerId");
 
-                    b.ToTable("Courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.CourseCategory", b =>
@@ -135,7 +137,7 @@ namespace E_LearningSystem.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CourseCategories", (string)null);
+                    b.ToTable("CourseCategories");
                 });
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.Issue", b =>
@@ -173,7 +175,7 @@ namespace E_LearningSystem.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Issues", (string)null);
+                    b.ToTable("Issues");
                 });
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.Lecture", b =>
@@ -207,7 +209,7 @@ namespace E_LearningSystem.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Lectures", (string)null);
+                    b.ToTable("Lectures");
                 });
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.Resource", b =>
@@ -241,7 +243,7 @@ namespace E_LearningSystem.Data.Migrations
 
                     b.HasIndex("ResourceTypeId");
 
-                    b.ToTable("Resources", (string)null);
+                    b.ToTable("Resources");
                 });
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.ResourceType", b =>
@@ -259,7 +261,7 @@ namespace E_LearningSystem.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ResourceTypes", (string)null);
+                    b.ToTable("ResourceTypes");
                 });
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.Trainer", b =>
@@ -303,7 +305,7 @@ namespace E_LearningSystem.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Trainers", (string)null);
+                    b.ToTable("Trainers");
                 });
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.User", b =>
