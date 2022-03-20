@@ -3,6 +3,7 @@
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using E_LearningSystem.Data.Data;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 
 using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
+using static E_LearningSystem.Infrastructure.Constants.ClaimsKeysConstants;
 
 namespace E_LearningSystem.Web.Areas.Identity.Pages.Account
 {
@@ -26,8 +28,7 @@ namespace E_LearningSystem.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly ELearningSystemDbContext _dbContext;
+        private readonly IWebHostEnvironment _webHostEnvironment;        
 
         public RegisterModel(
             UserManager<User> userManager,
@@ -44,8 +45,7 @@ namespace E_LearningSystem.Web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            _webHostEnvironment = webHostEnvironment;
-            _dbContext = dbContext;
+            _webHostEnvironment = webHostEnvironment;          
         }
 
         /// <summary>
@@ -152,6 +152,8 @@ namespace E_LearningSystem.Web.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
+                    await _userManager.AddClaimAsync(user, new Claim(ProfileImageUrl, user.ProfileImageUrl));
+                   
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

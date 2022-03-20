@@ -1,11 +1,13 @@
-﻿@using E_LearningSystem.Web.Models.Course
+﻿@using E_LearningSystem.Services.Services.Courses.Models
+@using E_LearningSystem.Web.Models.Course
 @using Microsoft.AspNetCore.Identity
 @using E_LearningSystem.Data.Models;
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
+
 @using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
 
-@model CourseDetailsViewModel
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@model CourseDetailsServiceModel
 
 <main id="main">
 
@@ -13,7 +15,7 @@
     <div class="breadcrumbs" data-aos="fade-in">
         <div class="container">
             <h2>Course Details</h2>
-            <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
+            <p>Here you can see all details for your course.</p>
         </div>
     </div><!-- End Breadcrumbs -->
     <!-- ======= Cource Details Section ======= -->
@@ -22,51 +24,51 @@
 
             <div class="row">
                 <div class="col-lg-8">
-                    <img src="~/assets/img/courses/@Model.CourseServiceModel.ImageUrl" class="img-fluid" alt="">
-                    <h3>@Model.CourseServiceModel.Name</h3>
+                    <img src="~/assets/img/courses/@Model.ImageUrl" class="img-fluid" alt="">
+                    <h3>@Model.Name</h3>
                     <p>
-                        @Model.CourseServiceModel.Description
+                        @Model.Description
                     </p>
                 </div>
                 <div class="col-lg-4">
                     <div class="course-info d-flex justify-content-between align-items-center">
                         <h5>Trainer</h5>
-                        <p><a href="#">Walter White</a></p>
+                        <p><a href="#">@Model.Trainer.FullName</a></p>
                     </div>
 
                     <div class="course-info d-flex justify-content-between align-items-center">
                         <h5>Course Fee</h5>
-                        <p>$@Model.CourseServiceModel.Price</p>
+                        <p>$@Model.Price</p>
                     </div>
                     <div class="course-info d-flex justify-content-between align-items-center">
                         <h5>Assigned Students</h5>
-                        @if (Model.CourseServiceModel.AssignedStudents == null)
+                        @if (Model.AssignedStudents == null)
                         {
                             <p>0</p>
                         }
                         else
                         {
-                            <p>Model.AssignedStudents</p>
+                            <p>@Model.AssignedStudents</p>
                         }
                     </div>
                   
                     @if (User.IsInRole(AdminRole) || User.IsInRole(TrainerRole))
                     {
-                        <a asp-controller="Courses" asp-action="DeleteCourse" asp-route-id="@Model.CourseServiceModel.Id" class="btn btn-danger">Delete Course</a>
-                        <a asp-controller="Courses" asp-action="EditCourse" asp-route-id="@Model.CourseServiceModel.Id" class="btn btn-warning">Edit Course</a>
-                        <a asp-controller="Lectures" asp-action="CreateLecture" asp-route-id="@Model.CourseServiceModel.Id" class="btn btn-primary">Add Lecture</a>
+                        <a asp-controller="Courses" asp-action="DeleteCourse" asp-route-id="@Model.Id" class="btn btn-danger">Delete Course</a>
+                        <a asp-controller="Courses" asp-action="EditCourse" asp-route-id="@Model.Id" class="btn btn-warning">Edit Course</a>
+                        <a asp-controller="Lectures" asp-action="CreateLecture" asp-route-id="@Model.Id" class="btn btn-primary">Add Lecture</a>
                     }
                     @if (User.IsInRole(LearnerRole))
                     {
-                        <a asp-controller="Issues" asp-action="CreateIssue" asp-route-id="@Model.CourseServiceModel.Id" class="btn btn-danger">Report Issue</a>
-                        <a asp-controller="Carts" asp-action="AddCourseToCart" asp-route-courseId="@Model.CourseServiceModel.Id" class="get-started-btn">Add to Cart</a>
+                        <a asp-controller="Issues" asp-action="CreateIssue" asp-route-id="@Model.Id" class="btn btn-danger">Report Issue</a>
+                        <a asp-controller="Carts" asp-action="AddCourseToCart" asp-route-courseId="@Model.Id" class="get-started-btn">Add to Cart</a>
                     }
                 </div>
             </div>
 
             <ol class="list-group list-group-numbered col-md-12">
 
-                @foreach (var lecture in Model.CourseServiceModel.Lectures)
+                @foreach (var lecture in Model.Lectures)
                 {
                     <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
@@ -75,7 +77,7 @@
                         </div>
                         @if (User.IsInRole(AdminRole) || User.IsInRole(TrainerRole))
                         {
-                            <a asp-controller="Lectures" asp-action="EditLecture" asp-route-id="@lecture.Id" asp-route-courseId="@Model.CourseServiceModel.Id" class="btn btn-secondary">Edit Lecture</a>
+                            <a asp-controller="Lectures" asp-action="EditLecture" asp-route-id="@lecture.Id" asp-route-courseId="@Model.Id" class="btn btn-secondary">Edit Lecture</a>
                             <a asp-controller="Lectures" asp-action="DeleteLecture" asp-route-id="@lecture.Id" class="btn btn-danger">Delete Lecture</a>
                         }
 

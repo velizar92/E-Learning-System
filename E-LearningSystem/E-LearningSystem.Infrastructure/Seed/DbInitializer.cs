@@ -3,13 +3,15 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
+    using System.Security.Claims;
     using Microsoft.Extensions.DependencyInjection;
     using E_LearningSystem.Data.Data;
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Data.Enums;
 
     using static Constants.IdentityConstants;
-
+    using static Constants.ClaimsKeysConstants;
+    
 
     public class DbInitializer : IDbInitializer
     {
@@ -122,6 +124,8 @@
 
             IdentityResult result = await userManager.CreateAsync(adminUser, "test123");
 
+            await userManager.AddClaimAsync(adminUser, new Claim(ProfileImageUrl, adminUser.ProfileImageUrl));
+           
             if (result.Succeeded)
             {
                 userManager.AddToRoleAsync(adminUser, AdminRole).Wait();
@@ -139,21 +143,27 @@
 
             await userManager.CreateAsync(trainerUsers[0], "Test1111");
             await userManager.AddToRoleAsync(trainerUsers[0], TrainerRole);
+            await userManager.AddClaimAsync(trainerUsers[0], new Claim(ProfileImageUrl, trainerUsers[0].ProfileImageUrl));
 
             await userManager.CreateAsync(trainerUsers[1], "Test2222");
             await userManager.AddToRoleAsync(trainerUsers[1], TrainerRole);
+            await userManager.AddClaimAsync(trainerUsers[1], new Claim(ProfileImageUrl, trainerUsers[1].ProfileImageUrl));
 
             await userManager.CreateAsync(trainerUsers[2], "Test3333");
             await userManager.AddToRoleAsync(trainerUsers[2], TrainerRole);
+            await userManager.AddClaimAsync(trainerUsers[2], new Claim(ProfileImageUrl, trainerUsers[2].ProfileImageUrl));
 
             await userManager.CreateAsync(trainerUsers[3], "Test4444");
             await userManager.AddToRoleAsync(trainerUsers[3], TrainerRole);
+            await userManager.AddClaimAsync(trainerUsers[3], new Claim(ProfileImageUrl, trainerUsers[3].ProfileImageUrl));
 
             await userManager.CreateAsync(trainerUsers[4], "Test5555");
             await userManager.AddToRoleAsync(trainerUsers[4], TrainerRole);
+            await userManager.AddClaimAsync(trainerUsers[4], new Claim(ProfileImageUrl, trainerUsers[4].ProfileImageUrl));
 
             await userManager.CreateAsync(trainerUsers[5], "Test6666");
             await userManager.AddToRoleAsync(trainerUsers[5], TrainerRole);
+            await userManager.AddClaimAsync(trainerUsers[5], new Claim(ProfileImageUrl, trainerUsers[5].ProfileImageUrl));
 
 
             //======================Seed trainers=====================

@@ -203,6 +203,7 @@
                                ImageUrl = x.ImageUrl,
                                AssignedStudents = x.AssignedStudents,
                                Price = x.Price,
+                               Trainer = x.Trainer,
                                Lectures = x.Lectures.Select(x => new LectureServiceModel
                                {
                                    Id = x.Id,

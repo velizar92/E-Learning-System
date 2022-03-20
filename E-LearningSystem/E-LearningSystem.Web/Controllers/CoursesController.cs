@@ -223,12 +223,7 @@
         {
             var courseDetails = await courseService.GetCourseDetails(id);
 
-            var courseDetailsViewModel = new CourseDetailsViewModel
-            {
-                CourseServiceModel = courseDetails,
-            };
-
-            return View(courseDetailsViewModel);
+            return View(courseDetails);
         }
 
 
