@@ -5,7 +5,11 @@ This is a web project that represents E-Learning system that contains many cours
 Project Views:
   - Index View
 
-    ![indexView](https://user-images.githubusercontent.com/40525254/159136049-a08885df-4c6e-40a5-98d5-23ca31b667bf.jpg)
+   ![index](https://user-images.githubusercontent.com/40525254/159301376-7385b756-4c2b-4e3d-8d40-96866da3fdca.jpg)
+   
+  - Partial Index View /Popular courses and Top Trainers by rating/
+
+    ![index-partial](https://user-images.githubusercontent.com/40525254/159301558-af18a066-3382-45c7-837f-70a902b0208f.png)
 
   - All Courses View
   
@@ -15,14 +19,15 @@ Project Views:
   
     ![MyCoursesTrainerView](https://user-images.githubusercontent.com/40525254/159135873-051146ca-d2f7-412e-a92b-2c46ee14c083.jpg)
 
-  - Course Details
+  - Course Details /Learner Role/
   
-    ![CourseDetailsView](https://user-images.githubusercontent.com/40525254/159135730-b5ef3655-94aa-463f-aeeb-8b96d25d8051.jpg)
-    
+    ![course-details](https://user-images.githubusercontent.com/40525254/159301415-72eff194-b140-4e88-9fa7-d1829d132f34.jpg)
+
   - Shopping Cart View
 
     ![ShoppingCartView](https://user-images.githubusercontent.com/40525254/159136272-11dd18e3-d0e3-4cb8-9d93-45b970f4423e.jpg)
 
   - Trainers View
 
-    ![TrainersView](https://user-images.githubusercontent.com/40525254/159136282-69aae88b-f3a7-45b3-9875-16eb026b27c8.jpg)
+   ![trainers](https://user-images.githubusercontent.com/40525254/159301443-ee6c38cd-05e9-44a7-beae-a8c7920fb5ac.jpg)
+
