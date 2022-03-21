@@ -7,8 +7,6 @@
     using E_LearningSystem.Web.Models.Comment;
     using E_LearningSystem.Infrastructure.Extensions;
 
-    //var user = await userManagerService.GetUserAsync(HttpContext.User);
-
     public class CommentsController : Controller
     {
         private readonly ICommentService commentService;

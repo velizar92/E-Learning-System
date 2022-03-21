@@ -2,13 +2,19 @@
 @using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
 @model IEnumerable<AllIssuesServiceModel>;
 
+
 <!-- ======= Breadcrumbs ======= -->
 <div class="breadcrumbs">
     <div class="container">
         <h2>My issues</h2>
-        <p>Here you can report an issue found by you in the course itself.</p>
+        <p>Here you can report an issue found by you in the course.</p>
     </div>
 </div><!-- End Breadcrumbs -->
+
+@if (Model.Count() == 0)
+{
+    <h2>There are no any issues at the the moment from your side or if you had such they are fixed by your trainer. </h2>
+}
 
 <ol class="list-group list-group-numbered col-md-12">
     @foreach (var issue in Model)
@@ -16,8 +22,9 @@
         <li class="list-group-item d-flex justify-content-between align-items-start">
             <div class="ms-2 me-auto">
                 <div class="fw-bold">@issue.Title</div>
-               @issue.Description
-            </div>          
+                @issue.Description
+            </div>
+            <a asp-controller="Issues" asp-action="EditIssue" asp-route-id="@issue.IssueId" class="btn btn-danger">Edit Issue</a>
         </li>
     }
 </ol>

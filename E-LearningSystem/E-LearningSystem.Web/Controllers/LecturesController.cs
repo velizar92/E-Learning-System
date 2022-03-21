@@ -107,11 +107,14 @@
         {
             var (isDeleted, courseId) = await lectureService.DeleteLecture(id);
 
-            //TO DO Some check with "isDeleted"
+            if (isDeleted == true)
+            {
+                id = courseId;
 
-            id = courseId;
+                return RedirectToAction("Details", "Courses", new { id });
+            }
 
-            return RedirectToAction("Details", "Courses", new { id });
+            return BadRequest();
         }
 
     }

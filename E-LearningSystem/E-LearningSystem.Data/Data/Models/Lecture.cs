@@ -24,11 +24,9 @@
         [MaxLength(LectureDescriptionMaxLength)]
         public string Description { get; set; }
 
-
         [ForeignKey(nameof(Course))]
         public int CourseId { get; set; }
         public Course Course { get; set; }
-
 
         public ICollection<Resource> Resources { get; set; }
 

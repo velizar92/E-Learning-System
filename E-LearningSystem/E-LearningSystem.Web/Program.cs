@@ -12,6 +12,7 @@ using AspNetCoreHero.ToastNotification.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<ELearningSystemDbContext>(options =>
     options.UseSqlServer(connectionString));
 
@@ -40,7 +41,6 @@ builder.Services.AddScoped<ITrainerService, TrainerService>();
 builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IIssueService, IssueService>();
-
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 builder.Services.Configure<FormOptions>(options => {
@@ -90,6 +90,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
+
+app.MapControllerRoute(
+    name: "Area",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

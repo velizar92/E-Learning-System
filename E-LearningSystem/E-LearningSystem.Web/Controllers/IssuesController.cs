@@ -33,11 +33,11 @@
 
         [HttpPost]
         [Authorize(Roles = $"{AdminRole}, {LearnerRole}")]
-        public async Task<IActionResult> CreateIssue(int courseId, IssueFormModel issueModel)
+        public async Task<IActionResult> CreateIssue(IssueFormModel issueModel, int id)
         {
             string userId = User.Id();
 
-            int issueId = await this.issueService.CreateIssue(userId, courseId, issueModel.Title, issueModel.Description);
+            int issueId = await this.issueService.CreateIssue(userId, id, issueModel.Title, issueModel.Description);
 
             return RedirectToAction(nameof(MyReportedIssues));
         }
@@ -45,9 +45,9 @@
 
         [HttpGet]
         [Authorize(Roles = $"{AdminRole}, {LearnerRole}")]
-        public async Task<IActionResult> EditIssue(int issueId)
+        public async Task<IActionResult> EditIssue(int id)
         {
-            var issue = await this.issueService.GetIssueDetails(issueId);
+            var issue = await this.issueService.GetIssueDetails(id);
 
             IssueFormModel issueFormModel = new IssueFormModel
             {
@@ -61,9 +61,9 @@
 
         [HttpPost]
         [Authorize(Roles = $"{AdminRole}, {LearnerRole}")]
-        public async Task<IActionResult> EditIssue(int issueId, IssueFormModel issueModel)
+        public async Task<IActionResult> EditIssue(int id, IssueFormModel issueModel)
         {
-            bool isEdited = await this.issueService.EditIssue(issueId, issueModel.Title, issueModel.Description);
+            bool isEdited = await this.issueService.EditIssue(id, issueModel.Title, issueModel.Description);
 
             if (isEdited == false)
             {
@@ -125,7 +125,7 @@
                 return BadRequest();
             }
 
-            return RedirectToAction(nameof(MyIssues));
+            return RedirectToAction(nameof(MyIssues), new { courseId });
         }
 
     }

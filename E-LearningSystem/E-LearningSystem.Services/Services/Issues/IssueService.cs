@@ -125,7 +125,8 @@
                             .Where(i => i.UserId == userId)
                             .Select(i => new AllIssuesServiceModel
                             {
-                                IssueId=i.Id,
+                                CourseId = i.CourseId,
+                                IssueId =i.Id,
                                 Title = i.Title,
                                 Description = i.Description,
                             })

@@ -28,6 +28,12 @@
                     <p>
                         @Model.Description
                     </p>
+                    <p>
+                        @if (User.IsInRole(LearnerRole))
+                        {
+                            <a asp-controller="Issues" asp-action="MyReportedIssues">See your reported issues</a>
+                        }
+                    </p>
                 </div>
                 <div class="col-lg-4">
                     <div class="course-info d-flex justify-content-between align-items-center">
@@ -60,7 +66,7 @@
                     }
                     @if (User.IsInRole(LearnerRole))
                     {
-                        <a asp-controller="Issues" asp-action="CreateIssue" asp-route-courseId="@Model.Id" class="btn btn-danger">Report Issue</a>
+                        <a asp-controller="Issues" asp-action="CreateIssue" asp-route-id="@Model.Id" class="btn btn-danger">Report Issue</a>
                         <a asp-controller="Carts" asp-action="AddCourseToCart" asp-route-courseId="@Model.Id" class="get-started-btn">Add to Cart</a>
                     }
                 </div>
