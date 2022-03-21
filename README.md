@@ -30,4 +30,14 @@ Project Views:
   - Trainers View
 
    ![trainers](https://user-images.githubusercontent.com/40525254/159301443-ee6c38cd-05e9-44a7-beae-a8c7920fb5ac.jpg)
+   
+   
+   Used Technologies and libraries:
+   
+    1. ASP .NET 6 
+    2. Entity Framework Core 6
+    3. MS SQL Server 2019 + SSMS 18.0
+    4. NewtonSoft.Json nuget package
+    5. AspNetCoreHero.ToastNotification 1.1.0 nuget package
+    
 
