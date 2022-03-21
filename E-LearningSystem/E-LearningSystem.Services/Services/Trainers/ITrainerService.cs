@@ -20,7 +20,7 @@
 
         Task<Trainer> GetTrainerByTrainerId(int trainerId);
 
-        Task<bool> VoteForTrainer(int trainerId);
+        Task<bool> VoteForTrainer(string userId, int trainerId);
 
     }
 }

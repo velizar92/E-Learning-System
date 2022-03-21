@@ -2,11 +2,13 @@
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Authorization;
     using E_LearningSystem.Data.Data;
     using E_LearningSystem.Data.Enums;
-    using E_LearningSystem.Data.Models;
-    using Microsoft.AspNetCore.Authorization;
+    using E_LearningSystem.Data.Models;   
+    using E_LearningSystem.Data.Data.Models;
     using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
+    
 
     public class TrainerService : ITrainerService
     {
@@ -135,21 +137,30 @@
             return trainer.Id;
         }
 
-        public async Task<bool> VoteForTrainer(int trainerId)
+        public async Task<bool> VoteForTrainer(string userId, int trainerId)
         {
             var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainerId);
 
-            if(trainer == null)
+            if (trainer == null)
             {
                 return false;
             }
-            
-            if (trainer.Rating == null)
-            {
-                trainer.Rating = 0;
-            }
 
-            trainer.Rating = trainer.Rating + 1;
+            if (await dbContext.Votes.FirstOrDefaultAsync(v => v.UserId == userId && v.TrainerId == trainerId) == null)
+            {
+                dbContext.Votes.Add(new Vote {UserId = userId, TrainerId = trainerId });
+
+                if (trainer.Rating == null)
+                {
+                    trainer.Rating = 0;
+                }
+
+                trainer.Rating = trainer.Rating + 1;
+            }
+            else
+            {
+                return false;
+            }
 
             await dbContext.SaveChangesAsync();
             return true;
