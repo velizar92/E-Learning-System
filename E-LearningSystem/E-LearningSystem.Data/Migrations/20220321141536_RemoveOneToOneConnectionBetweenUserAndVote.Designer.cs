@@ -4,6 +4,7 @@ using E_LearningSystem.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_LearningSystem.Data.Migrations
 {
     [DbContext(typeof(ELearningSystemDbContext))]
-    partial class ELearningSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220321141536_RemoveOneToOneConnectionBetweenUserAndVote")]
+    partial class RemoveOneToOneConnectionBetweenUserAndVote
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,13 +58,11 @@ namespace E_LearningSystem.Data.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TrainerId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Votes");
                 });
@@ -578,12 +578,6 @@ namespace E_LearningSystem.Data.Migrations
                         .HasForeignKey("TrainerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("E_LearningSystem.Data.Models.User", null)
-                        .WithMany("Votes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("E_LearningSystem.Data.Models.Comment", b =>
@@ -761,8 +755,6 @@ namespace E_LearningSystem.Data.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("CourseUsers");
-
-                    b.Navigation("Votes");
                 });
 #pragma warning restore 612, 618
         }

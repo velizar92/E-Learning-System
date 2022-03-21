@@ -12,6 +12,7 @@
         {
             this.CourseUsers = new HashSet<CourseUser>();
             this.Comments = new HashSet<Comment>();
+            this.Votes = new HashSet<Vote>();
         }
 
         [Required]
@@ -28,6 +29,8 @@
         public ICollection<CourseUser> CourseUsers { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
+
+        public ICollection<Vote> Votes { get; set; }
      
     }
 }

@@ -4,6 +4,7 @@ using E_LearningSystem.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_LearningSystem.Data.Migrations
 {
     [DbContext(typeof(ELearningSystemDbContext))]
-    partial class ELearningSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220321140452_AddVoteModel")]
+    partial class AddVoteModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,7 +64,8 @@ namespace E_LearningSystem.Data.Migrations
 
                     b.HasIndex("TrainerId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Votes");
                 });
@@ -580,9 +583,9 @@ namespace E_LearningSystem.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("E_LearningSystem.Data.Models.User", null)
-                        .WithMany("Votes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne()
+                        .HasForeignKey("E_LearningSystem.Data.Data.Models.Vote", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -761,8 +764,6 @@ namespace E_LearningSystem.Data.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("CourseUsers");
-
-                    b.Navigation("Votes");
                 });
 #pragma warning restore 612, 618
         }

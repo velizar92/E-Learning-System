@@ -23,6 +23,7 @@
         public DbSet<Issue> Issues { get; set; }
         public DbSet<Comment> Comments { get; set; }           
         public DbSet<CourseUser> CourseUsers { get; set; }           
+        public DbSet<Vote> Votes { get; set; }           
       
       
         protected override void OnModelCreating(ModelBuilder builder)
