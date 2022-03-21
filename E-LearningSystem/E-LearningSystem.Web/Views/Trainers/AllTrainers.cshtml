@@ -1,8 +1,12 @@
 ﻿@using E_LearningSystem.Services.Services
+@using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
 @model IEnumerable<AllTrainersServiceModel>
 
+   
+
+
 <main id="main" data-aos="fade-in">
- 
+
     <div class="breadcrumbs">
         <div class="container">
             <h2>Our Trainers</h2>
@@ -19,7 +23,14 @@
                         <div class="member">
                             <img src="~/assets/img/trainers/@trainer.ProfileImageUrl" class="img-fluid" alt="Trainer Profile Image" width="300" height="300">
                             <div class="member-content">
-                                <h4>@trainer.FullName</h4>                               
+                                <h4>@trainer.FullName</h4>
+                                @if (User.IsInRole(LearnerRole))
+                                {
+                                    <a asp-area="" asp-controller="Trainers" asp-action="Vote" asp-route-id="@trainer.Id" class="btn btn-primary">Vote <i class="fas fa-thumbs-up"></i></a>
+                                    <div>
+                                        <i class="fas fa-thumbs-up"></i> @(trainer.Rating == null ? 0 : trainer.Rating)
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>

@@ -89,11 +89,14 @@
         {
             var trainerUsers = await userManager.GetUsersInRoleAsync(TrainerRole);
 
-            return trainerUsers
+            return dbContext
+                        .Trainers
                         .Select(t => new AllTrainersServiceModel
                         {
-                            FullName = t.FirstName + " " + t.LastName,
-                            ProfileImageUrl = t.ProfileImageUrl
+                            Id = t.Id,
+                            FullName = t.FullName,
+                            ProfileImageUrl = t.ProfileImageUrl,
+                            Rating = t.Rating
                         })
                         .ToList();
         }
@@ -107,8 +110,10 @@
                         .OrderByDescending(t => t.Rating)
                         .Select(t => new AllTrainersServiceModel
                         {
+                            Id = t.Id,
                             FullName = t.FullName,
-                            ProfileImageUrl = t.ProfileImageUrl
+                            ProfileImageUrl = t.ProfileImageUrl,
+                            Rating = t.Rating
                         })
                         .Take(3)
                         .ToList();
@@ -125,9 +130,29 @@
 
         public async Task<int> GetTrainerIdByUserId(string userId)
         {
-           var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.UserId == userId);
+            var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.UserId == userId);
 
             return trainer.Id;
+        }
+
+        public async Task<bool> VoteForTrainer(int trainerId)
+        {
+            var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainerId);
+
+            if(trainer == null)
+            {
+                return false;
+            }
+            
+            if (trainer.Rating == null)
+            {
+                trainer.Rating = 0;
+            }
+
+            trainer.Rating = trainer.Rating + 1;
+
+            await dbContext.SaveChangesAsync();
+            return true;
         }
     }
 }

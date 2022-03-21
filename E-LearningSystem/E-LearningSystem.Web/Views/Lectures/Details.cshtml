@@ -11,14 +11,10 @@
 <!-- ======= Breadcrumbs ======= -->
 <div class="breadcrumbs">
     <div class="container">
-        <h2>Lecture Details</h2>
-        <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
+        <h2>@Model.Name</h2>
+        <p>@Model.Description</p>
     </div>
 </div><!-- End Breadcrumbs -->
-
-
-<p>@Model.Name</p>
-<p>@Model.Description</p>
 
 
 <div class="row">
@@ -48,14 +44,14 @@
     }
 </div>
 
-<a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId" class="btn btn-success">Back to Lectures</a>
+<a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId" class="get-started-btn">Back to Lectures</a>
 
 @if (User.IsInRole(LearnerRole))
 {
     <a asp-controller="Comments" asp-action="CreateComment" asp-route-lectureId="@Model.Id" class="btn btn-success">Leave a comment</a>
 }
 
-<a asp-controller="Comments" asp-action="AllComments" asp-route-lectureId="@Model.Id">See all comments</a>
+<a asp-controller="Comments" asp-action="AllComments" asp-route-lectureId="@Model.Id" class="get-started-btn">See all comments</a>
 
 
 

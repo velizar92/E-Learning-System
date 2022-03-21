@@ -20,5 +20,7 @@
 
         Task<Trainer> GetTrainerByTrainerId(int trainerId);
 
+        Task<bool> VoteForTrainer(int trainerId);
+
     }
 }
