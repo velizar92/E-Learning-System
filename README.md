@@ -32,6 +32,11 @@ Project Views:
   - Course Details /Learner Role/
   
     ![course-details](https://user-images.githubusercontent.com/40525254/159301415-72eff194-b140-4e88-9fa7-d1829d132f34.jpg)
+    
+  - Course Details /Trainer Role/
+
+   ![course-details-trainer-view](https://user-images.githubusercontent.com/40525254/159505164-fffd57a3-1fae-428c-bd08-6bfd0dd15b05.jpg)
+
 
   - Shopping Cart View
 
@@ -39,7 +44,30 @@ Project Views:
 
   - Trainers View
 
-    ![trainers](https://user-images.githubusercontent.com/40525254/159301443-ee6c38cd-05e9-44a7-beae-a8c7920fb5ac.jpg)
+    ![trainer-new-view](https://user-images.githubusercontent.com/40525254/159504983-e57de716-931f-48db-8682-5d04d9ca55ac.jpg)
+    
+  - Lecture Details View
+
+   ![lecture-details](https://user-images.githubusercontent.com/40525254/159505473-e15dd32d-8c0a-4d60-9fdf-33248f8659e4.jpg)
+
+   
+  - All Lecture comments View
+
+   ![lecture-comments](https://user-images.githubusercontent.com/40525254/159505367-9f01b4bc-6ba9-42c0-8183-631a656e2598.jpg)
+    
+  - My Reported Issues View
+
+   ![MyReportedIssues](https://user-images.githubusercontent.com/40525254/159505297-dc58fd9a-695b-4af9-a95d-582fa5770b89.jpg)
+   
+  - All Reported Issues for course /Trainter Role/
+
+   ![AllReportedIssues_TrainerView](https://user-images.githubusercontent.com/40525254/159506026-2241ccff-c3de-4f36-be90-8f5c8c8db132.jpg)
+
+   
+ 
+
+
+
    
 
    
