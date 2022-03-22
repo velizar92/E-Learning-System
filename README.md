@@ -17,9 +17,13 @@ Project Views:
 
     ![index](https://user-images.githubusercontent.com/40525254/159301376-7385b756-4c2b-4e3d-8d40-96866da3fdca.jpg)
    
-  - Partial Index View /Popular courses and Top Trainers by rating/
-
-    ![index-partial](https://user-images.githubusercontent.com/40525254/159301558-af18a066-3382-45c7-837f-70a902b0208f.png)
+  -  Index View /Popular courses/
+  
+     ![popularCourses](https://user-images.githubusercontent.com/40525254/159548828-9f926483-1eba-4b49-8e93-847168ca7f06.jpg)
+    
+  - Index View /Top trainers/
+   
+    ![topTrainers](https://user-images.githubusercontent.com/40525254/159548864-aa9e75d5-dd8f-4564-a613-6bdc7a41f65c.jpg)
 
   - All Courses View
   
@@ -40,7 +44,8 @@ Project Views:
 
   - Shopping Cart View
 
-    ![ShoppingCartView](https://user-images.githubusercontent.com/40525254/159136272-11dd18e3-d0e3-4cb8-9d93-45b970f4423e.jpg)
+    ![shoppingCart](https://user-images.githubusercontent.com/40525254/159548663-dceada33-a77f-415f-b072-7141bfaef8a8.jpg)
+
 
   - Trainers View
 
