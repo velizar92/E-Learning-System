@@ -41,6 +41,20 @@
         public async Task<IActionResult> CreateComment(int id, CommentFormModel commentModel)
         {
             string userId = User.Id();
+            var user = await userManagerService.GetUserAsync(HttpContext.User);
+
+            ModelState.Remove("FirstName");
+            ModelState.Remove("LastName");
+            ModelState.Remove("ProfileImageUrl");
+
+            commentModel.ProfileImageUrl = user.ProfileImageUrl;
+            commentModel.FirstName = user.FirstName;
+            commentModel.LastName = user.LastName;
+
+            if (!ModelState.IsValid)
+            {
+                return View(commentModel);
+            }
 
             int commentId = await this.commentService.CreateComment(commentModel.LectureId, userId, commentModel.Content);
 

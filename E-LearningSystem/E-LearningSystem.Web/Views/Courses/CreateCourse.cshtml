@@ -44,8 +44,9 @@
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Image Url</label>
-        <input type="file" name="pictureFile" class="form-control">
+        <label asp-for="PictureFile" class="form-label">Image Url</label>
+        <input asp-for="PictureFile" type="file" name="PictureFile" class="form-control">  
+        <span asp-validation-for="PictureFile" class="small text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>

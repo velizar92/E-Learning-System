@@ -54,5 +54,14 @@
             public const int IssueDescriptionMinLength = 20;
             public const int IssueDescriptionMaxLength = 1000;
         }
+
+        public class Comment
+        {
+            public const int CommentContentMinLength = 2;
+            public const int CommentContentMaxLength = 300;
+
+            public const int IssueDescriptionMinLength = 20;
+            public const int IssueDescriptionMaxLength = 1000;
+        }
     }
 }

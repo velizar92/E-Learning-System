@@ -12,6 +12,7 @@
     using E_LearningSystem.Services.Services.Users;
 
     using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
+    using static E_LearningSystem.Infrastructure.Messages.ErrorMessages;
     
 
     public class CoursesController : Controller
@@ -56,13 +57,13 @@
         [HttpPost]   
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCourse(CourseFormModel courseModel, IFormFile pictureFile)
+        public async Task<IActionResult> CreateCourse(CourseFormModel courseModel)
         {
             ModelState.Remove("Categories");
 
             if (!this.courseService.CheckIfCourseCategoryExists(courseModel.CategoryId))
             {
-                this.ModelState.AddModelError(nameof(courseModel.CategoryId), "Category does not exist.");
+                this.ModelState.AddModelError(nameof(courseModel.CategoryId), CategoryNotExists);
             }
 
             if (!ModelState.IsValid)
@@ -81,7 +82,7 @@
                                  courseModel.Description,
                                  courseModel.Price,
                                  courseModel.CategoryId,
-                                 pictureFile);
+                                 courseModel.PictureFile);
 
 
             return RedirectToAction(nameof(MyCourses));
@@ -90,8 +91,9 @@
 
         [HttpGet]
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
-        public async Task<IActionResult> EditCourse(int id, IFormFile pictureFile)
+        public async Task<IActionResult> EditCourse(int id)
         {
+
             int courseCreatorId = await this.courseService.GetCourseCreatorId(id);
             int currentTrainerId = await this.trainerService.GetTrainerIdByUserId(User.Id());
 
@@ -115,13 +117,6 @@
                 Categories = await courseService.GetAllCourseCategories()
             };
 
-            bool isEdited = await this.courseService.EditCourse(
-                id,
-                courseFormModel.Name,
-                courseFormModel.Description,
-                courseFormModel.CategoryId,
-                pictureFile);
-
             return View(courseFormModel);
         }
 
@@ -129,12 +124,13 @@
         [HttpPost] 
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCourse(int id, CourseFormModel courseModel, IFormFile pictureFile)
+        public async Task<IActionResult> EditCourse(int id, CourseFormModel courseModel)
         {
+            ModelState.Remove("Categories");
 
             if (!this.courseService.CheckIfCourseCategoryExists(courseModel.CategoryId))
             {
-                this.ModelState.AddModelError(nameof(courseModel.CategoryId), "Category does not exist.");
+                this.ModelState.AddModelError(nameof(courseModel.CategoryId), CategoryNotExists);
             }
 
             if (!ModelState.IsValid)
@@ -144,12 +140,12 @@
                 return View(courseModel);
             }
 
-            var course = courseService.EditCourse(
+            var course = await courseService.EditCourse(
                                 id,
                                 courseModel.Name,
                                 courseModel.Description,
                                 courseModel.CategoryId,
-                                pictureFile);
+                                courseModel.PictureFile);
 
             return RedirectToAction(nameof(MyCourses));
         }

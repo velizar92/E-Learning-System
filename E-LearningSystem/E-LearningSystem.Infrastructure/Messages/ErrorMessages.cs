@@ -4,5 +4,6 @@
     {
         public static string EmptyShoppingCart = "Your shopping cart is empty.";
         public static string CourseAlreadyAdded = "You have already purchased course {0}.";
+        public static string CategoryNotExists = "Category does not exist.";
     }
 }

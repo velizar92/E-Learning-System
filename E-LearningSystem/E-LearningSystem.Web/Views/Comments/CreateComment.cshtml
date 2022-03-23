@@ -9,7 +9,6 @@
 
 <form method="post"
       asp-controller="Comments" asp-action="CreateComment">
-
     <div class="container mt-5">
         <div class="d-flex justify-content-center row">
             <div class="col-md-12">
@@ -24,8 +23,8 @@
                     </div>
                     <div class="bg-light p-2">
                         <div class="d-flex flex-row align-items-start">
-                            <textarea asp-for="Content" class="form-control ml-1 shadow-none textarea"></textarea>
-                        </div>
+                            <textarea asp-for="Content" class="form-control ml-1 shadow-none textarea"></textarea>           
+                        </div>       
                         <span asp-validation-for="Content" class="small text-danger"></span>
                         <div class="mt-2 text-right">
                             <button asp-controller="Comments" asp-action="CreateComment" asp-route-lectureId="@Model.LectureId" class="btn btn-primary btn-sm shadow-none" type="submit">Post comment</button>
