@@ -46,7 +46,7 @@
 
             int issueId = await this.issueService.CreateIssue(userId, id, issueModel.Title, issueModel.Description);
 
-            return RedirectToAction(nameof(MyReportedIssues));
+            return RedirectToAction(nameof(MyReportedIssues), new { id });
         }
 
 
@@ -58,6 +58,7 @@
 
             IssueFormModel issueFormModel = new IssueFormModel
             {
+                CourseId = issue.CourseId,
                 Title = issue.Title,
                 Description = issue.Description
             };
@@ -77,7 +78,7 @@
                 return BadRequest();
             }
 
-            return RedirectToAction(nameof(MyReportedIssues));
+            return RedirectToAction(nameof(MyReportedIssues), new { id });
         }
 
 
@@ -112,11 +113,11 @@
         }
 
 
-        [Authorize(Roles = $"{TrainerRole}, {LearnerRole}")]
-        public async Task<IActionResult> MyReportedIssues()
+        [Authorize(Roles = LearnerRole)]
+        public async Task<IActionResult> MyReportedIssues(int id)
         {
             string userId = User.Id();
-            var myIssues = await this.issueService.GetMyReportedIssues(userId);
+            var myIssues = await this.issueService.GetMyReportedIssues(userId, id);
 
             return View(myIssues);
         }

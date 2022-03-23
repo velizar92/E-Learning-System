@@ -52,11 +52,8 @@
 
 
         public async Task<ResourceQueryServiceModel> GetAllMyResources(
-            string userId,
-            string resourceType = null,
-            string searchTerm = null,         
-            int currentPage = 1,
-            int resourcesPerPage = int.MaxValue)
+            string userId,           
+            string searchTerm = null)
         {
 
             List<Resource> myResources = new List<Resource>();
@@ -79,11 +76,6 @@
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(resourceType))
-            {
-                myResources = myResources.Where(r => r.Name == resourceType).ToList();
-            }
-
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 myResources = myResources.Where(r =>
@@ -92,11 +84,6 @@
 
             int resourcesCount = myResources.Count;
 
-            myResources = myResources
-                .Skip((currentPage - 1) * resourcesPerPage)
-                .Take(resourcesPerPage)
-                .ToList();
-
             return new ResourceQueryServiceModel
             {
                 Resources = myResources.Select(r => new AllResourcesServiceModel
@@ -104,10 +91,6 @@
                     ResourceName = r.Name,
                     LectureName = r.Lecture.Name
                 }),
-
-                TotalResources = resourcesCount,
-                CurrentPage = currentPage,
-                CarsPerPage = resourcesPerPage
             };        
         }
 

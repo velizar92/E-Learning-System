@@ -5,18 +5,13 @@
 
     public class AllResourcesQueryModel
     {
-        public const int ResourcesPerPage = 3;
-
+      
         [Display(Name = "Search by text")]
         public string SearchTerm { get; init; }
 
         public int ResourceTypeId { get; set; }
 
-        public string ResourceType { get; set; }        
-
-        public int CurrentPage { get; init; } = 1;
-
-        public int TotalResources { get; set; }
+        public string ResourceType { get; set; }             
 
         public IEnumerable<string> ResourceTypes { get; set; }
 

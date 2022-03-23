@@ -225,9 +225,10 @@
         public async Task<IActionResult> Details(int id)
         {
             var courseDetails = await courseService.GetCourseDetails(id);
-
-            bool isBuyed = await this.userService.CheckIfUserHasCourse(User.Id(), id);
-
+            bool hasCourse = false;
+          
+            hasCourse = await this.userService.CheckIfUserHasCourse(User.Id(), id);
+           
             var courseDetailsViewModel = new CourseDetailsViewModel
             {
                 Id = courseDetails.Id,
@@ -237,11 +238,9 @@
                 AssignedStudents = courseDetails.AssignedStudents,
                 Price = courseDetails.Price,
                 Trainer = courseDetails.Trainer,
-                IsBuyed = isBuyed,
+                HasCourse = hasCourse,
                 Lectures = courseDetails.Lectures,
             };
-
-            
 
             return View(courseDetailsViewModel);
         }

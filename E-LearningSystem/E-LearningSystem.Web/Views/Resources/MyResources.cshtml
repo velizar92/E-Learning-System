@@ -6,35 +6,21 @@
     <!-- ======= Breadcrumbs ======= -->
     <div class="breadcrumbs">
         <div class="container">
-            <h2>My Resources</h2>       
+            <h2>My Resources</h2>
         </div>
     </div><!-- End Breadcrumbs -->
 
     <form method="get">
-        <div class="row">
-            <div class="form-group col-md-8">
-                <label asp-for="SearchTerm"></label>
-                <input asp-for="SearchTerm" class="form-control">
-            </div>
-            <button type="submit" class="col-md-2 get-started-btn">Search</button>
-        </div>
+        <div class="form-outline mb-4">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" />
+        </div>    
     </form>
-
-    @{
-        var previousPage = Model.CurrentPage - 1;
-        if (previousPage < 1)
-        {
-            previousPage = 1;
-        }
-
-        var maxPage = Math.Ceiling((double)Model.TotalResources / AllResourcesQueryModel.ResourcesPerPage);
-    }
 
     <div class="container">
         @if (!Model.Resources.Any())
         {
             <h2 class="text-center">There are no resources found by the given criteria.</h2>
-            <img src="~/assets/resources//notfoundresource.jpg"/>
         }
     </div>
     <!-- ======= Resources Section ======= -->
@@ -79,28 +65,5 @@
 <div id="preloader"></div>
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-<div class="row mb-5">
-    <div class="col-md-6">
-        <a class="btn btn-success @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
-           asp-controller="Resources"
-           asp-action="MyResources"
-           asp-route-currentPage="@previousPage"
-           asp-route-resourceType="@Model.ResourceType"
-           asp-route-searchTerm="@Model.SearchTerm">Previous</a>
-    </div>
 
-    @{
-        var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
-                !Model.Resources.Any();
-    }
-
-    <div class="col-md-6">
-        <a class="btn btn-success float-sm-right @(shouldButtonBeDisabled ? "disabled" : string.Empty)" style="margin-top: 10px"
-           asp-controller="Resources"
-           asp-action="MyResources"
-           asp-route-currentPage="@(Model.CurrentPage + 1)"
-           asp-route-resourceType="@Model.ResourceType"
-           asp-route-searchTerm="@Model.SearchTerm">Next</a>
-    </div>
-</div>
 

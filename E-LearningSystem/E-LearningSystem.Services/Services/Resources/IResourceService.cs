@@ -13,11 +13,9 @@
         Task<IEnumerable<AllResourcesServiceModel>> GetMyResources(string userId);
 
         Task<ResourceQueryServiceModel> GetAllMyResources(
-            string userId,
-            string resourceType,
-            string searchTerm,
-            int currentPage,
-            int resourcesPerPage);
+            string userId,          
+            string searchTerm
+           );
 
     }
 }

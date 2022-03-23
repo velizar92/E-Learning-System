@@ -25,7 +25,7 @@
         
         public Trainer Trainer { get; set; }
 
-        public bool IsBuyed { get; set; }
+        public bool HasCourse { get; set; }
 
         public IEnumerable<LectureServiceModel> Lectures { get; set; }
 
