@@ -141,7 +141,6 @@
                  
         public async Task<IEnumerable<AllCoursesServiceModel>> GetAllCourses()
         {
-
             var trainerUsers = await userManager.GetUsersInRoleAsync("Trainer");
 
             return await dbContext
@@ -180,14 +179,12 @@
         }
 
 
-
         public async Task<int> GetCourseCreatorId(int courseId)
         {
             var course = await dbContext.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync();
 
             return course.TrainerId;
         }
-
 
 
         public async Task<CourseDetailsServiceModel> GetCourseDetails(int courseId)

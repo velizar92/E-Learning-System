@@ -7,6 +7,8 @@
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services.Lectures.Models;
 
+    using static E_LearningSystem.Infrastructure.Constants.MimeTypeConstants;
+
     public class LectureService : ILectureService
     {
 
@@ -42,7 +44,6 @@
             };
 
             var course = await dbContext.Courses.FirstOrDefaultAsync(c => c.Id == courseId);
-
             if (course == null)
             {
                 return 0;
@@ -147,6 +148,7 @@
                  .FirstOrDefaultAsync();
         }
 
+
         public async Task<int> GetLectureIdByResourceId(int resourceId)
         {
             var resource = await dbContext
@@ -164,9 +166,9 @@
 
             foreach (var resourceFile in resourceFiles)
             {
-                if (resourceFile.ContentType == "application/pdf")
+                if (resourceFile.ContentType == PDF)
                     tempResourceId = 3;
-                else if (resourceFile.ContentType == "video/mp4")
+                else if (resourceFile.ContentType == MP4)
                     tempResourceId = 2;
                 else
                     tempResourceId = 1;

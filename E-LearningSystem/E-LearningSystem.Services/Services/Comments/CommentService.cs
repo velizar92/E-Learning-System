@@ -33,7 +33,6 @@
                 Content = content,
             };
 
-
             await dbContext.Comments.AddAsync(comment);
             await dbContext.SaveChangesAsync();
 
@@ -41,37 +40,39 @@
         }
 
 
-        public async Task<bool> DeleteComment(int commentId)
-        {
+        public async Task<(bool, int?)> DeleteComment(int commentId)
+        {       
             var comment = await dbContext
                 .Comments
                 .FirstOrDefaultAsync(c => c.Id == commentId);
 
             if (comment != null)
             {
+                int lectureId = comment.LectureId;
                 dbContext.Comments.Remove(comment);
-                return true;
+                return (true, lectureId);
             }
 
-            return false;
+            return (false, null);
         }
 
 
-        public async Task<bool> EditComment(int commentId, string content)
+        public async Task<(bool, int?)> EditComment(int commentId, string content)
         {
             var comment = await dbContext
                             .Comments
                             .Where(c => c.Id == commentId).FirstOrDefaultAsync();
 
-            if (comment == null)
+            if (comment != null)
             {
-                return false;
+                int lectureId = comment.LectureId;
+                await dbContext.SaveChangesAsync();
+                return (true, lectureId);
             }
 
             comment.Content = content;
-            await dbContext.SaveChangesAsync();
 
-            return true;
+            return (false, null);
         }
 
 

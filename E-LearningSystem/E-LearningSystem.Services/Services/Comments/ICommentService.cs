@@ -6,9 +6,9 @@
     {
         Task<int> CreateComment(int lectureId, string userId, string content);
 
-        Task<bool> EditComment(int commentId, string content);
+        Task<(bool, int?)> EditComment(int commentId, string content);
 
-        Task<bool> DeleteComment(int commentId);
+        Task<(bool, int?)> DeleteComment(int commentId);
 
         Task<CommentServiceModel> GetCommentById(int commentId);
 

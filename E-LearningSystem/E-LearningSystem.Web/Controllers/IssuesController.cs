@@ -11,7 +11,6 @@
 
     using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
     
-
     public class IssuesController : Controller
     {
         private readonly IIssueService issueService;
@@ -40,9 +39,15 @@
 
         [HttpPost]
         [Authorize(Roles = $"{AdminRole}, {LearnerRole}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateIssue(IssueFormModel issueModel, int id)
         {
             string userId = User.Id();
+
+            if (!ModelState.IsValid)
+            {
+                return View(issueModel);
+            }
 
             int issueId = await this.issueService.CreateIssue(userId, id, issueModel.Title, issueModel.Description);
 
@@ -69,8 +74,14 @@
 
         [HttpPost]
         [Authorize(Roles = $"{AdminRole}, {LearnerRole}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditIssue(int id, IssueFormModel issueModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(issueModel);
+            }
+
             bool isEdited = await this.issueService.EditIssue(id, issueModel.Title, issueModel.Description);
 
             if (isEdited == false)
@@ -82,8 +93,9 @@
         }
 
 
-        [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
-        public async Task<IActionResult> DeleteIssue(int issueId)
+
+        [Authorize(Roles = $"{TrainerRole}, {LearnerRole}")]
+        public async Task<IActionResult> FixIssue(int issueId, int courseId)
         {
             bool isDeleted = await this.issueService.DeleteIssue(issueId);
 
@@ -92,7 +104,7 @@
                 return BadRequest();
             }
 
-            return RedirectToAction(nameof(MyIssues));
+            return RedirectToAction(nameof(MyIssues), new { courseId });
         }
 
 
@@ -120,20 +132,6 @@
             var myIssues = await this.issueService.GetMyReportedIssues(userId, id);
 
             return View(myIssues);
-        }
-
-
-        [Authorize(Roles = $"{TrainerRole}, {LearnerRole}")]
-        public async Task<IActionResult> FixIssue(int issueId, int courseId)
-        {
-            bool isDeleted = await this.issueService.DeleteIssue(issueId);
-
-            if (isDeleted == false)
-            {
-                return BadRequest();
-            }
-
-            return RedirectToAction(nameof(MyIssues), new { courseId });
         }
 
     }

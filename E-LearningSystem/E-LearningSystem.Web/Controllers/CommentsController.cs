@@ -6,6 +6,9 @@
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Web.Models.Comment;
     using E_LearningSystem.Infrastructure.Extensions;
+    using Microsoft.AspNetCore.Authorization;
+
+    using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
 
     public class CommentsController : Controller
     {
@@ -38,6 +41,8 @@
 
 
         [HttpPost]
+        [Authorize(Roles = LearnerRole)]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateComment(int id, CommentFormModel commentModel)
         {
             string userId = User.Id();
@@ -62,7 +67,6 @@
         }
 
 
-
         [HttpGet]
         public async Task<IActionResult> EditComment(int commentId)
         {
@@ -73,24 +77,32 @@
 
 
         [HttpPost]
+        [Authorize(Roles = LearnerRole)]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditComment(int commentId, string content)
         {
-            bool isEdited = await this.commentService.EditComment(commentId, content);
+            var (isEdited, lectureId) = await this.commentService.EditComment(commentId, content);
 
-            //TO DO Checks...
+            if (isEdited == false)
+            {
+                return BadRequest();
+            }
 
-            return RedirectToAction(nameof(AllComments));
+            return RedirectToAction(nameof(AllComments), new { lectureId });
         }
 
 
 
         public async Task<IActionResult> DeleteComment(int commentId)
         {
-            bool isDeleted = await this.commentService.DeleteComment(commentId);
+            var (isDeleted, lectureId) = await this.commentService.DeleteComment(commentId);
 
-            //TO DO Checks...
+            if (isDeleted == false)
+            {
+                return BadRequest();
+            }
 
-            return RedirectToAction(nameof(AllComments));
+            return RedirectToAction(nameof(AllComments), new { lectureId });
         }
 
 
@@ -113,7 +125,7 @@
                     UpdatedOn = commentModel.UpdatedOn,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    ProfileImageUrl = user.ProfileImageUrl,           
+                    ProfileImageUrl = user.ProfileImageUrl,
                 };
 
                 comments.Add(commentsViewModel);

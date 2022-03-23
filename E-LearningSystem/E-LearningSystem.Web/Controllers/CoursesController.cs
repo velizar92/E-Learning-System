@@ -69,7 +69,6 @@
             if (!ModelState.IsValid)
             {
                 courseModel.Categories = await this.courseService.GetAllCourseCategories();
-
                 return View(courseModel);
             }
 
@@ -84,7 +83,6 @@
                                  courseModel.CategoryId,
                                  courseModel.PictureFile);
 
-
             return RedirectToAction(nameof(MyCourses));
         }
 
@@ -93,7 +91,6 @@
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> EditCourse(int id)
         {
-
             int courseCreatorId = await this.courseService.GetCourseCreatorId(id);
             int currentTrainerId = await this.trainerService.GetTrainerIdByUserId(User.Id());
 
@@ -103,7 +100,6 @@
             }
 
             var course = await this.courseService.GetCourseById(id);
-
             if (course == null)
             {
                 return NotFound();
@@ -140,7 +136,7 @@
                 return View(courseModel);
             }
 
-            var course = await courseService.EditCourse(
+            var isEdited = await courseService.EditCourse(
                                 id,
                                 courseModel.Name,
                                 courseModel.Description,
@@ -185,7 +181,7 @@
         public async Task<IActionResult> MyCourses()
         {
             List<AllCoursesViewModel> myCoursesViewModel = new List<AllCoursesViewModel>();
-            IEnumerable<AllCoursesServiceModel> myCourses = null;
+            IEnumerable<AllCoursesServiceModel> myCourses = new List<AllCoursesServiceModel>();
 
             if (User.IsInRole(TrainerRole))
             {
@@ -247,6 +243,7 @@
 
 
         [Authorize]
+        [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
             int courseCreatorId = await this.courseService.GetCourseCreatorId(id);
