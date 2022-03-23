@@ -21,7 +21,7 @@
     {
         <li class="list-group-item d-flex justify-content-between align-items-start">
             <div class="ms-2 me-auto">
-                <div class="fw-bold">@issue.Title</div>
+                <div class="fw-bold">@issue.CourseName: @issue.Title</div>
                 @issue.Description
             </div>
             <a asp-controller="Issues" asp-action="EditIssue" asp-route-id="@issue.IssueId" class="btn btn-danger">Edit Issue</a>

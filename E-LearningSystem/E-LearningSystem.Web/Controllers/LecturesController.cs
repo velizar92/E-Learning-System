@@ -3,21 +3,32 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Authorization;
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Web.Models.Lecture;
-
+    using E_LearningSystem.Services.Services.Users;
+    using E_LearningSystem.Infrastructure.Extensions;
+   
     using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
-  
+
     public class LecturesController : Controller
     {
         private readonly ILectureService lectureService;
+        private readonly IUserService userService;
+        private readonly INotyfService notyfService;
         private readonly UserManager<User> userManagerService;
 
 
-        public LecturesController(ILectureService lectureService, UserManager<User> userManagerService)
+        public LecturesController(
+            ILectureService lectureService,
+            IUserService userService,
+            INotyfService notyfService,
+            UserManager<User> userManagerService)
         {
             this.lectureService = lectureService;
+            this.userService = userService;
+            this.notyfService = notyfService;
             this.userManagerService = userManagerService;
         }
 
@@ -54,14 +65,14 @@
         {
             var lecture = await lectureService.GetLectureById(id);
 
-            if(lecture == null)
+            if (lecture == null)
             {
                 return NotFound();
             }
 
             CreateLectureFormModel lectureFormModel = new CreateLectureFormModel()
             {
-                Id = lecture.Id,    
+                Id = lecture.Id,
                 CourseId = lecture.CourseId,
                 Name = lecture.Name,
                 Description = lecture.Description,
@@ -94,11 +105,21 @@
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Details(int id)
-        {
+        {      
             var lectureDetails = await lectureService.GetLectureDetails(id);
 
-            return View(lectureDetails);
+            var isBuyed = await this.userService.CheckIfUserHasCourse(User.Id(), lectureDetails.CourseId);
 
+            if (isBuyed == true)
+            {
+                return View(lectureDetails);
+            }
+            else
+            {              
+                id = lectureDetails.CourseId;
+                TempData["AlertMessage"] = "You don't have an access to this course.";
+                return RedirectToAction("Details", "Courses", new { id });
+            }
         }
 
 

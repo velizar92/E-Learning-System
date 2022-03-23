@@ -16,8 +16,10 @@
     </div>
 </div><!-- End Breadcrumbs -->
 
+<p></p>
 
 <div class="row">
+
     @foreach (var resourceUrl in @Model.ResourceUrls)
     {
         <div class="col-md-4">
@@ -28,7 +30,7 @@
                 }
                 else if (resourceUrl.EndsWith(".pdf"))
                 {
-                    <iframe src="~/@resourceUrl" sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation" width="290" height="290">@resourceUrl</iframe>
+                    <iframe src="~/assets/resources/@resourceUrl" sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation" width="290" height="290">@resourceUrl</iframe>
                 }
                 else if (resourceUrl.EndsWith(".mp4"))
                 {
@@ -44,14 +46,14 @@
     }
 </div>
 
-<a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId" class="get-started-btn">Back to Lectures</a>
+<a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId" class="btn btn-warning">Back to Lectures</a>
 
 @if (User.IsInRole(LearnerRole))
 {
-    <a asp-controller="Comments" asp-action="CreateComment" asp-route-lectureId="@Model.Id" class="btn btn-success">Leave a comment</a>
+    <a asp-controller="Comments" asp-action="CreateComment" asp-route-lectureId="@Model.Id" class="btn btn-primary">Leave a comment</a>
 }
 
-<a asp-controller="Comments" asp-action="AllComments" asp-route-lectureId="@Model.Id" class="get-started-btn">See all comments</a>
+<a asp-controller="Comments" asp-action="AllComments" asp-route-lectureId="@Model.Id" class="btn btn-secondary">See all comments</a>
 
 
 

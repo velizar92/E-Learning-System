@@ -8,6 +8,7 @@ using E_LearningSystem.Infrastructure.Seed;
 using E_LearningSystem.Services.Services;
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
+using E_LearningSystem.Services.Services.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,7 @@ builder.Services.AddScoped<ITrainerService, TrainerService>();
 builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IIssueService, IssueService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 builder.Services.Configure<FormOptions>(options => {

@@ -6,19 +6,26 @@
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Web.Models.Issue;
+    using E_LearningSystem.Services.Services.Users;
     using E_LearningSystem.Infrastructure.Extensions;
 
     using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
+    
 
     public class IssuesController : Controller
     {
         private readonly IIssueService issueService;
+        private readonly IUserService userService;
         private readonly UserManager<User> userManagerService;
 
 
-        public IssuesController(IIssueService issueService, UserManager<User> userManagerService)
+        public IssuesController(
+            IIssueService issueService,
+            IUserService userService,
+            UserManager<User> userManagerService)
         {
             this.issueService = issueService;
+            this.userService = userService;
             this.userManagerService = userManagerService;
         }
 

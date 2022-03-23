@@ -80,6 +80,7 @@
                             .Select(i => new AllIssuesServiceModel
                             {
                                 CourseId = i.CourseId,
+                                CourseName = i.Course.Name,
                                 IssueId = i.Id,
                                 Title = i.Title,
                                 Description = i.Description,
@@ -96,6 +97,7 @@
                             .Select(i => new AllIssuesServiceModel
                             {
                                 CourseId = i.CourseId,
+                                CourseName = i.Course.Name,
                                 IssueId = i.Id,
                                 Title = i.Title,
                                 Description = i.Description,
@@ -126,6 +128,7 @@
                             .Select(i => new AllIssuesServiceModel
                             {
                                 CourseId = i.CourseId,
+                                CourseName = i.Course.Name,
                                 IssueId =i.Id,
                                 Title = i.Title,
                                 Description = i.Description,

@@ -2,22 +2,25 @@
 {
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Authorization;
+    using AspNetCoreHero.ToastNotification.Abstractions;
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Web.Models.Course;
     using E_LearningSystem.Data.Models;
-    using E_LearningSystem.Infrastructure.Extensions;
-    using Microsoft.AspNetCore.Authorization;
-    using E_LearningSystem.Services.Services.Courses.Models;
-    using AspNetCoreHero.ToastNotification.Abstractions;
+    using E_LearningSystem.Infrastructure.Extensions; 
+    using E_LearningSystem.Services.Services.Courses.Models; 
+    using E_LearningSystem.Services.Services.Users;
 
     using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
+    
 
     public class CoursesController : Controller
     {
         private readonly ICourseService courseService;
         private readonly IShoppingCartService shoppingCartService;
-        private readonly ITrainerService trainerService;
         private readonly INotyfService notyfService;
+        private readonly ITrainerService trainerService;
+        private readonly IUserService userService;
         private readonly UserManager<User> userManagerService;
 
 
@@ -25,6 +28,7 @@
             ICourseService courseService,
             IShoppingCartService shoppingCartService,
             INotyfService notyfService,
+            IUserService userService,
             ITrainerService trainerService,
 
             UserManager<User> userManager)
@@ -32,6 +36,7 @@
             this.courseService = courseService;
             this.shoppingCartService = shoppingCartService;
             this.notyfService = notyfService;
+            this.userService = userService;
             this.trainerService = trainerService;
             this.userManagerService = userManager;
         }
@@ -48,8 +53,9 @@
         }
 
 
-        [HttpPost]
+        [HttpPost]   
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCourse(CourseFormModel courseModel, IFormFile pictureFile)
         {
             ModelState.Remove("Categories");
@@ -120,8 +126,9 @@
         }
 
 
-        [HttpPost]
+        [HttpPost] 
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditCourse(int id, CourseFormModel courseModel, IFormFile pictureFile)
         {
 
@@ -223,7 +230,24 @@
         {
             var courseDetails = await courseService.GetCourseDetails(id);
 
-            return View(courseDetails);
+            bool isBuyed = await this.userService.CheckIfUserHasCourse(User.Id(), id);
+
+            var courseDetailsViewModel = new CourseDetailsViewModel
+            {
+                Id = courseDetails.Id,
+                Name = courseDetails.Name,
+                Description = courseDetails.Description,
+                ImageUrl = courseDetails.ImageUrl,
+                AssignedStudents = courseDetails.AssignedStudents,
+                Price = courseDetails.Price,
+                Trainer = courseDetails.Trainer,
+                IsBuyed = isBuyed,
+                Lectures = courseDetails.Lectures,
+            };
+
+            
+
+            return View(courseDetailsViewModel);
         }
 
 
