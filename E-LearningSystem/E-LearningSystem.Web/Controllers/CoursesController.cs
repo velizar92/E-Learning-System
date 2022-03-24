@@ -108,6 +108,7 @@
             {
                 Name = course.Name,
                 Description = course.Description,
+                Price = course.Price,
                 CategoryId = course.CategoryId,
                 Categories = await courseService.GetAllCourseCategories()
             };
@@ -137,6 +138,7 @@
                                 id,
                                 courseModel.Name,
                                 courseModel.Description,
+                                courseModel.Price,
                                 courseModel.CategoryId,
                                 courseModel.PictureFile);
 

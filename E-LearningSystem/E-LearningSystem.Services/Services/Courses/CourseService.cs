@@ -97,7 +97,7 @@
         }
 
 
-        public async Task<bool> EditCourse(int courseId, string name, string description, int categoryId, IFormFile pictureFile)
+        public async Task<bool> EditCourse(int courseId, string name, string description, double price, int categoryId, IFormFile pictureFile)
         {
             var course = await dbContext.Courses.FindAsync(courseId);
 
@@ -117,7 +117,8 @@
             }
           
             course.Name = name;
-            course.Description = description;         
+            course.Description = description;
+            course.Price = price;
             course.CourseCategoryId = categoryId;
 
             await dbContext.SaveChangesAsync();

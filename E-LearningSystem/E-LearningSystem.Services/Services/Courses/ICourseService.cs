@@ -7,7 +7,7 @@
     {
         Task<int> CreateCourse(string userId, int trainerId, string name, string description, double price, int categoryId, IFormFile pictureFile);
 
-        Task<bool> EditCourse(int courseId, string name, string description, int categoryId, IFormFile pictureFile);
+        Task<bool> EditCourse(int courseId, string name, string description, double price, int categoryId, IFormFile pictureFile);
 
         Task<bool> DeleteCourse(int courseId);
 
