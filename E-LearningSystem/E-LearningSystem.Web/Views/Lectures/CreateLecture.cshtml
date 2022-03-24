@@ -15,16 +15,19 @@
     <div class="mb-3">
         <label asp-for="Name" class="form-label">Name</label>
         <input asp-for="Name" class="form-control" placeholder="Some Name">
+        <span asp-validation-for="Name" class="small text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="Description" class="form-label">Description</label>
         <textarea asp-for="Description" class="form-control" placeholder="Some Description"></textarea> 
+        <span asp-validation-for="Description" class="small text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Resource URLs</label>
-        <input type="file" name="files" class="form-control" multiple>
+        <label asp-for="Files" class="form-label">Resource URLs</label>
+        <input asp-for="Files" type="file" name="Files" class="form-control" multiple>
+        <span asp-validation-for="Files" class="small text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>

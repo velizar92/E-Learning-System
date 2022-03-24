@@ -9,7 +9,7 @@
     using E_LearningSystem.Web.Models.Lecture;
     using E_LearningSystem.Services.Services.Users;
     using E_LearningSystem.Infrastructure.Extensions;
-   
+
     using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
 
     public class LecturesController : Controller
@@ -46,14 +46,20 @@
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> CreateLecture(
             int id,
-            CreateLectureFormModel lectureModel,
-            IEnumerable<IFormFile> files)
+            CreateLectureFormModel lectureModel
+            )
         {
+           
+            if (ModelState.IsValid == false)
+            {
+                return View(lectureModel);
+            }
+
             int lectureId = await this.lectureService.AddLectureToCourse(
                                 id,
                                 lectureModel.Name,
                                 lectureModel.Description,
-                                files);
+                                lectureModel.Files);
 
             return RedirectToAction("Details", "Courses", new { id });
         }
@@ -86,7 +92,7 @@
 
         [HttpPost]
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
-        public async Task<IActionResult> EditLecture(int id, CreateLectureFormModel lectureModel, IEnumerable<IFormFile> files)
+        public async Task<IActionResult> EditLecture(int id, CreateLectureFormModel lectureModel)
         {
             var lecture = await lectureService.GetLectureById(id);
 
@@ -95,7 +101,7 @@
                 return NotFound();
             }
 
-            bool isEdited = await this.lectureService.EditLecture(id, lectureModel.Name, lectureModel.Description, files);
+            bool isEdited = await this.lectureService.EditLecture(id, lectureModel.Name, lectureModel.Description, lectureModel.Files);
 
             return RedirectToAction(nameof(Details), new { id });
         }
@@ -105,7 +111,7 @@
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Details(int id)
-        {      
+        {
             var lectureDetails = await lectureService.GetLectureDetails(id);
 
             var isBuyed = await this.userService.CheckIfUserHasCourse(User.Id(), lectureDetails.CourseId);
@@ -115,7 +121,7 @@
                 return View(lectureDetails);
             }
             else
-            {              
+            {
                 id = lectureDetails.CourseId;
                 TempData["AlertMessage"] = "You don't have an access to this course.";
                 return RedirectToAction("Details", "Courses", new { id });

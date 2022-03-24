@@ -35,6 +35,6 @@
         public IFormFile PictureFile { get; set; }
 
 
-        public IEnumerable<CourseCategoriesServiceModel> Categories { get; set; }
+        public IEnumerable<CourseCategoriesServiceModel>? Categories { get; set; }
     }
 }

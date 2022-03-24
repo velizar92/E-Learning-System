@@ -59,8 +59,7 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCourse(CourseFormModel courseModel)
         {
-            ModelState.Remove("Categories");
-
+           
             if (!this.courseService.CheckIfCourseCategoryExists(courseModel.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(courseModel.CategoryId), CategoryNotExists);
@@ -121,9 +120,7 @@
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditCourse(int id, CourseFormModel courseModel)
-        {
-            ModelState.Remove("Categories");
-
+        {           
             if (!this.courseService.CheckIfCourseCategoryExists(courseModel.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(courseModel.CategoryId), CategoryNotExists);
