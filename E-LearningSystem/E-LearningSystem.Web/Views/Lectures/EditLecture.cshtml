@@ -1,44 +1,26 @@
 ﻿@using E_LearningSystem.Web.Models.Lecture
 @model CreateLectureFormModel
 
- <!-- ======= Breadcrumbs ======= -->
-    <div class="breadcrumbs">
-        <div class="container">
-            <h2>Edit Lecture</h2>
-            <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
-        </div>
-    </div><!-- End Breadcrumbs -->
-
-
-<form method="post" enctype="multipart/form-data"
-      asp-controller="Lectures" asp-action="EditLecture">
-
-    <div class="mb-3">
-        <label asp-for="Name" class="form-label">Name</label>
-        <input asp-for="Name" class="form-control" placeholder="Some Name" value="@Model.Name">
+<!-- ======= Breadcrumbs ======= -->
+<div class="breadcrumbs">
+    <div class="container">
+        <h2>Edit Lecture</h2>
+        <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
     </div>
+</div><!-- End Breadcrumbs -->
 
-    <div class="mb-3">
-        <label asp-for="Description" class="form-label">Description</label>
-        <textarea asp-for="Description" class="form-control" placeholder="Some Description" value="@Model.Description"></textarea>
-    </div>
+<partial name="_LectureFormPartial" model="@Model" />
 
-    <div class="mb-3">
-        <label asp-for="Files" class="form-label">Resource URLs</label>
-        <input asp-for="Files" type="file" name="Files" class="form-control" multiple>
-    </div>
-
-
+@if (Model.Resources != null && Model.Resources.Count() > 0)
+{
     @foreach (var resource in Model.Resources)
     {
         <span>@resource.Name</span>
         <a asp-controller="Resources" asp-action="DeleteResource" asp-route-resourceId="@resource.Id" class="btn btn-danger">Delete Resource</a>
         <br />
     }
+}
 
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
 
 <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId" class="btn btn-success">Back to Lectures</a>
 
