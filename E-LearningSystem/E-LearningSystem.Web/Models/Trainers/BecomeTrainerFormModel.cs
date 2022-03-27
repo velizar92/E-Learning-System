@@ -4,7 +4,7 @@
     {
         public string FullName { get; set; }
 
-        public string CVUrl { get; set; }
+        public IFormFile CVUrl { get; set; }
       
     }
 }

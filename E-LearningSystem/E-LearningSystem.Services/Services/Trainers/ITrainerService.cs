@@ -1,8 +1,9 @@
 ﻿namespace E_LearningSystem.Services.Services
 {
+    using Microsoft.AspNetCore.Http;
     using E_LearningSystem.Data.Enums;
     using E_LearningSystem.Data.Models;
-
+   
     public interface ITrainerService
     {
         Task<int> CreateTrainer(string firstName, string lastName, string userName, string password,
@@ -14,6 +15,8 @@
 
         Task<IEnumerable<AllTrainersServiceModel>> GetAllTrainers();
 
+        Task<IEnumerable<AllTrainersServiceModel>> GetActiveTrainers();
+
         Task<IEnumerable<AllTrainersServiceModel>> GetTopTrainers();
 
         Task<int> GetTrainerIdByUserId(string userId);
@@ -22,7 +25,7 @@
 
         Task<bool> VoteForTrainer(string userId, int trainerId);
 
-        void BecomeTrainer(string userId, string fullName, string cvUrl);
+        Task BecomeTrainer(User user, string fullName, IFormFile cvUrl);
 
         Task<bool> CheckIfTrainerExists(string userId);
 
