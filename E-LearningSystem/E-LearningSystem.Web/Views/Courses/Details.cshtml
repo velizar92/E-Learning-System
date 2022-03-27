@@ -73,7 +73,7 @@
                         }
                     </div>
 
-                    @if ((User.IsInRole(AdminRole) || User.IsInRole(TrainerRole)) && Model.HasCourse == true)
+                    @if (User.IsInRole(AdminRole) || (User.IsInRole(TrainerRole)) && Model.HasCourse == true)
                     {
                         <a asp-controller="Courses" asp-action="DeleteCourse" asp-route-id="@Model.Id" class="btn btn-danger">Delete Course</a>
                         <a asp-controller="Courses" asp-action="EditCourse" asp-route-id="@Model.Id" class="btn btn-warning">Edit Course</a>
