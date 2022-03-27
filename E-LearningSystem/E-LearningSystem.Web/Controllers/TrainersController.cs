@@ -5,12 +5,12 @@
     using Microsoft.AspNetCore.Authorization;
     using AspNetCoreHero.ToastNotification.Abstractions;
     using E_LearningSystem.Infrastructure.Extensions;
-  
-    using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
-    using static E_LearningSystem.Infrastructure.Messages.WarningMessages;
-    using static E_LearningSystem.Infrastructure.Messages.Messages;
-    
+    using E_LearningSystem.Web.Models.Trainers;
 
+    using static E_LearningSystem.Infrastructure.Messages.Messages;
+    using static E_LearningSystem.Infrastructure.Messages.WarningMessages;
+    using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
+    
     public class TrainersController : Controller
     {
 
@@ -46,6 +46,37 @@
                 this.notyfService.Warning(YouAlreadyVoteForThisTrainer);        
             }
 
+            return RedirectToAction(nameof(AllTrainers));
+        }
+
+
+        [Authorize(Roles = LearnerRole)]
+        public IActionResult BecomeTrainer()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = LearnerRole)]
+        public async Task<IActionResult> BecomeTrainer(BecomeTrainerFormModel formModel)
+        {
+            var userId = this.User.Id();
+
+            var isUserAlreadyTrainer = await this.trainerService.CheckIfTrainerExists(userId);
+
+            if (isUserAlreadyTrainer)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(formModel);
+            }
+
+            this.trainerService.BecomeTrainer(userId, formModel.FullName, formModel.CVUrl);
+           
             return RedirectToAction(nameof(AllTrainers));
         }
 

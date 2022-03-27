@@ -22,5 +22,9 @@
 
         Task<bool> VoteForTrainer(string userId, int trainerId);
 
+        void BecomeTrainer(string userId, string fullName, string cvUrl);
+
+        Task<bool> CheckIfTrainerExists(string userId);
+
     }
 }

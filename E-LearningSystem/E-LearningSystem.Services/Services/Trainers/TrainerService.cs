@@ -7,6 +7,7 @@
     using E_LearningSystem.Data.Enums;
     using E_LearningSystem.Data.Models;   
     using E_LearningSystem.Data.Data.Models;
+
     using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
     
 
@@ -21,6 +22,27 @@
             this.userManager = userManager;
         }
 
+        public async Task BecomeTrainer(string userId, string fullName, string cvUrl)
+        {       
+            var trainer = new Trainer
+            {
+                FullName = fullName,
+                CVUrl = cvUrl,
+                UserId = userId
+            };
+
+            await this.dbContext.Trainers.AddAsync(trainer);
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> CheckIfTrainerExists(string userId)
+        {
+            var isUserAlreadyTrainer = await this.dbContext
+                .Trainers
+                .AnyAsync(d => d.UserId == userId);
+
+            return isUserAlreadyTrainer;
+        }
 
         [Authorize(Roles = AdminRole)]
         public async Task<int> CreateTrainer(string firstName, string lastName, string userName,
