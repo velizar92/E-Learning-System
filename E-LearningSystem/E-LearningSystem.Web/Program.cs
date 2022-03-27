@@ -51,7 +51,7 @@ builder.Services.Configure<FormOptions>(options => {
     options.MemoryBufferThreshold = int.MaxValue;
 });
 
-builder.Services.AddDistributedMemoryCache();
+builder.Services.AddMemoryCache();
 
 builder.Services.AddSession(options =>
 {

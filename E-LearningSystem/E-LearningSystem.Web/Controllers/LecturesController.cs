@@ -41,9 +41,9 @@
         }
 
 
-        [HttpPost, DisableRequestSizeLimit]
-        [ValidateAntiForgeryToken]
+        [HttpPost, DisableRequestSizeLimit]       
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateLecture(
             int id,
             CreateLectureFormModel lectureModel
@@ -90,10 +90,16 @@
         }
 
 
-        [HttpPost]
+        [HttpPost, DisableRequestSizeLimit]   
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditLecture(int id, CreateLectureFormModel lectureModel)
         {
+            if (ModelState.IsValid == false)
+            {
+                return View(lectureModel);
+            }
+
             var lecture = await lectureService.GetLectureById(id);
 
             if (lecture == null)
