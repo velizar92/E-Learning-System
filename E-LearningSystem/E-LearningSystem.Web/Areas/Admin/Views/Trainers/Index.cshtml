@@ -1,0 +1,47 @@
+﻿@model IEnumerable<AllTrainersServiceModel>
+
+@{
+    int lineIndex = 1;
+}
+
+<div class="breadcrumbs">
+    <div class="container">
+        <h2>Manage trainers</h2>
+    </div>
+</div>
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">FullName</th>
+            <th scope="col">Rating</th>
+            <th scope="col">Status</th>
+            <th scope="col">Profile Image</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var trainer in Model)
+        {
+            <tr>
+                <th scope="row">@lineIndex</th>
+                <td>@trainer.FullName</td>
+                <td>@trainer.Rating</td>
+                <td>@trainer.Status.ToString()</td>
+                <td>@trainer.ProfileImageUrl</td>
+                <td>
+                    <a asp-area="Admin" asp-controller="Trainers" asp-action="DeleteTrainer" asp-route-id="" class="btn btn-danger">Delete Trainer</a>
+
+                    @if(trainer.Status.ToString() == "Pending")
+                    {
+                        <a asp-area="Admin" asp-controller="Trainers" asp-action="ApproveTrainer" asp-route-id="" class="btn btn-success">Approve Trainer</a>
+                    }
+                </td>
+            </tr>
+
+            lineIndex++;
+        }
+
+    </tbody>
+</table>

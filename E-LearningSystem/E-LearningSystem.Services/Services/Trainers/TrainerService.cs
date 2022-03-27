@@ -145,7 +145,8 @@
                             Id = t.Id,
                             FullName = t.FullName,
                             ProfileImageUrl = t.ProfileImageUrl,
-                            Rating = t.Rating
+                            Rating = t.Rating,
+                            Status = t.Status
                         })
                         .ToList();
         }
@@ -162,7 +163,8 @@
                             Id = t.Id,
                             FullName = t.FullName,
                             ProfileImageUrl = t.ProfileImageUrl,
-                            Rating = t.Rating
+                            Rating = t.Rating,
+                            Status = t.Status
                         })
                         .ToList();
         }
@@ -179,7 +181,8 @@
                             Id = t.Id,
                             FullName = t.FullName,
                             ProfileImageUrl = t.ProfileImageUrl,
-                            Rating = t.Rating
+                            Rating = t.Rating,
+                            Status = t.Status
                         })
                         .Take(3)
                         .ToList();
