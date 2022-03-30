@@ -11,7 +11,7 @@
 
         Task<bool> EditTrainer(int trainerId, string fullName, string cvUrl, TrainerStatus trainerStatus);
 
-        Task<bool> DeleteTrainer(int trainerId);
+        Task<bool> DeleteTrainer(int trainerId, string userId);
 
         Task<IEnumerable<AllTrainersServiceModel>> GetAllTrainers();
 
@@ -28,6 +28,8 @@
         Task BecomeTrainer(User user, string fullName, IFormFile cvUrl);
 
         Task<bool> CheckIfTrainerExists(string userId);
+
+        Task<bool> ApproveTrainer(int id);
 
     }
 }

@@ -29,6 +29,21 @@
             this.userManager = userManager;        
         }
 
+        public async Task<bool> ApproveTrainer(int id)
+        {
+            var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == id);
+
+            if (trainer == null)
+            {
+                return false;
+            }
+
+            trainer.Status = TrainerStatus.Active;
+
+            await dbContext.SaveChangesAsync();
+            return true;
+        }
+
 
         public async Task BecomeTrainer(User user, string fullName, IFormFile cvUrl)
         {
@@ -99,14 +114,18 @@
 
 
         [Authorize(Roles = AdminRole)]
-        public async Task<bool> DeleteTrainer(int trainerId)
+        public async Task<bool> DeleteTrainer(int trainerId, string userId)
         {
             var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainerId);
+            var user = await dbContext.Users.FirstOrDefaultAsync(t => t.Id == userId);
 
-            if (trainer == null)
+            if (trainer == null || user == null)
             {
                 return false;
             }
+       
+            await userManager.RemoveFromRoleAsync(user, TrainerRole);
+            await userManager.AddToRoleAsync(user, LearnerRole);
 
             dbContext.Trainers.Remove(trainer);
             await dbContext.SaveChangesAsync();
@@ -143,6 +162,7 @@
                         .Select(t => new AllTrainersServiceModel
                         {
                             Id = t.Id,
+                            UserId = t.UserId,
                             FullName = t.FullName,
                             ProfileImageUrl = t.ProfileImageUrl,
                             Rating = t.Rating,
@@ -161,6 +181,7 @@
                         .Select(t => new AllTrainersServiceModel
                         {
                             Id = t.Id,
+                            UserId = t.UserId,
                             FullName = t.FullName,
                             ProfileImageUrl = t.ProfileImageUrl,
                             Rating = t.Rating,
@@ -179,6 +200,7 @@
                         .Select(t => new AllTrainersServiceModel
                         {
                             Id = t.Id,
+                            UserId = t.UserId,
                             FullName = t.FullName,
                             ProfileImageUrl = t.ProfileImageUrl,
                             Rating = t.Rating,
