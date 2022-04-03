@@ -50,7 +50,7 @@
             )
         {
            
-            if (ModelState.IsValid == false)
+            if (!ModelState.IsValid)
             {
                 return View(lectureModel);
             }

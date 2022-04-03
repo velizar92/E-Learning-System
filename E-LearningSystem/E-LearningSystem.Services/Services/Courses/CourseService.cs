@@ -27,7 +27,7 @@
 
         public bool CheckIfCourseCategoryExists(int _categoryId)
         {
-            if (dbContext.CourseCategories.Any(c => c.Id == _categoryId) == false)
+            if (this.dbContext.CourseCategories.Any(c => c.Id == _categoryId) == false)
             {
                 return false;
             }
@@ -54,14 +54,14 @@
                 CourseCategoryId = categoryId
             };
 
-            dbContext.Courses.Add(course);
-            await dbContext.SaveChangesAsync();
+            this.dbContext.Courses.Add(course);
+            await this.dbContext.SaveChangesAsync();
 
-            var courseData = dbContext.Courses.FirstOrDefault(c => c.TrainerId == trainerId && c.Name == name);                     
-            var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);      
+            var courseData = this.dbContext.Courses.FirstOrDefault(c => c.TrainerId == trainerId && c.Name == name);                     
+            var user = await this.dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);      
             user.CourseUsers.Add(new CourseUser {CourseId = courseData.Id, UserId = userId});
 
-            await dbContext.SaveChangesAsync();
+            await this.dbContext.SaveChangesAsync();
 
             return courseData.Id;
         }
@@ -69,29 +69,29 @@
 
         public async Task<bool> DeleteCourse(int courseId)
         {
-            var course = await dbContext.Courses.FirstOrDefaultAsync(c => c.Id == courseId);
+            var course = await this.dbContext.Courses.FirstOrDefaultAsync(c => c.Id == courseId);
 
             if (course == null)
             {
                 return false;
             }
 
-            var lectures = dbContext.Lectures.Where(r => r.CourseId == courseId).ToList();
-
+            var lectures = this.dbContext.Lectures.Where(r => r.CourseId == courseId).ToList();
+       
             foreach (var lecture in lectures)
             {
-                var resources = dbContext.Resources.Where(r => r.LectureId == lecture.Id).ToList();
+                var resources = this.dbContext.Resources.Where(r => r.LectureId == lecture.Id).ToList();
                 foreach (var resource in resources)
                 {
                     File.Delete(Path.Combine(webHostEnvironment.WebRootPath, resource.Name));
                     dbContext.Resources.Remove(resource);
                 }
 
-                dbContext.Lectures.Remove(lecture);
+                this.dbContext.Lectures.Remove(lecture);
             }
 
-            dbContext.Courses.Remove(course);
-            await dbContext.SaveChangesAsync();
+            this.dbContext.Courses.Remove(course);
+            await this.dbContext.SaveChangesAsync();
 
             return true;
         }
@@ -99,7 +99,7 @@
 
         public async Task<bool> EditCourse(int courseId, string name, string description, double price, int categoryId, IFormFile pictureFile)
         {
-            var course = await dbContext.Courses.FindAsync(courseId);
+            var course = await this.dbContext.Courses.FindAsync(courseId);
 
             if (course == null)
             {
@@ -121,7 +121,7 @@
             course.Price = price;
             course.CourseCategoryId = categoryId;
 
-            await dbContext.SaveChangesAsync();
+            await this.dbContext.SaveChangesAsync();
 
             return true;
         }
@@ -129,7 +129,7 @@
 
         public async Task<IEnumerable<CourseCategoriesServiceModel>> GetAllCourseCategories()
         {
-            return await dbContext
+            return await this.dbContext
                             .CourseCategories
                             .Select(c => new CourseCategoriesServiceModel
                             {
@@ -144,7 +144,7 @@
         {
             var trainerUsers = await userManager.GetUsersInRoleAsync("Trainer");
 
-            return await dbContext
+            return await this.dbContext
                             .Courses
                             .Select(c => new AllCoursesServiceModel
                             {
@@ -162,19 +162,19 @@
 
         public async Task<CourseServiceModel> GetCourseById(int id)
         {
-            var course = await dbContext
-                            .Courses    
-                            .Where(c => c.Id == id)
-                            .Select(c => new CourseServiceModel
-                            { 
-                                Id = c.Id,
-                                Name = c.Name,
-                                Description= c.Description,
-                                ImageUrl = c.ImageUrl,
-                                Price = c.Price,
-                                CategoryId = c.CourseCategoryId
-                            })
-                            .FirstOrDefaultAsync();
+            var course = await this.dbContext
+                                        .Courses    
+                                        .Where(c => c.Id == id)
+                                        .Select(c => new CourseServiceModel
+                                        { 
+                                            Id = c.Id,
+                                            Name = c.Name,
+                                            Description= c.Description,
+                                            ImageUrl = c.ImageUrl,
+                                            Price = c.Price,
+                                            CategoryId = c.CourseCategoryId
+                                        })
+                                        .FirstOrDefaultAsync();
 
             return course;
         }
@@ -182,7 +182,7 @@
 
         public async Task<int> GetCourseCreatorId(int courseId)
         {
-            var course = await dbContext.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync();
+            var course = await this.dbContext.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync();
 
             return course.TrainerId;
         }
@@ -190,7 +190,7 @@
 
         public async Task<CourseDetailsServiceModel> GetCourseDetails(int courseId)
         {       
-            return await dbContext
+            return await this.dbContext
                            .Courses
                            .Where(c => c.Id == courseId)
                            .Select(x => new CourseDetailsServiceModel
@@ -216,7 +216,7 @@
 
         public async Task<IEnumerable<LatestCoursesServiceModel>> GetLatestCourses(int count)
         {
-            return await dbContext
+            return await this.dbContext
                            .Courses
                            .OrderByDescending(c => c.CreatedOn)
                            .Include(c => c.Trainer)
@@ -239,7 +239,7 @@
         
         public async Task<IEnumerable<AllCoursesServiceModel>> GetMyCourses(string userId)
         {
-            return await dbContext
+            return await this.dbContext
                              .Courses
                              .Where(c => c.CourseUsers.Any(cu => cu.UserId == userId))
                              .Select(c => new AllCoursesServiceModel
@@ -258,7 +258,7 @@
 
         public async Task<IEnumerable<AllCoursesServiceModel>> GetMyCourses(int trainerId)
         {
-            return await dbContext
+            return await this.dbContext
                              .Courses
                              .Where(c => c.TrainerId == trainerId)
                              .Select(c => new AllCoursesServiceModel

@@ -45,14 +45,19 @@
             <!-- Uncomment below if you prefer to use an image logo -->
 
             <nav id="navbar" class="navbar order-last order-lg-0">
-                <ul>                           
+                <ul>
+                    @if (!SignInManager.IsSignedIn(User))
+                    {
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    }
+
                     <li><a asp-area="" asp-controller="Courses" asp-action="AllCourses">All Courses</a></li>
 
                     @if (SignInManager.IsSignedIn(User))
                     {
                         if (User.IsInRole(AdminRole))
                         {
-                            <li><a asp-area="Admin" asp-controller="Trainers" asp-action="Index">Manage Trainers</a></li>                           
+                            <li><a asp-area="Admin" asp-controller="Trainers" asp-action="Index">Manage Trainers</a></li>
                         }
                         if (User.IsInRole(TrainerRole))
                         {
@@ -64,12 +69,12 @@
                         {
                             <li><a asp-area="" asp-controller="Courses" asp-action="MyCourses">My Courses</a></li>
                             <li><a asp-area="" asp-controller="Resources" asp-action="MyResources">My Resources</a></li>
-                            <li><a asp-area="" asp-controller="Trainers" asp-action="AllTrainers">Trainers</a></li>                           
+                            <li><a asp-area="" asp-controller="Trainers" asp-action="AllTrainers">Trainers</a></li>
                             <li><a asp-area="" asp-controller="Trainers" asp-action="BecomeTrainer">Become Trainer</a></li>
                         }
                     }
 
-                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
 
                     <partial name="_LoginPartial" />
                 </ul>

@@ -3,6 +3,7 @@
     using Microsoft.EntityFrameworkCore;
     using E_LearningSystem.Data.Data;
     using E_LearningSystem.Data.Models;
+    using E_LearningSystem.Services.Services.Issues.Models;
 
     public class IssueService : IIssueService
     {
@@ -16,14 +17,14 @@
 
         public async Task<int> CreateIssue(string userId, int courseId, string title, string description)
         {
-            var course = await dbContext
+            var course = await this.dbContext
                              .Courses
                              .Where(c => c.Id == courseId)
                              .FirstOrDefaultAsync();
 
             if (course == null)
             {
-                return 0;
+                return -1;
             }
 
             var issue = new Issue()
@@ -35,7 +36,7 @@
             };
 
             course.Issues.Add(issue);           
-            await dbContext.SaveChangesAsync();
+            await this.dbContext.SaveChangesAsync();
 
             return issue.Id;
         }
@@ -43,22 +44,22 @@
 
         public async Task<bool> DeleteIssue(int issueId)
         {
-            var issue = await dbContext.Issues.FirstOrDefaultAsync(i => i.Id == issueId);
+            var issue = await this.dbContext.Issues.FirstOrDefaultAsync(i => i.Id == issueId);
 
             if (issue == null)
             {
                 return false;
             }
 
-            dbContext.Issues.Remove(issue);
-            await dbContext.SaveChangesAsync();
+            this.dbContext.Issues.Remove(issue);
+            await this.dbContext.SaveChangesAsync();
             return true;
         }
 
 
         public async Task<bool> EditIssue(int issueId, string title, string description)
         {
-            var issue = await dbContext.Issues.FirstOrDefaultAsync(i => i.Id == issueId);
+            var issue = await this.dbContext.Issues.FirstOrDefaultAsync(i => i.Id == issueId);
 
             if (issue == null)
             {
@@ -68,14 +69,14 @@
             issue.Title = title;
             issue.Description = description;
 
-            await dbContext.SaveChangesAsync();
+            await this.dbContext.SaveChangesAsync();
             return true;
         }
 
 
         public async Task<IEnumerable<AllIssuesServiceModel>> GetAllReportedIssues()
         {
-            return await dbContext
+            return await this.dbContext
                             .Issues
                             .Select(i => new AllIssuesServiceModel
                             {
@@ -91,7 +92,7 @@
 
         public async Task<IEnumerable<AllIssuesServiceModel>> GetAllReportedIssuesForCourse(int courseId)
         {
-            return await dbContext
+            return await this.dbContext
                             .Issues
                             .Where(i => i.CourseId == courseId)
                             .Select(i => new AllIssuesServiceModel
@@ -108,7 +109,7 @@
 
         public async Task<IssueDetailsServiceModel> GetIssueDetails(int issueId)
         {
-            var issue = await dbContext.Issues.FirstOrDefaultAsync(i => i.Id == issueId);
+            var issue = await this.dbContext.Issues.FirstOrDefaultAsync(i => i.Id == issueId);
 
             var issueDetails = new IssueDetailsServiceModel
             {
@@ -123,7 +124,7 @@
 
         public async Task<IEnumerable<AllIssuesServiceModel>> GetMyReportedIssues(string userId, int courseId)
         {
-            return await dbContext
+            return await this.dbContext
                             .Issues
                             .Where(i => i.UserId == userId && i.CourseId == courseId)
                             .Select(i => new AllIssuesServiceModel

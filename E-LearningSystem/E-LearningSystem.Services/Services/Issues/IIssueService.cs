@@ -1,5 +1,7 @@
 ﻿namespace E_LearningSystem.Services.Services
 {
+    using E_LearningSystem.Services.Services.Issues.Models;
+
     public interface IIssueService
     {
         Task<int> CreateIssue(string userId, int courseId, string title, string description);

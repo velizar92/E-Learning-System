@@ -26,10 +26,10 @@
             {
                 foreach (var cartItem in cartItems)
                 {
-                    if (dbContext.CourseUsers.FirstOrDefault(c => (c.CourseId == cartItem.Course.Id) && (c.UserId == user.Id)) == null)
+                    if (this.dbContext.CourseUsers.FirstOrDefault(c => (c.CourseId == cartItem.Course.Id) && (c.UserId == user.Id)) == null)
                     {
-                        var course = dbContext.Courses.FirstOrDefault(c => c.Id == cartItem.Course.Id);
-                        dbContext.CourseUsers.Add(new CourseUser { CourseId = course.Id, UserId = user.Id });
+                        var course = this.dbContext.Courses.FirstOrDefault(c => c.Id == cartItem.Course.Id);
+                        this.dbContext.CourseUsers.Add(new CourseUser { CourseId = course.Id, UserId = user.Id });
                         
                         if(course.AssignedStudents == null)
                         {
@@ -49,7 +49,7 @@
                 errors.Add(EmptyShoppingCart);
             }
          
-            await dbContext.SaveChangesAsync();
+            await this.dbContext.SaveChangesAsync();
             return errors;
         }
 

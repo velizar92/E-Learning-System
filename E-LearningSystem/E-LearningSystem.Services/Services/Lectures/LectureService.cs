@@ -43,14 +43,14 @@
                 Resources = resources,
             };
 
-            var course = await dbContext.Courses.FirstOrDefaultAsync(c => c.Id == courseId);
+            var course = await this.dbContext.Courses.FirstOrDefaultAsync(c => c.Id == courseId);
             if (course == null)
             {
                 return 0;
             }
 
             course.Lectures.Add(lecture);
-            await dbContext.SaveChangesAsync();
+            await this.dbContext.SaveChangesAsync();
 
             return lecture.Id;
         }
@@ -58,24 +58,24 @@
 
         public async Task<(bool, int)> DeleteLecture(int lectureId)
         {
-            var lecture = await dbContext.Lectures.FindAsync(lectureId);
+            var lecture = await this.dbContext.Lectures.FindAsync(lectureId);
 
             if (lecture == null)
             {
                 return (false, 0);
             }
 
-            var resources = dbContext.Resources.Where(r => r.LectureId == lectureId).ToList();
+            var resources = this.dbContext.Resources.Where(r => r.LectureId == lectureId).ToList();
             lecture.Resources = resources;
 
             foreach (var resource in lecture.Resources)
             {
                 File.Delete(Path.Combine(webHostEnvironment.WebRootPath, resource.Name));
-                dbContext.Resources.Remove(resource);
+                this.dbContext.Resources.Remove(resource);
             }
 
-            dbContext.Lectures.Remove(lecture);
-            await dbContext.SaveChangesAsync();
+            this.dbContext.Lectures.Remove(lecture);
+            await this.dbContext.SaveChangesAsync();
 
             return (true, lecture.CourseId);
         }
@@ -95,7 +95,7 @@
             }
 
             resources = GetResources(resourceFiles);
-            var lecture = dbContext.Lectures.Find(lectureId);
+            var lecture = this.dbContext.Lectures.Find(lectureId);
 
             if (lecture == null)
             {
@@ -110,14 +110,14 @@
                 lecture.Resources.Add(resourceItem);
             }
            
-            await dbContext.SaveChangesAsync();
+            await this.dbContext.SaveChangesAsync();
             return true;
         }
 
 
         public async Task<LectureServiceModel> GetLectureById(int lectureId)
         {
-            return await dbContext
+            return await this.dbContext
                              .Lectures
                              .Where(l => l.Id == lectureId)
                              .Select(l => new LectureServiceModel
@@ -134,7 +134,7 @@
 
         public async Task<LectureDetailsServiceModel> GetLectureDetails(int lectureId)
         {
-            return await dbContext
+            return await this.dbContext
                  .Lectures
                  .Where(l => l.Id == lectureId)
                  .Select(l => new LectureDetailsServiceModel
@@ -151,7 +151,7 @@
 
         public async Task<int> GetLectureIdByResourceId(int resourceId)
         {
-            var resource = await dbContext
+            var resource = await this.dbContext
                             .Resources
                             .FirstOrDefaultAsync(r => r.Id == resourceId);
 

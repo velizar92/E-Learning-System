@@ -142,6 +142,11 @@
                                 courseModel.CategoryId,
                                 courseModel.PictureFile);
 
+            if (isEdited == false)
+            {
+                return BadRequest();
+            }
+
             return RedirectToAction(nameof(MyCourses));
         }
 

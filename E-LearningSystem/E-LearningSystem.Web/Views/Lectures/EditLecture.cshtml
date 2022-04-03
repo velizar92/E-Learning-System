@@ -4,22 +4,34 @@
 <div class="breadcrumbs">
     <div class="container">
         <h2>Edit Lecture</h2>
-        <p>Est dolorum ut non facere possimus quibusdam eligendi voluptatem. Quia id aut similique quia voluptas sit quaerat debitis. Rerum omnis ipsam aperiam consequatur laboriosam nemo harum praesentium. </p>
+        <p>In this section you can edit a new lecture.</p>
     </div>
 </div><!-- End Breadcrumbs -->
 
 <partial name="_LectureFormPartial" model="@Model" />
 
-@if (Model.Resources != null && Model.Resources.Count() > 0)
-{
-    @foreach (var resource in Model.Resources)
+<p></p>
+<div class="row">
+    @if (Model.Resources != null && Model.Resources.Count() > 0)
     {
-        <span>@resource.Name</span>
-        <a asp-controller="Resources" asp-action="DeleteResource" asp-route-resourceId="@resource.Id" class="btn btn-danger">Delete Resource</a>
-        <br />
-    }
-}
+        <ol class="list-group list-group-numbered col-md-12">
 
+            @foreach (var resource in Model.Resources)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">@resource.Name</div>
+                    </div>
+
+                    <a asp-controller="Resources" asp-action="DeleteResource" asp-route-resourceId="@resource.Id" class="btn btn-danger">Delete Resource</a>
+                </li>
+            }
+
+        </ol>
+    }
+</div>
+
+<p></p>
 
 <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId" class="btn btn-success">Back to Lectures</a>
 

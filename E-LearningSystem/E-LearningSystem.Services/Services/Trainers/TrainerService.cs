@@ -1,10 +1,9 @@
 ﻿namespace E_LearningSystem.Services.Services
 {
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
     using E_LearningSystem.Data.Data;
     using E_LearningSystem.Data.Enums;
     using E_LearningSystem.Data.Models;
@@ -31,7 +30,7 @@
 
         public async Task<bool> ApproveTrainer(int id)
         {
-            var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == id);
+            var trainer = await this.dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == id);
 
             if (trainer == null)
             {
@@ -56,7 +55,7 @@
             await userManager.RemoveFromRoleAsync(user, LearnerRole);
             await userManager.AddToRoleAsync(user, TrainerRole);
 
-            dbContext.Entry(user).State = EntityState.Modified;
+            this.dbContext.Entry(user).State = EntityState.Modified;
 
             var trainer = new Trainer
             {
@@ -67,6 +66,9 @@
                 Status = TrainerStatus.Pending,
                 UserId = user.Id
             };
+
+            var userCourses = this.dbContext.CourseUsers.Where(u => u.UserId == user.Id).ToArray();
+            this.dbContext.CourseUsers.RemoveRange(userCourses);
 
             await this.dbContext.Trainers.AddAsync(trainer);
             await this.dbContext.SaveChangesAsync();
@@ -82,8 +84,7 @@
             return isUserAlreadyTrainer;
         }
 
-
-        [Authorize(Roles = AdminRole)]
+    
         public async Task<int> CreateTrainer(string firstName, string lastName, string userName,
             string password, string email, string profileImageUrl, string cvUrl, TrainerStatus trainerStatus)
         {
@@ -106,18 +107,18 @@
                 Status = trainerStatus,
             };
 
-            await dbContext.Trainers.AddAsync(trainer);
-            await dbContext.SaveChangesAsync();
+            await this.dbContext.Trainers.AddAsync(trainer);
+            await this.dbContext.SaveChangesAsync();
 
             return trainer.Id;
         }
 
 
-        [Authorize(Roles = AdminRole)]
+        
         public async Task<bool> DeleteTrainer(int trainerId, string userId)
         {
-            var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainerId);
-            var user = await dbContext.Users.FirstOrDefaultAsync(t => t.Id == userId);
+            var trainer = await this.dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainerId);
+            var user = await this.dbContext.Users.FirstOrDefaultAsync(t => t.Id == userId);
 
             if (trainer == null || user == null)
             {
@@ -127,13 +128,12 @@
             await userManager.RemoveFromRoleAsync(user, TrainerRole);
             await userManager.AddToRoleAsync(user, LearnerRole);
 
-            dbContext.Trainers.Remove(trainer);
-            await dbContext.SaveChangesAsync();
+            this.dbContext.Trainers.Remove(trainer);
+            await this.dbContext.SaveChangesAsync();
             return true;
         }
 
-
-        [Authorize(Roles = AdminRole)]
+      
         public async Task<bool> EditTrainer(int trainerId, string fullName, string cvUrl, TrainerStatus trainerStatus)
         {
             var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainerId);
@@ -147,7 +147,7 @@
             trainer.CVUrl = cvUrl;
             trainer.Status = trainerStatus;
 
-            await dbContext.SaveChangesAsync();
+            await this.dbContext.SaveChangesAsync();
             return true;
         }
 
@@ -156,7 +156,7 @@
         {
             var trainerUsers = await userManager.GetUsersInRoleAsync(TrainerRole);
 
-            return dbContext
+            return this.dbContext
                         .Trainers
                         .Where(t => t.Status == TrainerStatus.Active)
                         .Select(t => new AllTrainersServiceModel
@@ -176,7 +176,7 @@
         {
             var trainerUsers = await userManager.GetUsersInRoleAsync(TrainerRole);
 
-            return dbContext
+            return this.dbContext
                         .Trainers
                         .Select(t => new AllTrainersServiceModel
                         {
@@ -195,7 +195,7 @@
         {
             var trainerUsers = await userManager.GetUsersInRoleAsync(TrainerRole);
 
-            return dbContext.Trainers
+            return this.dbContext.Trainers
                         .OrderByDescending(t => t.Rating)
                         .Select(t => new AllTrainersServiceModel
                         {
@@ -213,7 +213,7 @@
 
         public async Task<Trainer> GetTrainerByTrainerId(int trainerId)
         {
-            var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainerId);
+            var trainer = await this.dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainerId);
 
             return trainer;
         }
@@ -221,23 +221,28 @@
 
         public async Task<int> GetTrainerIdByUserId(string userId)
         {
-            var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.UserId == userId);
+            var trainer = await this.dbContext.Trainers.FirstOrDefaultAsync(t => t.UserId == userId);
+
+            if(trainer == null)
+            {
+                return -1;
+            }
 
             return trainer.Id;
         }
 
         public async Task<bool> VoteForTrainer(string userId, int trainerId)
         {
-            var trainer = await dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainerId);
+            var trainer = await this.dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainerId);
 
             if (trainer == null)
             {
                 return false;
             }
 
-            if (await dbContext.Votes.FirstOrDefaultAsync(v => v.UserId == userId && v.TrainerId == trainerId) == null)
+            if (await this.dbContext.Votes.FirstOrDefaultAsync(v => v.UserId == userId && v.TrainerId == trainerId) == null)
             {
-                dbContext.Votes.Add(new Vote { UserId = userId, TrainerId = trainerId });
+                this.dbContext.Votes.Add(new Vote { UserId = userId, TrainerId = trainerId });
 
                 if (trainer.Rating == null)
                 {
@@ -251,7 +256,7 @@
                 return false;
             }
 
-            await dbContext.SaveChangesAsync();
+            await this.dbContext.SaveChangesAsync();
             return true;
         }
     }

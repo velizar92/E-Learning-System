@@ -1,4 +1,4 @@
-﻿namespace E_LearningSystem.Services.Services
+﻿namespace E_LearningSystem.Services.Services.Issues.Models
 {  
 
     public class AllIssuesServiceModel

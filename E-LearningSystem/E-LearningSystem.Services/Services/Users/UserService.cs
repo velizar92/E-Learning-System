@@ -14,7 +14,7 @@
 
         public async Task<bool> CheckIfUserHasCourse(string userId, int courseId)
         {
-            if (await dbContext.CourseUsers.FirstOrDefaultAsync(cu => cu.UserId == userId && cu.CourseId == courseId) != null)
+            if (await this.dbContext.CourseUsers.FirstOrDefaultAsync(cu => cu.UserId == userId && cu.CourseId == courseId) != null)
             {
                 return true;
             }

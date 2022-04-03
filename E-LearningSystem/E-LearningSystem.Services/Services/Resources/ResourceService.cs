@@ -17,7 +17,7 @@
 
         public bool CheckIfResourceTypeExists(int resourceTypeId)
         {
-            if (dbContext.ResourceTypes.Any(r => r.Id == resourceTypeId) == false)
+            if (this.dbContext.ResourceTypes.Any(r => r.Id == resourceTypeId) == false)
             {
                 return false;
             }
@@ -27,7 +27,7 @@
 
         public async Task<IEnumerable<string>> GetAllResourceTypes()
         {
-            return await dbContext
+            return await this.dbContext
                             .ResourceTypes
                             .Select(c => c.Name)
                             .Distinct()
@@ -37,15 +37,15 @@
 
         public async Task<bool> DeleteResource(int resourceId)
         {
-            var resource = await dbContext.Resources.FirstOrDefaultAsync(r => r.Id == resourceId);
+            var resource = await this.dbContext.Resources.FirstOrDefaultAsync(r => r.Id == resourceId);
 
             if (resource == null)
             {
                 return false;
             }
 
-            dbContext.Resources.Remove(resource);
-            await dbContext.SaveChangesAsync();
+            this.dbContext.Resources.Remove(resource);
+            await this.dbContext.SaveChangesAsync();
 
             return true;
         }
@@ -58,7 +58,7 @@
 
             List<Resource> myResources = new List<Resource>();
 
-            var myCourses = await dbContext
+            var myCourses = await this.dbContext
                                     .Courses
                                     .Where(c => c.CourseUsers.Any(cu => cu.UserId == userId))
                                     .Include(l => l.Lectures)
@@ -99,7 +99,7 @@
         {
             List<Resource> myResources = new List<Resource>();
 
-            var myCourses = await dbContext
+            var myCourses = await this.dbContext
                                     .Courses
                                     .Where(c => c.CourseUsers.Any(cu => cu.UserId == userId))
                                     .Include(l => l.Lectures)
