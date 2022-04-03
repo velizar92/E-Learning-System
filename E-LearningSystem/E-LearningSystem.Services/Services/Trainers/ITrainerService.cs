@@ -6,8 +6,8 @@
    
     public interface ITrainerService
     {
-        Task<int> CreateTrainer(string firstName, string lastName, string userName, string password,
-            string email, string profileImageUrl, string cvUrl, TrainerStatus trainerStatus);
+        Task<int> CreateTrainer(string firstName, string lastName, string email,
+            string password, IFormFile profileImage, IFormFile cv);
 
         Task<bool> EditTrainer(int trainerId, string fullName, string cvUrl, TrainerStatus trainerStatus);
 

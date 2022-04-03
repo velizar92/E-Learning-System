@@ -58,6 +58,7 @@
                         if (User.IsInRole(AdminRole))
                         {
                             <li><a asp-area="Admin" asp-controller="Trainers" asp-action="Index">Manage Trainers</a></li>
+                            <li><a asp-area="Admin" asp-controller="Courses" asp-action="Index">Manage Courses</a></li>
                         }
                         if (User.IsInRole(TrainerRole))
                         {

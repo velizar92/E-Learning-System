@@ -4,9 +4,9 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Authorization;
     using AspNetCoreHero.ToastNotification.Abstractions;
-    using E_LearningSystem.Services.Services;
-    using E_LearningSystem.Web.Models.Course;
     using E_LearningSystem.Data.Models;
+    using E_LearningSystem.Services.Services;
+    using E_LearningSystem.Web.Models.Course; 
     using E_LearningSystem.Infrastructure.Extensions; 
     using E_LearningSystem.Services.Services.Courses.Models; 
     using E_LearningSystem.Services.Services.Users;

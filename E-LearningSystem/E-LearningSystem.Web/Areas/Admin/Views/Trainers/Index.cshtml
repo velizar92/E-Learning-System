@@ -35,7 +35,7 @@
                 <td>
                     <a asp-area="Admin" asp-controller="Trainers" asp-action="DeleteTrainer" asp-route-id="@trainer.Id" asp-route-userId="@trainer.UserId" class="btn btn-danger">Delete Trainer</a>
 
-                    @if(trainer.Status.ToString() == "Pending")
+                    @if (trainer.Status.ToString() == "Pending")
                     {
                         <a asp-area="Admin" asp-controller="Trainers" asp-action="ApproveTrainer" asp-route-id="@trainer.Id" class="btn btn-success">Approve Trainer</a>
                     }
@@ -47,3 +47,7 @@
 
     </tbody>
 </table>
+
+<p></p>
+
+<a asp-area="Admin" asp-controller="Trainers" asp-action="CreateTrainer" class="btn btn-success">Create Trainer</a>

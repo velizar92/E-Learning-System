@@ -1,5 +1,6 @@
 ﻿namespace E_LearningSystem.Services.Services
 {
+    using System.Security.Claims;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,7 @@
     using E_LearningSystem.Data.Data.Models;
 
     using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
+   
 
     public class TrainerService : ITrainerService
     {
@@ -85,26 +87,37 @@
         }
 
     
-        public async Task<int> CreateTrainer(string firstName, string lastName, string userName,
-            string password, string email, string profileImageUrl, string cvUrl, TrainerStatus trainerStatus)
+        public async Task<int> CreateTrainer(string firstName, string lastName,
+            string email, string password, IFormFile profileImage, IFormFile cv)
         {
-            var user = new User()
+            User user = new()
             {
                 FirstName = firstName,
                 LastName = lastName,
-                UserName = userName,
+                UserName = email,
+                NormalizedUserName = email.ToUpper(),
                 Email = email,
-                ProfileImageUrl = profileImageUrl,
+                ProfileImageUrl = profileImage.FileName,
             };
 
+            string detailPath = Path.Combine(@"\assets\img\users", profileImage.FileName);
+            using (var stream = new FileStream(webHostEnvironment.WebRootPath + detailPath, FileMode.Create))
+            {
+                await profileImage.CopyToAsync(stream);
+            }
+
             await userManager.CreateAsync(user, password);
+            await userManager.AddToRoleAsync(user, TrainerRole);
+            await userManager.AddClaimAsync(user, new Claim("ProfileImageUrl", user.ProfileImageUrl));
 
             var trainer = new Trainer()
             {
                 FullName = firstName + " " + lastName,
-                CVUrl = cvUrl,
+                CVUrl = cv.FileName,
                 UserId = user.Id,
-                Status = trainerStatus,
+                Status = TrainerStatus.Active,
+                ProfileImageUrl= profileImage.FileName,
+                Rating = 0,
             };
 
             await this.dbContext.Trainers.AddAsync(trainer);
@@ -113,8 +126,7 @@
             return trainer.Id;
         }
 
-
-        
+   
         public async Task<bool> DeleteTrainer(int trainerId, string userId)
         {
             var trainer = await this.dbContext.Trainers.FirstOrDefaultAsync(t => t.Id == trainerId);
@@ -124,10 +136,24 @@
             {
                 return false;
             }
-       
-            await userManager.RemoveFromRoleAsync(user, TrainerRole);
-            await userManager.AddToRoleAsync(user, LearnerRole);
 
+            var trainerCoursers = dbContext.Courses.Where(c => c.TrainerId == trainerId).ToList();
+            foreach (var course in trainerCoursers)
+            {
+                var lectures = this.dbContext.Lectures.Where(r => r.CourseId == course.Id).ToList();
+                foreach (var lecture in lectures)
+                {
+                    var resources = this.dbContext.Resources.Where(r => r.LectureId == lecture.Id).ToList();
+                    foreach (var resource in resources)
+                    {                    
+                        dbContext.Resources.Remove(resource);
+                    }
+
+                    this.dbContext.Lectures.Remove(lecture);
+                }
+            }
+
+            this.dbContext.Users.Remove(user);        
             this.dbContext.Trainers.Remove(trainer);
             await this.dbContext.SaveChangesAsync();
             return true;

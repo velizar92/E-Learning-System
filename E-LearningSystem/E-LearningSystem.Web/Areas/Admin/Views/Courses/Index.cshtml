@@ -1,0 +1,44 @@
+﻿@using E_LearningSystem.Services.Services;
+
+@model IEnumerable<AllCoursesServiceModel>
+
+@{
+    int lineIndex = 1;
+}
+
+<div class="breadcrumbs">
+    <div class="container">
+        <h2>Manage courses</h2>
+    </div>
+</div>
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Course Name</th>        
+            <th scope="col">Price</th>
+            <th scope="col">Category</th>
+            <th scope="col">Actions</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <th scope="row">@lineIndex</th>
+                <td>@course.Name</td>              
+                <td>$@course.Price</td>
+                <td>@course.CategoryName</td>
+                <td>                  
+                    <a asp-area="Admin" asp-controller="Courses" asp-action="EditCourse" asp-route-id="@course.Id" class="btn btn-warning">Edit Course</a>
+                    <a asp-area="Admin" asp-controller="Courses" asp-action="DeleteCourse" asp-route-id="@course.Id" class="btn btn-danger">Delete Course</a>                
+                </td>
+            </tr>
+
+            lineIndex++;
+        }
+
+    </tbody>
+</table>

@@ -15,6 +15,10 @@
 
 <div class="row">
 
+    @if(@Model.ResourceUrls.Count() == 0){
+        <h2>There are no resources for this lecture at the moment.</h2>
+    }
+
     @foreach (var resourceUrl in @Model.ResourceUrls)
     {
         <div class="col-md-4">

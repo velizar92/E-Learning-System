@@ -173,7 +173,8 @@
                 FullName = trainerUsers[0].FirstName + " " + trainerUsers[0].LastName,
                 ProfileImageUrl = trainerUsers[0].ProfileImageUrl,
                 Status = TrainerStatus.Active,
-                CVUrl = "trainer1.pdf"
+                CVUrl = "trainer1.pdf",
+                Rating = 0
             };
 
             var trainer2 = new Trainer
@@ -182,7 +183,8 @@
                 FullName = trainerUsers[1].FirstName + " " + trainerUsers[1].LastName,
                 ProfileImageUrl = trainerUsers[1].ProfileImageUrl,
                 Status = TrainerStatus.Active,
-                CVUrl = "trainer2.pdf"
+                CVUrl = "trainer2.pdf",
+                Rating = 0
             };
 
             var trainer3 = new Trainer
@@ -191,7 +193,8 @@
                 FullName = trainerUsers[2].FirstName + " " + trainerUsers[2].LastName,
                 ProfileImageUrl = trainerUsers[2].ProfileImageUrl,
                 Status = TrainerStatus.Active,
-                CVUrl = "trainer3.pdf"
+                CVUrl = "trainer3.pdf",
+                Rating = 0
             };
 
             var trainer4 = new Trainer
@@ -200,7 +203,8 @@
                 FullName = trainerUsers[3].FirstName + " " + trainerUsers[3].LastName,
                 ProfileImageUrl = trainerUsers[3].ProfileImageUrl,
                 Status = TrainerStatus.Active,
-                CVUrl = "trainer4.pdf"
+                CVUrl = "trainer4.pdf",
+                Rating = 0
             };
 
             var trainer5 = new Trainer
@@ -209,7 +213,8 @@
                 FullName = trainerUsers[4].FirstName + " " + trainerUsers[4].LastName,
                 ProfileImageUrl = trainerUsers[4].ProfileImageUrl,
                 Status = TrainerStatus.Active,
-                CVUrl = "trainer5.pdf"
+                CVUrl = "trainer5.pdf",
+                Rating = 0
             };
 
             var trainer6 = new Trainer
@@ -218,7 +223,8 @@
                 FullName = trainerUsers[5].FirstName + " " + trainerUsers[5].LastName,
                 ProfileImageUrl = trainerUsers[5].ProfileImageUrl,
                 Status = TrainerStatus.Active,
-                CVUrl = "trainer6.pdf"
+                CVUrl = "trainer6.pdf",
+                Rating = 0
             };
 
             dbContext.Trainers.AddRange(trainer1, trainer2, trainer3, trainer4, trainer5, trainer6);
