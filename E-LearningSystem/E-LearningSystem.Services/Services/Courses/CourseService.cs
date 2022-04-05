@@ -7,23 +7,22 @@
     using Microsoft.EntityFrameworkCore;
     using E_LearningSystem.Data.Data;
     using E_LearningSystem.Data.Models;
+    using E_LearningSystem.Data.Data.Models;
     using E_LearningSystem.Services.Services.Courses.Models;
     using E_LearningSystem.Services.Services.Lectures.Models;
-    using Microsoft.AspNetCore.Identity;
-    using E_LearningSystem.Data.Data.Models;
+    
 
     public class CourseService : ICourseService
     {
         private readonly ELearningSystemDbContext dbContext;
-        private readonly IWebHostEnvironment webHostEnvironment;
-        private readonly UserManager<User> userManager;
+        private readonly IWebHostEnvironment webHostEnvironment;     
 
-        public CourseService(ELearningSystemDbContext dbContext, IWebHostEnvironment webHostEnvironment, UserManager<User> userManager)
+        public CourseService(ELearningSystemDbContext dbContext, IWebHostEnvironment webHostEnvironment)
         {
             this.dbContext = dbContext;
-            this.webHostEnvironment = webHostEnvironment;
-            this.userManager = userManager;
+            this.webHostEnvironment = webHostEnvironment;           
         }
+
 
         public bool CheckIfCourseCategoryExists(int _categoryId)
         {
@@ -141,22 +140,20 @@
 
                  
         public async Task<IEnumerable<AllCoursesServiceModel>> GetAllCourses()
-        {
-            var trainerUsers = await userManager.GetUsersInRoleAsync("Trainer");
-
+        {          
             return await this.dbContext
-                            .Courses
-                            .Select(c => new AllCoursesServiceModel
-                            {
-                                Id = c.Id,
-                                TrainerId = c.TrainerId,
-                                Name = c.Name,
-                                Description = c.Description,
-                                Price = c.Price,
-                                ImageUrl = c.ImageUrl,
-                                CategoryName = c.CourseCategory.Name
-                            })
-                            .ToListAsync();
+                                .Courses
+                                .Select(c => new AllCoursesServiceModel
+                                {
+                                    Id = c.Id,
+                                    TrainerId = c.TrainerId,
+                                    Name = c.Name,
+                                    Description = c.Description,
+                                    Price = c.Price,
+                                    ImageUrl = c.ImageUrl,
+                                    CategoryName = c.CourseCategory.Name
+                                })
+                                .ToListAsync();
 
         }
 
@@ -183,6 +180,11 @@
         public async Task<int> GetCourseCreatorId(int courseId)
         {
             var course = await this.dbContext.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync();
+
+            if(course == null)
+            {
+                return -1;
+            }
 
             return course.TrainerId;
         }
@@ -235,8 +237,7 @@
                            .ToListAsync();
         }
 
-
-        
+   
         public async Task<IEnumerable<AllCoursesServiceModel>> GetMyCourses(string userId)
         {
             return await this.dbContext
@@ -255,6 +256,7 @@
                              })
                              .ToListAsync();
         }
+
 
         public async Task<IEnumerable<AllCoursesServiceModel>> GetMyCourses(int trainerId)
         {
@@ -275,7 +277,5 @@
                              .ToListAsync();
           
         }
-
-
     }
 }

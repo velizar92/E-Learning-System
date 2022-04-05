@@ -123,9 +123,7 @@
                 LectureName = r.Lecture.Name
             });
 
-            return resources;
-
-           
+            return resources;         
         }
 
 

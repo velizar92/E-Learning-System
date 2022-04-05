@@ -22,7 +22,7 @@
         private readonly INotyfService notyfService;
         private readonly ITrainerService trainerService;
         private readonly IUserService userService;
-        private readonly UserManager<User> userManagerService;
+        private readonly UserManager<User> userManager;
 
 
         public CoursesController(
@@ -39,7 +39,7 @@
             this.notyfService = notyfService;
             this.userService = userService;
             this.trainerService = trainerService;
-            this.userManagerService = userManager;
+            this.userManager = userManager;
         }
 
 
@@ -90,30 +90,31 @@
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> EditCourse(int id)
         {
+            var user = await userManager.GetUserAsync(HttpContext.User);
             int courseCreatorId = await this.courseService.GetCourseCreatorId(id);
             int currentTrainerId = await this.trainerService.GetTrainerIdByUserId(User.Id());
-
-            if (currentTrainerId != courseCreatorId)
+          
+            if (currentTrainerId == courseCreatorId || await userManager.IsInRoleAsync(user, AdminRole))
             {
-                return Unauthorized();
+                var course = await this.courseService.GetCourseById(id);
+                if (course == null)
+                {
+                    return NotFound();
+                }
+
+                CourseFormModel courseFormModel = new CourseFormModel
+                {
+                    Name = course.Name,
+                    Description = course.Description,
+                    Price = course.Price,
+                    CategoryId = course.CategoryId,
+                    Categories = await courseService.GetAllCourseCategories()
+                };
+
+                return View(courseFormModel);
             }
 
-            var course = await this.courseService.GetCourseById(id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-
-            CourseFormModel courseFormModel = new CourseFormModel
-            {
-                Name = course.Name,
-                Description = course.Description,
-                Price = course.Price,
-                CategoryId = course.CategoryId,
-                Categories = await courseService.GetAllCourseCategories()
-            };
-
-            return View(courseFormModel);
+            return Unauthorized();
         }
 
 
@@ -250,22 +251,23 @@
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
+            var user = await userManager.GetUserAsync(HttpContext.User);
             int courseCreatorId = await this.courseService.GetCourseCreatorId(id);
             int currentTrainerId = await this.trainerService.GetTrainerIdByUserId(User.Id());
 
-            if (currentTrainerId != courseCreatorId)
+            if (currentTrainerId == courseCreatorId || await userManager.IsInRoleAsync(user, AdminRole))
             {
-                return Unauthorized();
+                var result = await courseService.DeleteCourse(id);
+
+                if (result == false)
+                {
+                    return BadRequest();
+                }
+
+                return RedirectToAction(nameof(AllCourses));
             }
 
-            var result = await courseService.DeleteCourse(id);
-
-            if (result == false)
-            {
-                return BadRequest();
-            }
-
-            return RedirectToAction(nameof(AllCourses));
+            return Unauthorized();         
         }
     }
 }

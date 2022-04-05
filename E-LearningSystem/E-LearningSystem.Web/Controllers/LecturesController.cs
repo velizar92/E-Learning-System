@@ -17,7 +17,7 @@
         private readonly ILectureService lectureService;
         private readonly IUserService userService;
         private readonly INotyfService notyfService;
-        private readonly UserManager<User> userManagerService;
+        private readonly UserManager<User> userManager;
 
 
         public LecturesController(
@@ -29,7 +29,7 @@
             this.lectureService = lectureService;
             this.userService = userService;
             this.notyfService = notyfService;
-            this.userManagerService = userManagerService;
+            this.userManager = userManagerService;
         }
 
 
@@ -118,11 +118,12 @@
         [Authorize]
         public async Task<IActionResult> Details(int id)
         {
+            var user = await userManager.GetUserAsync(HttpContext.User);
             var lectureDetails = await lectureService.GetLectureDetails(id);
 
             var isBuyed = await this.userService.CheckIfUserHasCourse(User.Id(), lectureDetails.CourseId);
 
-            if (isBuyed == true)
+            if (isBuyed == true || await userManager.IsInRoleAsync(user, AdminRole))
             {
                 return View(lectureDetails);
             }

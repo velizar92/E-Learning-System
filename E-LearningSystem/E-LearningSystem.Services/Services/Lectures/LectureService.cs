@@ -46,7 +46,7 @@
             var course = await this.dbContext.Courses.FirstOrDefaultAsync(c => c.Id == courseId);
             if (course == null)
             {
-                return 0;
+                return -1;
             }
 
             course.Lectures.Add(lecture);
@@ -62,7 +62,7 @@
 
             if (lecture == null)
             {
-                return (false, 0);
+                return (false, -1);
             }
 
             var resources = this.dbContext.Resources.Where(r => r.LectureId == lectureId).ToList();
@@ -118,17 +118,17 @@
         public async Task<LectureServiceModel> GetLectureById(int lectureId)
         {
             return await this.dbContext
-                             .Lectures
-                             .Where(l => l.Id == lectureId)
-                             .Select(l => new LectureServiceModel
-                             {
-                                 Id = l.Id,
-                                 CourseId = l.CourseId,
-                                 Name = l.Name,
-                                 Description = l.Description,
-                                 Resources = l.Resources.ToArray(),
-                             })
-                             .FirstOrDefaultAsync();
+                                 .Lectures
+                                 .Where(l => l.Id == lectureId)
+                                 .Select(l => new LectureServiceModel
+                                 {
+                                     Id = l.Id,
+                                     CourseId = l.CourseId,
+                                     Name = l.Name,
+                                     Description = l.Description,
+                                     Resources = l.Resources.ToArray(),
+                                 })
+                                 .FirstOrDefaultAsync();
         }
 
 
@@ -136,16 +136,16 @@
         {
             return await this.dbContext
                  .Lectures
-                 .Where(l => l.Id == lectureId)
-                 .Select(l => new LectureDetailsServiceModel
-                 {
-                     Id = l.Id,
-                     CourseId = l.CourseId,
-                     Name = l.Name,
-                     Description = l.Description,
-                     ResourceUrls = l.Resources.Select(x => x.Name).ToArray()
-                 })
-                 .FirstOrDefaultAsync();
+                     .Where(l => l.Id == lectureId)
+                     .Select(l => new LectureDetailsServiceModel
+                     {
+                         Id = l.Id,
+                         CourseId = l.CourseId,
+                         Name = l.Name,
+                         Description = l.Description,
+                         ResourceUrls = l.Resources.Select(x => x.Name).ToArray()
+                     })
+                     .FirstOrDefaultAsync();
         }
 
 

@@ -53,10 +53,7 @@
             {
                 await cvUrl.CopyToAsync(stream);
             }
-
-            await userManager.RemoveFromRoleAsync(user, LearnerRole);
-            await userManager.AddToRoleAsync(user, TrainerRole);
-
+          
             this.dbContext.Entry(user).State = EntityState.Modified;
 
             var trainer = new Trainer
@@ -79,9 +76,10 @@
 
         public async Task<bool> CheckIfTrainerExists(string userId)
         {
-            var isUserAlreadyTrainer = await this.dbContext
-                .Trainers
-                .AnyAsync(d => d.UserId == userId);
+            var isUserAlreadyTrainer = 
+                                await this.dbContext
+                                            .Trainers
+                                            .AnyAsync(d => d.UserId == userId);
 
             return isUserAlreadyTrainer;
         }
@@ -179,61 +177,55 @@
 
 
         public async Task<IEnumerable<AllTrainersServiceModel>> GetActiveTrainers()
-        {
-            var trainerUsers = await userManager.GetUsersInRoleAsync(TrainerRole);
-
+        {          
             return this.dbContext
-                        .Trainers
-                        .Where(t => t.Status == TrainerStatus.Active)
-                        .Select(t => new AllTrainersServiceModel
-                        {
-                            Id = t.Id,
-                            UserId = t.UserId,
-                            FullName = t.FullName,
-                            ProfileImageUrl = t.ProfileImageUrl,
-                            Rating = t.Rating,
-                            Status = t.Status
-                        })
-                        .ToList();
+                            .Trainers
+                            .Where(t => t.Status == TrainerStatus.Active)
+                            .Select(t => new AllTrainersServiceModel
+                            {
+                                Id = t.Id,
+                                UserId = t.UserId,
+                                FullName = t.FullName,
+                                ProfileImageUrl = t.ProfileImageUrl,
+                                Rating = t.Rating,
+                                Status = t.Status
+                            })
+                            .ToList();
         }
 
 
         public async Task<IEnumerable<AllTrainersServiceModel>> GetAllTrainers()
-        {
-            var trainerUsers = await userManager.GetUsersInRoleAsync(TrainerRole);
-
+        {          
             return this.dbContext
-                        .Trainers
-                        .Select(t => new AllTrainersServiceModel
-                        {
-                            Id = t.Id,
-                            UserId = t.UserId,
-                            FullName = t.FullName,
-                            ProfileImageUrl = t.ProfileImageUrl,
-                            Rating = t.Rating,
-                            Status = t.Status
-                        })
-                        .ToList();
+                            .Trainers
+                            .Select(t => new AllTrainersServiceModel
+                            {
+                                Id = t.Id,
+                                UserId = t.UserId,
+                                FullName = t.FullName,
+                                ProfileImageUrl = t.ProfileImageUrl,
+                                Rating = t.Rating,
+                                Status = t.Status
+                            })
+                            .ToList();
         }
 
 
         public async Task<IEnumerable<AllTrainersServiceModel>> GetTopTrainers()
-        {
-            var trainerUsers = await userManager.GetUsersInRoleAsync(TrainerRole);
-
+        {          
             return this.dbContext.Trainers
-                        .OrderByDescending(t => t.Rating)
-                        .Select(t => new AllTrainersServiceModel
-                        {
-                            Id = t.Id,
-                            UserId = t.UserId,
-                            FullName = t.FullName,
-                            ProfileImageUrl = t.ProfileImageUrl,
-                            Rating = t.Rating,
-                            Status = t.Status
-                        })
-                        .Take(3)
-                        .ToList();
+                                    .OrderByDescending(t => t.Rating)
+                                    .Select(t => new AllTrainersServiceModel
+                                    {
+                                        Id = t.Id,
+                                        UserId = t.UserId,
+                                        FullName = t.FullName,
+                                        ProfileImageUrl = t.ProfileImageUrl,
+                                        Rating = t.Rating,
+                                        Status = t.Status
+                                    })
+                                    .Take(3)
+                                    .ToList();
         }
 
 

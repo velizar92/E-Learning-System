@@ -9,9 +9,9 @@
     {
         private readonly ELearningSystemDbContext dbContext;
 
-        public CommentService(ELearningSystemDbContext _dbContext)
+        public CommentService(ELearningSystemDbContext dbContext)
         {
-            this.dbContext = _dbContext;
+            this.dbContext = dbContext;
         }
 
 
@@ -23,7 +23,7 @@
 
             if (lecture == null)
             {
-                return 0;
+                return -1;
             }
 
             var comment = new Comment()

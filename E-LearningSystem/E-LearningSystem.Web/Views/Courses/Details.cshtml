@@ -36,12 +36,12 @@
                             {
                                 <a asp-controller="Issues" asp-action="MyIssues" asp-route-courseId="@Model.Id">Check for issues</a>
                             }
-                            <p>
+                        <p>
                                 @if (User.IsInRole(LearnerRole) && Model.HasCourse == true)
                                 {
                                 <a asp-controller="Issues" asp-action="MyReportedIssues" asp-route-id="@Model.Id">See your reported issues</a>
                                 }
-                            </p>
+                        </p>
                         }
                     </p>
                 </div>
@@ -111,7 +111,12 @@
                                 <a asp-controller="Lectures" asp-action="Details" asp-route-id="@lecture.Id" class="btn btn-primary">View More</a>
                             }
                         }
-
+                        @if (User.IsInRole(AdminRole))
+                        {
+                            <a asp-controller="Lectures" asp-action="EditLecture" asp-route-id="@lecture.Id" asp-route-courseId="@Model.Id" class="btn btn-secondary">Edit Lecture</a>
+                            <a asp-controller="Lectures" asp-action="DeleteLecture" asp-route-id="@lecture.Id" class="btn btn-danger">Delete Lecture</a>
+                            <a asp-controller="Lectures" asp-action="Details" asp-route-id="@lecture.Id" class="btn btn-primary">View More</a>
+                        }
                     </li>
                 }
             </ol>

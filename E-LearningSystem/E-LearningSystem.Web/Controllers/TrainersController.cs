@@ -18,16 +18,16 @@
 
         private readonly ITrainerService trainerService;
         private readonly INotyfService notyfService;
-        private readonly UserManager<User> userManagerService;
+        private readonly UserManager<User> userManager;
 
         public TrainersController(
             ITrainerService trainerService,
             INotyfService notyfService,
-            UserManager<User> userManagerService)
+            UserManager<User> userManager)
         {
             this.trainerService = trainerService;
             this.notyfService = notyfService;
-            this.userManagerService = userManagerService;
+            this.userManager = userManager;
         }
 
         
@@ -70,7 +70,7 @@
         public async Task<IActionResult> BecomeTrainer(BecomeTrainerFormModel formModel)
         {
             var userId = this.User.Id();
-            var user = await userManagerService.GetUserAsync(HttpContext.User);
+            var user = await userManager.GetUserAsync(HttpContext.User);
 
             var isUserAlreadyTrainer = await this.trainerService.CheckIfTrainerExists(userId);
 
@@ -83,6 +83,9 @@
             {
                 return View(formModel);
             }
+
+            await userManager.RemoveFromRoleAsync(user, LearnerRole);
+            await userManager.AddToRoleAsync(user, TrainerRole);
 
             await this.trainerService.BecomeTrainer(user, formModel.FullName, formModel.CVUrl);
            
