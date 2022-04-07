@@ -15,7 +15,7 @@
         }
 
 
-        public async Task<int> CreateComment(int lectureId, string userId, string content)
+        public async Task<bool> CreateComment(int lectureId, string userId, string content)
         {
             var lecture = await this.dbContext
                              .Lectures
@@ -23,7 +23,7 @@
 
             if (lecture == null)
             {
-                return -1;
+                return false;
             }
 
             var comment = new Comment()
@@ -36,7 +36,7 @@
             await this.dbContext.Comments.AddAsync(comment);
             await this.dbContext.SaveChangesAsync();
 
-            return comment.Id;
+            return true;
         }
 
 
@@ -50,6 +50,7 @@
             {
                 int lectureId = comment.LectureId;
                 this.dbContext.Comments.Remove(comment);
+                await this.dbContext.SaveChangesAsync();
                 return (true, lectureId);
             }
 

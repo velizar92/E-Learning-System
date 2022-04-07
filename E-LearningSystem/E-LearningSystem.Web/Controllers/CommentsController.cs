@@ -61,7 +61,7 @@
                 return View(commentModel);
             }
 
-            int commentId = await this.commentService.CreateComment(commentModel.LectureId, userId, commentModel.Content);
+           bool result = await this.commentService.CreateComment(commentModel.LectureId, userId, commentModel.Content);
 
             return RedirectToAction(nameof(AllComments), new { commentModel.LectureId });
         }

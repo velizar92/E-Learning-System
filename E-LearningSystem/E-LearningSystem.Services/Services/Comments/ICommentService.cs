@@ -4,7 +4,7 @@
 
     public interface ICommentService
     {
-        Task<int> CreateComment(int lectureId, string userId, string content);
+        Task<bool> CreateComment(int lectureId, string userId, string content);
 
         Task<(bool, int?)> EditComment(int commentId, string content);
 
