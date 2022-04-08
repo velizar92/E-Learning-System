@@ -3,14 +3,19 @@
     using Microsoft.AspNetCore.Mvc;
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Web.Areas.Admin.Models;
+    using E_LearningSystem.Services.Services.Storage;
 
     public class TrainersController : AdminController
     {
         private readonly ITrainerService trainerService;
+        private readonly IStorageService storageService;
 
-        public TrainersController(ITrainerService trainerService)
+        public TrainersController(
+            ITrainerService trainerService,
+            IStorageService storageService)
         {
             this.trainerService = trainerService;
+            this.storageService = storageService;   
         }
         
 
@@ -37,8 +42,11 @@
                                             formModel.LastName,
                                             formModel.Email,
                                             formModel.Password,
-                                            formModel.ProfileImage,
-                                            formModel.CV);
+                                            formModel.ProfileImage.FileName,
+                                            formModel.CV.FileName);
+
+            await this.storageService.SaveFile(@"\assets\img\users", formModel.ProfileImage);
+            await this.storageService.SaveFile(@"\assets\resources", formModel.CV);
 
             return RedirectToAction(nameof(Index));
         }

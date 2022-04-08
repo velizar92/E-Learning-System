@@ -8,25 +8,29 @@
     using AspNetCoreHero.ToastNotification.Abstractions;
     using E_LearningSystem.Infrastructure.Extensions;
     using E_LearningSystem.Web.Models.Trainers;
+    using E_LearningSystem.Services.Services.Storage;
 
     using static E_LearningSystem.Infrastructure.Messages.Messages;
     using static E_LearningSystem.Infrastructure.Messages.WarningMessages;
     using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
-   
+    
     public class TrainersController : Controller
     {
 
         private readonly ITrainerService trainerService;
         private readonly INotyfService notyfService;
+        private readonly IStorageService storageService;
         private readonly UserManager<User> userManager;
 
         public TrainersController(
             ITrainerService trainerService,
             INotyfService notyfService,
+            IStorageService storageService,
             UserManager<User> userManager)
         {
             this.trainerService = trainerService;
             this.notyfService = notyfService;
+            this.storageService = storageService;
             this.userManager = userManager;
         }
 
@@ -87,7 +91,9 @@
             await userManager.RemoveFromRoleAsync(user, LearnerRole);
             await userManager.AddToRoleAsync(user, TrainerRole);
 
-            await this.trainerService.BecomeTrainer(user, formModel.FullName, formModel.CVUrl);
+            await this.trainerService.BecomeTrainer(user, formModel.FullName, formModel.CVUrl.FileName);
+
+            await this.storageService.SaveFile(@"\assets\resources", formModel.CVUrl);
            
             return RedirectToAction(nameof(AllTrainers));
         }

@@ -1,9 +1,7 @@
 ﻿namespace E_LearningSystem.Services.Services
 {
-    using System.Security.Claims;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Hosting;
+    using System.Security.Claims;   
+    using Microsoft.AspNetCore.Identity; 
     using Microsoft.EntityFrameworkCore;
     using E_LearningSystem.Data.Data;
     using E_LearningSystem.Data.Enums;
@@ -12,21 +10,16 @@
 
     using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
    
-
     public class TrainerService : ITrainerService
     {
-        private readonly ELearningSystemDbContext dbContext;
-        private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly ELearningSystemDbContext dbContext;      
         private readonly UserManager<User> userManager;
        
         public TrainerService(
-            ELearningSystemDbContext dbContext,
-            IWebHostEnvironment webHostEnvironment,
-            UserManager<User> userManager,
-            RoleManager<IdentityRole> roleManager)
+            ELearningSystemDbContext dbContext,         
+            UserManager<User> userManager)
         {
-            this.dbContext = dbContext;
-            this.webHostEnvironment = webHostEnvironment;
+            this.dbContext = dbContext;           
             this.userManager = userManager;        
         }
 
@@ -46,14 +39,8 @@
         }
 
 
-        public async Task BecomeTrainer(User user, string fullName, IFormFile cvUrl)
-        {
-            string detailPath = Path.Combine(@"\assets\resources", cvUrl.FileName);
-            using (var stream = new FileStream(webHostEnvironment.WebRootPath + detailPath, FileMode.Create))
-            {
-                await cvUrl.CopyToAsync(stream);
-            }
-          
+        public async Task BecomeTrainer(User user, string fullName, string cvUrl)
+        {           
             this.dbContext.Entry(user).State = EntityState.Modified;
 
             var trainer = new Trainer
@@ -61,7 +48,7 @@
                 FullName = fullName,
                 ProfileImageUrl = user.ProfileImageUrl,
                 Rating = 0,
-                CVUrl = cvUrl.FileName,
+                CVUrl = cvUrl,
                 Status = TrainerStatus.Pending,
                 UserId = user.Id
             };
@@ -86,7 +73,7 @@
 
     
         public async Task<int> CreateTrainer(string firstName, string lastName,
-            string email, string password, IFormFile profileImage, IFormFile cv)
+            string email, string password, string profileImageUrl, string cvUrl)
         {
             User user = new()
             {
@@ -95,14 +82,8 @@
                 UserName = email,
                 NormalizedUserName = email.ToUpper(),
                 Email = email,
-                ProfileImageUrl = profileImage.FileName,
+                ProfileImageUrl = profileImageUrl,
             };
-
-            string detailPath = Path.Combine(@"\assets\img\users", profileImage.FileName);
-            using (var stream = new FileStream(webHostEnvironment.WebRootPath + detailPath, FileMode.Create))
-            {
-                await profileImage.CopyToAsync(stream);
-            }
 
             await userManager.CreateAsync(user, password);
             await userManager.AddToRoleAsync(user, TrainerRole);
@@ -111,10 +92,10 @@
             var trainer = new Trainer()
             {
                 FullName = firstName + " " + lastName,
-                CVUrl = cv.FileName,
+                CVUrl = cvUrl,
                 UserId = user.Id,
                 Status = TrainerStatus.Active,
-                ProfileImageUrl= profileImage.FileName,
+                ProfileImageUrl= profileImageUrl,
                 Rating = 0,
             };
 

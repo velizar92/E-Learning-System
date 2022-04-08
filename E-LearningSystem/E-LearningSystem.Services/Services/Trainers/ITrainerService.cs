@@ -1,13 +1,12 @@
 ﻿namespace E_LearningSystem.Services.Services
 {
-    using Microsoft.AspNetCore.Http;
     using E_LearningSystem.Data.Enums;
     using E_LearningSystem.Data.Models;
    
     public interface ITrainerService
     {
         Task<int> CreateTrainer(string firstName, string lastName, string email,
-            string password, IFormFile profileImage, IFormFile cv);
+            string password, string profileImageUrl, string cvUrl);
 
         Task<bool> EditTrainer(int trainerId, string fullName, string cvUrl, TrainerStatus trainerStatus);
 
@@ -25,7 +24,7 @@
 
         Task<bool> VoteForTrainer(string userId, int trainerId);
 
-        Task BecomeTrainer(User user, string fullName, IFormFile cvUrl);
+        Task BecomeTrainer(User user, string fullName, string cvUrl);
 
         Task<bool> CheckIfTrainerExists(string userId);
 
