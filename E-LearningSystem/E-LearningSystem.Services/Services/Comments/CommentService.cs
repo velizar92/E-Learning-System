@@ -58,25 +58,6 @@
         }
 
 
-        public async Task<(bool, int?)> EditComment(int commentId, string content)
-        {
-            var comment = await this.dbContext
-                            .Comments
-                            .Where(c => c.Id == commentId).FirstOrDefaultAsync();
-
-            if (comment != null)
-            {
-                int lectureId = comment.LectureId;
-                await this.dbContext.SaveChangesAsync();
-                return (true, lectureId);
-            }
-
-            comment.Content = content;
-
-            return (false, null);
-        }
-
-
         public Task<CommentServiceModel> GetCommentById(int commentId)
         {
             var comment = this.dbContext
