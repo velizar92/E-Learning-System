@@ -7,6 +7,7 @@ namespace E_LearningSystem.Tests
     public abstract class SqliteDbContext
     {
         private const string InMemoryConnectionString = "DataSource=:memory:";
+
         private readonly SqliteConnection _connection;
 
         protected readonly ELearningSystemDbContext DbContext;
@@ -16,8 +17,8 @@ namespace E_LearningSystem.Tests
             _connection = new SqliteConnection(InMemoryConnectionString);
             _connection.Open();
             var options = new DbContextOptionsBuilder<ELearningSystemDbContext>()
-                    .UseSqlite(_connection)
-                    .Options;
+                     .UseSqlite(_connection)
+                     .Options;
             DbContext = new ELearningSystemDbContext(options);
             DbContext.Database.EnsureCreated();
         }
