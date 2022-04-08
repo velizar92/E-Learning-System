@@ -178,7 +178,7 @@
 
         public async Task<IEnumerable<AllTrainersServiceModel>> GetActiveTrainers()
         {          
-            return this.dbContext
+            return await this.dbContext
                             .Trainers
                             .Where(t => t.Status == TrainerStatus.Active)
                             .Select(t => new AllTrainersServiceModel
@@ -190,13 +190,13 @@
                                 Rating = t.Rating,
                                 Status = t.Status
                             })
-                            .ToList();
+                            .ToListAsync();
         }
 
 
         public async Task<IEnumerable<AllTrainersServiceModel>> GetAllTrainers()
         {          
-            return this.dbContext
+            return await this.dbContext
                             .Trainers
                             .Select(t => new AllTrainersServiceModel
                             {
@@ -207,13 +207,13 @@
                                 Rating = t.Rating,
                                 Status = t.Status
                             })
-                            .ToList();
+                            .ToListAsync();
         }
 
 
         public async Task<IEnumerable<AllTrainersServiceModel>> GetTopTrainers()
         {          
-            return this.dbContext.Trainers
+            return await this.dbContext.Trainers
                                     .OrderByDescending(t => t.Rating)
                                     .Select(t => new AllTrainersServiceModel
                                     {
@@ -225,7 +225,7 @@
                                         Status = t.Status
                                     })
                                     .Take(3)
-                                    .ToList();
+                                    .ToListAsync();
         }
 
 

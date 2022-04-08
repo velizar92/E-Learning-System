@@ -67,7 +67,7 @@
                                 courseModel.Description,
                                 courseModel.Price,
                                 courseModel.CategoryId,
-                                courseModel.PictureFile);
+                                courseModel.PictureFile.FileName);
 
             if (isEdited == false)
             {

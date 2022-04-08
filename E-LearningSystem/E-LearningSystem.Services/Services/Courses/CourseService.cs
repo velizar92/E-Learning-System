@@ -2,25 +2,22 @@
 {
     using System.Threading.Tasks;
     using System.Collections.Generic;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
     using E_LearningSystem.Data.Data;
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Data.Data.Models;
     using E_LearningSystem.Services.Services.Courses.Models;
     using E_LearningSystem.Services.Services.Lectures.Models;
-    
+
 
     public class CourseService : ICourseService
     {
         private readonly ELearningSystemDbContext dbContext;
-        private readonly IWebHostEnvironment webHostEnvironment;     
+      
 
-        public CourseService(ELearningSystemDbContext dbContext, IWebHostEnvironment webHostEnvironment)
+        public CourseService(ELearningSystemDbContext dbContext)
         {
-            this.dbContext = dbContext;
-            this.webHostEnvironment = webHostEnvironment;           
+            this.dbContext = dbContext;          
         }
 
 
@@ -35,20 +32,14 @@
         }
 
 
-        public async Task<int> CreateCourse(string userId, int trainerId, string name, string description, double price, int categoryId, IFormFile pictureFile)
+        public async Task<int> CreateCourse(string userId, int trainerId, string name, string description, double price, int categoryId, string pictureFileName)
         {
-            string detailPath = Path.Combine(@"\assets\img\courses", pictureFile.FileName);
-            using (var stream = new FileStream(webHostEnvironment.WebRootPath + detailPath, FileMode.Create))
-            {
-                await pictureFile.CopyToAsync(stream);
-            }
-
             Course course = new Course()
             {
                 TrainerId = trainerId,
                 Name = name,
                 Description = description,
-                ImageUrl = pictureFile.FileName,
+                ImageUrl = pictureFileName,
                 Price = price,
                 CourseCategoryId = categoryId
             };
@@ -56,9 +47,9 @@
             this.dbContext.Courses.Add(course);
             await this.dbContext.SaveChangesAsync();
 
-            var courseData = this.dbContext.Courses.FirstOrDefault(c => c.TrainerId == trainerId && c.Name == name);                     
-            var user = await this.dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);      
-            user.CourseUsers.Add(new CourseUser {CourseId = courseData.Id, UserId = userId});
+            var courseData = this.dbContext.Courses.FirstOrDefault(c => c.TrainerId == trainerId && c.Name == name);
+            var user = await this.dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            user.CourseUsers.Add(new CourseUser { CourseId = courseData.Id, UserId = userId });
 
             await this.dbContext.SaveChangesAsync();
 
@@ -76,13 +67,12 @@
             }
 
             var lectures = this.dbContext.Lectures.Where(r => r.CourseId == courseId).ToList();
-       
+
             foreach (var lecture in lectures)
             {
                 var resources = this.dbContext.Resources.Where(r => r.LectureId == lecture.Id).ToList();
                 foreach (var resource in resources)
-                {
-                    File.Delete(Path.Combine(webHostEnvironment.WebRootPath, resource.Name));
+                {                  
                     dbContext.Resources.Remove(resource);
                 }
 
@@ -96,7 +86,7 @@
         }
 
 
-        public async Task<bool> EditCourse(int courseId, string name, string description, double price, int categoryId, IFormFile pictureFile)
+        public async Task<bool> EditCourse(int courseId, string name, string description, double price, int categoryId, string pictureFileName)
         {
             var course = await this.dbContext.Courses.FindAsync(courseId);
 
@@ -105,16 +95,7 @@
                 return false;
             }
 
-            if(pictureFile != null)
-            {
-                string detailPath = Path.Combine(@"\assets\img\courses", pictureFile.FileName);
-                using (var stream = new FileStream(webHostEnvironment.WebRootPath + detailPath, FileMode.Create))
-                {
-                    await pictureFile.CopyToAsync(stream);
-                }
-                course.ImageUrl = pictureFile.FileName;
-            }
-          
+            course.ImageUrl = pictureFileName;
             course.Name = name;
             course.Description = description;
             course.Price = price;
@@ -136,11 +117,11 @@
                                 Name = c.Name,
                             })
                            .ToListAsync();
-        } 
+        }
 
-                 
+
         public async Task<IEnumerable<AllCoursesServiceModel>> GetAllCourses()
-        {          
+        {
             return await this.dbContext
                                 .Courses
                                 .Select(c => new AllCoursesServiceModel
@@ -160,13 +141,13 @@
         public async Task<CourseServiceModel> GetCourseById(int id)
         {
             var course = await this.dbContext
-                                        .Courses    
+                                        .Courses
                                         .Where(c => c.Id == id)
                                         .Select(c => new CourseServiceModel
-                                        { 
+                                        {
                                             Id = c.Id,
                                             Name = c.Name,
-                                            Description= c.Description,
+                                            Description = c.Description,
                                             ImageUrl = c.ImageUrl,
                                             Price = c.Price,
                                             CategoryId = c.CourseCategoryId
@@ -181,7 +162,7 @@
         {
             var course = await this.dbContext.Courses.Where(c => c.Id == courseId).FirstOrDefaultAsync();
 
-            if(course == null)
+            if (course == null)
             {
                 return -1;
             }
@@ -191,7 +172,7 @@
 
 
         public async Task<CourseDetailsServiceModel> GetCourseDetails(int courseId)
-        {       
+        {
             return await this.dbContext
                            .Courses
                            .Where(c => c.Id == courseId)
@@ -212,7 +193,7 @@
                                })
                                .ToList()
                            })
-                           .FirstOrDefaultAsync();          
+                           .FirstOrDefaultAsync();
         }
 
 
@@ -237,7 +218,7 @@
                            .ToListAsync();
         }
 
-   
+
         public async Task<IEnumerable<AllCoursesServiceModel>> GetMyCourses(string userId)
         {
             return await this.dbContext
@@ -275,7 +256,7 @@
                                  AssignedStudents = c.AssignedStudents
                              })
                              .ToListAsync();
-          
+
         }
     }
 }

@@ -6,14 +6,15 @@
     using AspNetCoreHero.ToastNotification.Abstractions;
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services;
-    using E_LearningSystem.Web.Models.Course; 
-    using E_LearningSystem.Infrastructure.Extensions; 
-    using E_LearningSystem.Services.Services.Courses.Models; 
+    using E_LearningSystem.Web.Models.Course;
+    using E_LearningSystem.Infrastructure.Extensions;
+    using E_LearningSystem.Services.Services.Courses.Models;
     using E_LearningSystem.Services.Services.Users;
+    using E_LearningSystem.Services.Services.Storage;
 
     using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
     using static E_LearningSystem.Infrastructure.Messages.ErrorMessages;
-    
+
 
     public class CoursesController : Controller
     {
@@ -22,6 +23,7 @@
         private readonly INotyfService notyfService;
         private readonly ITrainerService trainerService;
         private readonly IUserService userService;
+        private readonly IStorageService storageService;
         private readonly UserManager<User> userManager;
 
 
@@ -30,6 +32,7 @@
             IShoppingCartService shoppingCartService,
             INotyfService notyfService,
             IUserService userService,
+            IStorageService storageService,
             ITrainerService trainerService,
 
             UserManager<User> userManager)
@@ -38,6 +41,7 @@
             this.shoppingCartService = shoppingCartService;
             this.notyfService = notyfService;
             this.userService = userService;
+            this.storageService = storageService;
             this.trainerService = trainerService;
             this.userManager = userManager;
         }
@@ -54,12 +58,11 @@
         }
 
 
-        [HttpPost]   
+        [HttpPost]
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCourse(CourseFormModel courseModel)
         {
-           
             if (!this.courseService.CheckIfCourseCategoryExists(courseModel.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(courseModel.CategoryId), CategoryNotExists);
@@ -72,7 +75,6 @@
             }
 
             int trainerId = await this.trainerService.GetTrainerIdByUserId(User.Id());
-
             int courseId = await this.courseService.CreateCourse(
                                  User.Id(),
                                  trainerId,
@@ -80,7 +82,9 @@
                                  courseModel.Description,
                                  courseModel.Price,
                                  courseModel.CategoryId,
-                                 courseModel.PictureFile);
+                                 courseModel.PictureFile.FileName);
+
+            await this.storageService.SaveFile(@"\assets\img\courses", courseModel.PictureFile);
 
             return RedirectToAction(nameof(MyCourses));
         }
@@ -93,7 +97,7 @@
             var user = await userManager.GetUserAsync(HttpContext.User);
             int courseCreatorId = await this.courseService.GetCourseCreatorId(id);
             int currentTrainerId = await this.trainerService.GetTrainerIdByUserId(User.Id());
-          
+
             if (currentTrainerId == courseCreatorId || await userManager.IsInRoleAsync(user, AdminRole))
             {
                 var course = await this.courseService.GetCourseById(id);
@@ -118,11 +122,11 @@
         }
 
 
-        [HttpPost] 
+        [HttpPost]
         [Authorize(Roles = $"{AdminRole}, {TrainerRole}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditCourse(int id, CourseFormModel courseModel)
-        {           
+        {
             if (!this.courseService.CheckIfCourseCategoryExists(courseModel.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(courseModel.CategoryId), CategoryNotExists);
@@ -141,12 +145,14 @@
                                 courseModel.Description,
                                 courseModel.Price,
                                 courseModel.CategoryId,
-                                courseModel.PictureFile);
-
+                                courseModel.PictureFile.FileName);
+            
             if (isEdited == false)
             {
                 return BadRequest();
             }
+
+            await this.storageService.SaveFile(@"\assets\img\courses", courseModel.PictureFile);
 
             return RedirectToAction(nameof(MyCourses));
         }
@@ -166,7 +172,7 @@
                 {
                     Id = course.Id,
                     Name = course.Name,
-                    Description = course.Description,   
+                    Description = course.Description,
                     Price = course.Price,
                     ImageUrl = course.ImageUrl,
                     CategoryName = course.CategoryName,
@@ -177,7 +183,7 @@
 
                 allCoursesViewModel.Add(viewModel);
             }
-        
+
             return View(allCoursesViewModel);
         }
 
@@ -227,9 +233,9 @@
         {
             var courseDetails = await courseService.GetCourseDetails(id);
             bool hasCourse = false;
-          
+
             hasCourse = await this.userService.CheckIfUserHasCourse(User.Id(), id);
-           
+
             var courseDetailsViewModel = new CourseDetailsViewModel
             {
                 Id = courseDetails.Id,
@@ -267,7 +273,7 @@
                 return RedirectToAction(nameof(AllCourses));
             }
 
-            return Unauthorized();         
+            return Unauthorized();
         }
     }
 }
