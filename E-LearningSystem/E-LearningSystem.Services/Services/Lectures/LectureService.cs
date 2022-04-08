@@ -2,7 +2,6 @@
 {
     using Microsoft.EntityFrameworkCore;
     using E_LearningSystem.Data.Data;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services.Lectures.Models;
@@ -11,31 +10,15 @@
 
     public class LectureService : ILectureService
     {
-
         private readonly ELearningSystemDbContext dbContext;
-        private readonly IWebHostEnvironment webHostEnvironment;
-
-        public LectureService(ELearningSystemDbContext dbContext, IWebHostEnvironment webHostEnvironment)
+       
+        public LectureService(ELearningSystemDbContext dbContext)
         {
-            this.dbContext = dbContext;
-            this.webHostEnvironment = webHostEnvironment;
+            this.dbContext = dbContext;          
         }
 
-
-        public async Task<int> AddLectureToCourse(int courseId, string name, string description, IEnumerable<IFormFile> resourceFiles)
-        {
-            List<Resource> resources = new List<Resource>();           
-            foreach (var file in resourceFiles)
-            {
-                string detailPath = Path.Combine(@"\assets\resources", file.FileName);
-                using (var stream = new FileStream(webHostEnvironment.WebRootPath + detailPath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-            }
-
-            resources = GetResources(resourceFiles);
-
+        public async Task<int> AddLectureToCourse(int courseId, string name, string description, List<Resource> resources)
+        {                                   
             var lecture = new Lecture
             {
                 Name = name,
@@ -69,8 +52,7 @@
             lecture.Resources = resources;
 
             foreach (var resource in lecture.Resources)
-            {
-                File.Delete(Path.Combine(webHostEnvironment.WebRootPath, resource.Name));
+            {               
                 this.dbContext.Resources.Remove(resource);
             }
 
@@ -81,22 +63,9 @@
         }
 
 
-        public async Task<bool> EditLecture(int lectureId, string name, string description, IEnumerable<IFormFile> resourceFiles)
-        {
-            List<Resource> resources = new List<Resource>();
-            
-            foreach (var file in resourceFiles)
-            {
-                string detailPath = Path.Combine(@"\assets\resources", file.FileName);
-                using (var stream = new FileStream(webHostEnvironment.WebRootPath + detailPath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-            }
-
-            resources = GetResources(resourceFiles);
+        public async Task<bool> EditLecture(int lectureId, string name, string description, List<Resource> resources)
+        {           
             var lecture = this.dbContext.Lectures.Find(lectureId);
-
             if (lecture == null)
             {
                 return false;

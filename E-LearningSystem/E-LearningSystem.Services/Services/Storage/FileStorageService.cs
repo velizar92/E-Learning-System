@@ -20,5 +20,17 @@
                 await file.CopyToAsync(stream);
             }
         }
+
+        public async Task SaveFiles(string destinationFolderPath, IEnumerable<IFormFile> files)
+        {
+            foreach (var file in files)
+            {
+                string detailPath = Path.Combine(destinationFolderPath, file.FileName);
+                using (var stream = new FileStream(webHostEnvironment.WebRootPath + detailPath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+            }
+        }
     }
 }

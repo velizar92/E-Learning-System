@@ -1,13 +1,13 @@
 ﻿namespace E_LearningSystem.Services.Services
 {
-    using E_LearningSystem.Services.Services.Lectures.Models;
-    using Microsoft.AspNetCore.Http;
+    using E_LearningSystem.Data.Models;
+    using E_LearningSystem.Services.Services.Lectures.Models; 
 
     public interface ILectureService
     {
-        Task<int> AddLectureToCourse(int courseId, string name, string description, IEnumerable<IFormFile> resourceFiles);
+        Task<int> AddLectureToCourse(int courseId, string name, string description, List<Resource> resources);
 
-        Task<bool> EditLecture(int lectureId, string name, string description, IEnumerable<IFormFile> resourceFiles);
+        Task<bool> EditLecture(int lectureId, string name, string description, List<Resource> resources);
 
         Task<(bool, int)> DeleteLecture(int lectureId);
 

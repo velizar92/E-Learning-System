@@ -9,14 +9,17 @@
     using E_LearningSystem.Web.Models.Lecture;
     using E_LearningSystem.Services.Services.Users;
     using E_LearningSystem.Infrastructure.Extensions;
+    using E_LearningSystem.Services.Services.Storage;
 
     using static E_LearningSystem.Infrastructure.Constants.IdentityConstants;
+    using static E_LearningSystem.Infrastructure.Constants.MimeTypeConstants;
 
     public class LecturesController : Controller
     {
         private readonly ILectureService lectureService;
         private readonly IUserService userService;
         private readonly INotyfService notyfService;
+        private readonly IStorageService storageService;
         private readonly UserManager<User> userManager;
 
 
@@ -24,11 +27,13 @@
             ILectureService lectureService,
             IUserService userService,
             INotyfService notyfService,
+            IStorageService storageService,
             UserManager<User> userManagerService)
         {
             this.lectureService = lectureService;
             this.userService = userService;
             this.notyfService = notyfService;
+            this.storageService = storageService;
             this.userManager = userManagerService;
         }
 
@@ -46,21 +51,27 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateLecture(
             int id,
-            CreateLectureFormModel lectureModel
-            )
-        {
-           
+            CreateLectureFormModel lectureModel)
+        {    
             if (!ModelState.IsValid)
             {
                 return View(lectureModel);
             }
 
+            var resources = GetResources(lectureModel.Files);
+
             int lectureId = await this.lectureService.AddLectureToCourse(
                                 id,
                                 lectureModel.Name,
                                 lectureModel.Description,
-                                lectureModel.Files);
+                                resources);
 
+            if (lectureId == -1)
+            {
+                return BadRequest();
+            }
+
+            await storageService.SaveFiles(@"\assets\resources", lectureModel.Files);
             return RedirectToAction("Details", "Courses", new { id });
         }
 
@@ -107,8 +118,15 @@
                 return NotFound();
             }
 
-            bool isEdited = await this.lectureService.EditLecture(id, lectureModel.Name, lectureModel.Description, lectureModel.Files);
+            var resources = GetResources(lectureModel.Files);
+            bool isEdited = await this.lectureService.EditLecture(id, lectureModel.Name, lectureModel.Description, resources);
 
+            if (isEdited == false)
+            {
+                return BadRequest();
+            }
+
+            await storageService.SaveFiles(@"\assets\resources", lectureModel.Files);
             return RedirectToAction(nameof(Details), new { id });
         }
 
@@ -149,6 +167,26 @@
             }
 
             return BadRequest();
+        }
+
+        private List<Resource> GetResources(IEnumerable<IFormFile> resourceFiles)
+        {
+            List<Resource> resources = new List<Resource>();
+            int tempResourceId = 1;
+
+            foreach (var resourceFile in resourceFiles)
+            {
+                if (resourceFile.ContentType == PDF)
+                    tempResourceId = 3;
+                else if (resourceFile.ContentType == MP4)
+                    tempResourceId = 2;
+                else
+                    tempResourceId = 1;
+
+                resources.Add(new Resource { Name = resourceFile.FileName, ResourceTypeId = tempResourceId });
+            }
+
+            return resources;
         }
 
     }
