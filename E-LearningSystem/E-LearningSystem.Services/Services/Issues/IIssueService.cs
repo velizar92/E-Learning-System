@@ -4,11 +4,11 @@
 
     public interface IIssueService
     {
-        Task<int> CreateIssue(string userId, int courseId, string title, string description);
+        Task<(bool, string)> CreateIssue(string userId, int courseId, string title, string description);
 
-        Task<bool> EditIssue(int issueId, string title, string description);
+        Task<(bool, string)> EditIssue(int issueId, string title, string description);
 
-        Task<bool> DeleteIssue(int issueId);
+        Task<(bool, string)> DeleteIssue(int issueId);
 
         Task<IssueDetailsServiceModel> GetIssueDetails(int issueId);
 

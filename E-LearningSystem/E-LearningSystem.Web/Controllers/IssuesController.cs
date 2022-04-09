@@ -49,7 +49,12 @@
                 return View(issueModel);
             }
 
-            int issueId = await this.issueService.CreateIssue(userId, id, issueModel.Title, issueModel.Description);
+           var(isCreated, errorMessage) = await this.issueService.CreateIssue(userId, id, issueModel.Title, issueModel.Description);
+
+            if (isCreated == false)
+            {
+                return BadRequest(errorMessage);
+            }
 
             return RedirectToAction(nameof(MyReportedIssues), new { id });
         }
@@ -82,11 +87,11 @@
                 return View(issueModel);
             }
 
-            bool isEdited = await this.issueService.EditIssue(id, issueModel.Title, issueModel.Description);
+            var (isEdited, errorMessage) = await this.issueService.EditIssue(id, issueModel.Title, issueModel.Description);
 
             if (isEdited == false)
             {
-                return BadRequest();
+                return BadRequest(errorMessage);
             }
 
             return RedirectToAction(nameof(MyReportedIssues), new { id });
@@ -97,11 +102,11 @@
         [Authorize(Roles = $"{TrainerRole}, {LearnerRole}")]
         public async Task<IActionResult> FixIssue(int issueId, int courseId)
         {
-            bool isDeleted = await this.issueService.DeleteIssue(issueId);
+            var (isDeleted, errorMessage) = await this.issueService.DeleteIssue(issueId);
 
             if (isDeleted == false)
             {
-                return BadRequest();
+                return BadRequest(errorMessage);
             }
 
             return RedirectToAction(nameof(MyIssues), new { courseId });

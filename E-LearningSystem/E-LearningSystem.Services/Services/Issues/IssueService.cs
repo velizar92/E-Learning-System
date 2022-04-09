@@ -15,7 +15,7 @@
         }
 
 
-        public async Task<int> CreateIssue(string userId, int courseId, string title, string description)
+        public async Task<(bool, string)> CreateIssue(string userId, int courseId, string title, string description)
         {
             var course = await this.dbContext
                              .Courses
@@ -24,7 +24,7 @@
 
             if (course == null)
             {
-                return -1;
+                return (false, "Invalid course id.");
             }
 
             var issue = new Issue()
@@ -38,39 +38,41 @@
             course.Issues.Add(issue);           
             await this.dbContext.SaveChangesAsync();
 
-            return issue.Id;
+            return (true, null);
         }
 
 
-        public async Task<bool> DeleteIssue(int issueId)
+        public async Task<(bool, string)> DeleteIssue(int issueId)
         {
             var issue = await this.dbContext.Issues.FirstOrDefaultAsync(i => i.Id == issueId);
 
             if (issue == null)
             {
-                return false;
+                return (false, "Invalid issue id.");
             }
 
             this.dbContext.Issues.Remove(issue);
             await this.dbContext.SaveChangesAsync();
-            return true;
+
+            return (true, null);
         }
 
 
-        public async Task<bool> EditIssue(int issueId, string title, string description)
+        public async Task<(bool, string)> EditIssue(int issueId, string title, string description)
         {
             var issue = await this.dbContext.Issues.FirstOrDefaultAsync(i => i.Id == issueId);
 
             if (issue == null)
             {
-                return false;
+                return (false, "Invalid issue id.");
             }
 
             issue.Title = title;
             issue.Description = description;
 
             await this.dbContext.SaveChangesAsync();
-            return true;
+
+            return (true, null);
         }
 
 

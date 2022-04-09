@@ -85,6 +85,24 @@ namespace E_LearningSystem.Tests
                         Price = 100.00,
                         ImageUrl = "testUrl",
                         CourseCategoryId = 1,
+                        Issues = new List<Issue>
+                        {
+                            new Issue
+                            {
+                                Id = 1,
+                                Title = "First Issue",
+                                Description = "First Issue Description",
+                                UserId = "EEEEEEEE-6666-6666-6666-331431D13211"
+                            },
+                            new Issue
+                            {
+                                Id = 2,
+                                Title = "Second Issue",
+                                Description = "Second Issue Description",
+                                UserId = "EEEEEEEE-6666-6666-6666-331431D13211"
+                            },
+
+                        },
                         CourseUsers = new List<CourseUser>
                         {
                             new CourseUser
