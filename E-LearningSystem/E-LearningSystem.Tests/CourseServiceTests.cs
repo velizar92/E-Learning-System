@@ -1,13 +1,14 @@
 ﻿namespace E_LearningSystem.Tests
 {
     using System.Linq;
-    using E_LearningSystem.Services.Services;
-    using Microsoft.Extensions.DependencyInjection;
-    using NUnit.Framework;
-    using System.Threading.Tasks;
-    using Microsoft.EntityFrameworkCore;
-    using E_LearningSystem.Services.Services.Courses.Models;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using NUnit.Framework;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.DependencyInjection;
+    using E_LearningSystem.Services.Services;
+    using E_LearningSystem.Services.Services.Courses.Models;
+    using E_LearningSystem.Services.Services.Lectures.Models;
 
     public class CourseServiceTests
     {
@@ -307,6 +308,97 @@
 
             //Assert
             Assert.AreEqual(expectedTrainerId, actualTrainerId);
+        }
+
+
+        [Test]
+        public async Task GetMyCourses_With_Passed_UserId_Should_Return_Count_Of_My_Courses()
+        {
+            //Arrange
+            int expectedCoursesCount = 1;
+            string userId = "EC90AD4D-7C94-4BAC-B04C-331431D132D5";
+            var courseService = serviceProvider.GetService<ICourseService>();
+
+            //Act
+            var myCourses = await courseService.GetMyCourses(userId);
+            int actualCoursesCount = myCourses.Count();
+
+            //Assert
+            Assert.AreEqual(expectedCoursesCount, actualCoursesCount);
+        }
+
+
+        [Test]
+        public async Task GetMyCourses_With_Passed_TrainerId_Should_Return_Count_Of_My_Courses()
+        {
+            //Arrange
+            int expectedCoursesCount = 1;
+            int trainerId = 1;
+            var courseService = serviceProvider.GetService<ICourseService>();
+
+            //Act
+            var myCourses = await courseService.GetMyCourses(trainerId);
+            int actualCoursesCount = myCourses.Count();
+
+            //Assert
+            Assert.AreEqual(expectedCoursesCount, actualCoursesCount);
+        }
+
+
+
+        [Test]
+        public async Task GetCourseDetails_Should_Get_Course_Details()
+        {
+            //Arrange
+            CourseDetailsServiceModel expectedCourseDetails = new CourseDetailsServiceModel
+            {
+                Id = 1,
+                Name = "C# Basics",
+                Description = "C# basics description",
+                Price = 100.00,
+                ImageUrl = "testUrl",
+                Lectures = new List<LectureServiceModel>
+                        {
+                            new LectureServiceModel
+                            {
+                                Id = 1,
+                                Name = "Lecture 1",
+                                Description = "Lecture 1 description",
+                            },
+                            new LectureServiceModel
+                            {
+                                Id = 2,
+                                Name = "Lecture 2",
+                                Description = "Lecture 2 description",
+                            },
+                            new LectureServiceModel
+                            {
+                                Id = 3,
+                                Name = "Lecture 3",
+                                Description = "Lecture 3 description",
+                            }
+                        }
+            };
+
+            int courseId = 1;
+            var courseService = serviceProvider.GetService<ICourseService>();
+
+            //Act
+            var actualCourseDetails = await courseService.GetCourseDetails(courseId);
+
+            //Assert
+            Assert.AreEqual(expectedCourseDetails.Id, actualCourseDetails.Id);
+            Assert.AreEqual(expectedCourseDetails.Name, actualCourseDetails.Name);
+            Assert.AreEqual(expectedCourseDetails.Description, actualCourseDetails.Description);
+            Assert.AreEqual(expectedCourseDetails.Price, actualCourseDetails.Price);
+            Assert.AreEqual(expectedCourseDetails.ImageUrl, actualCourseDetails.ImageUrl);
+
+            for (int i = 0; i < expectedCourseDetails.Lectures.Count(); i++)
+            {
+                Assert.AreEqual(expectedCourseDetails.Lectures.ElementAt(i).Id, actualCourseDetails.Lectures.ElementAt(i).Id);
+                Assert.AreEqual(expectedCourseDetails.Lectures.ElementAt(i).Name, actualCourseDetails.Lectures.ElementAt(i).Name);
+                Assert.AreEqual(expectedCourseDetails.Lectures.ElementAt(i).Description, actualCourseDetails.Lectures.ElementAt(i).Description);
+            }   
         }
     }
 }
