@@ -25,7 +25,7 @@ namespace E_LearningSystem.Tests
             DbContext = new ELearningSystemDbContext(options);
      
             DbContext.Database.EnsureCreated();
-            SeedDbAsync();
+            SeedDb();
         }
 
         public void Dispose()
@@ -33,7 +33,7 @@ namespace E_LearningSystem.Tests
             _connection.Close();
         }
 
-        private void SeedDbAsync()
+        private void SeedDb()
         {
             List<User> users = new List<User>()
             {
@@ -124,6 +124,12 @@ namespace E_LearningSystem.Tests
                                          UserId = "EEEEEEEE-6666-6666-6666-331431D13211"
                                     }
                                 }
+                            },
+                            new Lecture
+                            {
+                                Id = 3,
+                                Name = "Lecture 3",
+                                Description = "Lecture 3 description",
                             }
                         }
                     },

@@ -1,11 +1,13 @@
 ﻿namespace E_LearningSystem.Tests
-{   
+{
     using NUnit.Framework;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using E_LearningSystem.Services.Services;
     using Microsoft.Extensions.DependencyInjection;
-  
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class CommentServiceTests
     {
         private ServiceProvider serviceProvider;
@@ -23,7 +25,7 @@
                 .BuildServiceProvider();
         }
 
-      
+
         [Test]
         public async Task CreateComment_Should_Create_Comment()
         {
@@ -142,5 +144,73 @@
             //Assert
             Assert.AreEqual(expectedCommentContent, comment);
         }
-    }     
+
+
+        [Test]
+        public async Task GetLectureComments_Should_Return_All_Lecture_Comments()
+        {
+            //Arrange
+            int lectureId = 1;
+            List<AllLectureCommentsServiceModel> expectedComments = new List<AllLectureCommentsServiceModel>()
+            {
+                  new AllLectureCommentsServiceModel
+                    {
+                        UserId = "EEEEEEEE-6666-6666-6666-331431D13211",
+                        Content = "Lecture 1 comment",
+                        LectureId = 1,
+                    }
+            };
+
+            var commentService = serviceProvider.GetService<ICommentService>();
+
+            //Act
+            var lectureComments = await commentService.GetLectureComments(lectureId);
+            var lectureCommentsList = lectureComments.ToList();
+
+            //Assert
+            for (int i = 0; i < expectedComments.Count(); i++)
+            {
+                Assert.AreEqual(expectedComments[i].LectureId, lectureCommentsList[i].LectureId);
+                Assert.AreEqual(expectedComments[i].UserId, lectureCommentsList[i].UserId);
+                Assert.AreEqual(expectedComments[i].Content, lectureCommentsList[i].Content);
+            }       
+        }
+
+
+        [Test]
+        public async Task GetLectureComments_Should_Return_Empty_Collection_If_Is_Passed_Invalid_LectureId()
+        {
+            //Arrange
+            int invalidLectureId = -1;
+            List<AllLectureCommentsServiceModel> expectedComments = new List<AllLectureCommentsServiceModel>();          
+
+            var commentService = serviceProvider.GetService<ICommentService>();
+
+            //Act
+            var lectureComments = await commentService.GetLectureComments(invalidLectureId);
+
+            //Assert
+            Assert.AreEqual(expectedComments.Count, lectureComments.Count());
+        }
+
+
+        [Test]
+        public async Task GetLectureComments_Should_Return_Empty_Collection_If_There_Are_No_Comments_For_The_Particular_Lecture()
+        {
+            //Arrange
+            int lectureId = 3;
+            List<AllLectureCommentsServiceModel> expectedComments = new List<AllLectureCommentsServiceModel>();
+
+            var commentService = serviceProvider.GetService<ICommentService>();
+
+            //Act
+            var lectureComments = await commentService.GetLectureComments(lectureId);
+
+            //Assert
+            Assert.AreEqual(expectedComments.Count, lectureComments.Count());
+        }
+
+
+    }
 }
+
