@@ -139,7 +139,7 @@
                 return View(courseModel);
             }
 
-            var isEdited = await courseService.EditCourse(
+            var (isEdited, errorMessage) = await courseService.EditCourse(
                                 id,
                                 courseModel.Name,
                                 courseModel.Description,
@@ -149,7 +149,7 @@
             
             if (isEdited == false)
             {
-                return BadRequest();
+                return BadRequest(errorMessage);
             }
 
             await this.storageService.SaveFile(@"\assets\img\courses", courseModel.PictureFile);
@@ -263,11 +263,11 @@
 
             if (currentTrainerId == courseCreatorId || await userManager.IsInRoleAsync(user, AdminRole))
             {
-                var result = await courseService.DeleteCourse(id);
+                var (isDeleted, errorMessage) = await courseService.DeleteCourse(id);
 
-                if (result == false)
+                if (isDeleted == false)
                 {
-                    return BadRequest();
+                    return BadRequest(errorMessage);
                 }
 
                 return RedirectToAction(nameof(AllCourses));

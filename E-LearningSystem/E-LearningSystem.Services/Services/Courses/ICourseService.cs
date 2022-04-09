@@ -1,15 +1,14 @@
 ﻿namespace E_LearningSystem.Services.Services
 {
-    using Microsoft.AspNetCore.Http;
     using E_LearningSystem.Services.Services.Courses.Models;
     
     public interface ICourseService
     {
         Task<int> CreateCourse(string userId, int trainerId, string name, string description, double price, int categoryId, string pictureFileName);
 
-        Task<bool> EditCourse(int courseId, string name, string description, double price, int categoryId, string pictureFileName);
+        Task<(bool, string)> EditCourse(int courseId, string name, string description, double price, int categoryId, string pictureFileName);
 
-        Task<bool> DeleteCourse(int courseId);
+        Task<(bool, string)> DeleteCourse(int courseId);
 
         bool CheckIfCourseCategoryExists(int categoryId);
 

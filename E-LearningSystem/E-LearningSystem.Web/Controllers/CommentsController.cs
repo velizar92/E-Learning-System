@@ -67,31 +67,6 @@
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> EditComment(int commentId)
-        {
-            var comment = await this.commentService.GetCommentById(commentId);
-
-            return View(comment);
-        }
-
-
-        [HttpPost]
-        [Authorize(Roles = LearnerRole)]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditComment(int commentId, string content)
-        {
-            var (isEdited, lectureId) = await this.commentService.EditComment(commentId, content);
-
-            if (isEdited == false)
-            {
-                return BadRequest();
-            }
-
-            return RedirectToAction(nameof(AllComments), new { lectureId });
-        }
-
-
 
         public async Task<IActionResult> DeleteComment(int commentId)
         {

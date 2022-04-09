@@ -56,13 +56,13 @@
         }
 
 
-        public async Task<bool> DeleteCourse(int courseId)
+        public async Task<(bool, string)> DeleteCourse(int courseId)
         {
             var course = await this.dbContext.Courses.FirstOrDefaultAsync(c => c.Id == courseId);
 
             if (course == null)
             {
-                return false;
+                return (false, "Unknown course.");
             }
 
             var lectures = this.dbContext.Lectures.Where(r => r.CourseId == courseId).ToList();
@@ -81,17 +81,17 @@
             this.dbContext.Courses.Remove(course);
             await this.dbContext.SaveChangesAsync();
 
-            return true;
+            return (true, null);
         }
 
 
-        public async Task<bool> EditCourse(int courseId, string name, string description, double price, int categoryId, string pictureFileName)
+        public async Task<(bool, string)> EditCourse(int courseId, string name, string description, double price, int categoryId, string pictureFileName)
         {
             var course = await this.dbContext.Courses.FindAsync(courseId);
 
             if (course == null)
             {
-                return false;
+                return (false, "Unknown course.");
             }
 
             course.ImageUrl = pictureFileName;
@@ -102,7 +102,7 @@
 
             await this.dbContext.SaveChangesAsync();
 
-            return true;
+            return (true, null);
         }
 
 

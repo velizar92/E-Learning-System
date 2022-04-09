@@ -91,7 +91,12 @@ namespace E_LearningSystem.Tests
                             {
                                 UserId = "EC90AD4D-7C94-4BAC-B04C-331431D132D5",
                                 CourseId = 1
-                            }
+                            },
+                             new CourseUser
+                            {
+                                UserId = "EEEEEEEE-6666-6666-6666-331431D13211",
+                                CourseId = 1
+                            },
                         },
                         Lectures = new List<Lecture>
                         {

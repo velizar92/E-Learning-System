@@ -61,7 +61,7 @@
                 return View(courseModel);
             }
 
-            var isEdited = await this.courseService.EditCourse(
+            var (isEdited, errorMessage) = await this.courseService.EditCourse(
                                 id,
                                 courseModel.Name,
                                 courseModel.Description,
@@ -71,7 +71,7 @@
 
             if (isEdited == false)
             {
-                return BadRequest();
+                return BadRequest(errorMessage);
             }
 
             return RedirectToAction(nameof(Index));
@@ -80,11 +80,11 @@
 
         public async Task<IActionResult> DeleteCourse(int id)
         {          
-            var result = await courseService.DeleteCourse(id);
+            var (result, errorMessage) = await courseService.DeleteCourse(id);
 
             if (result == false)
             {
-                return BadRequest();
+                return BadRequest(errorMessage);
             }
 
             return RedirectToAction(nameof(Index));
