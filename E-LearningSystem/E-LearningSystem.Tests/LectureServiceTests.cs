@@ -1,15 +1,13 @@
 ﻿namespace E_LearningSystem.Tests
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using E_LearningSystem.Data.Models;
     using E_LearningSystem.Services.Services;
     using E_LearningSystem.Services.Services.Lectures.Models;
     using Microsoft.Extensions.DependencyInjection;
     using NUnit.Framework;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public class LectureServiceTests
     {
@@ -80,7 +78,7 @@
             int lectureId = 1;
 
             //Act
-            var actualResult = await lectureService.DeleteLecture(lectureId);           
+            var actualResult = await lectureService.DeleteLecture(lectureId);
             var lectureResult = sqliteDbContext.DbContext.Lectures.FirstOrDefault(l => l.Id == 1);
 
             Assert.AreEqual(null, lectureResult);
@@ -123,6 +121,66 @@
 
 
         [Test]
+        public async Task EditLecture_Should_Return_True_If_Lecture_Is_Edited()
+        {
+            //Arrange          
+            var lectureService = serviceProvider.GetService<ILectureService>();
+            bool expectedResult = true;
+
+            //Act
+            var actualResult = await lectureService.EditLecture(1, "Lecture 1", "Lecture 1 new description", new List<Resource> { });
+
+            //Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+
+        [Test]
+        public async Task EditLecture_Should_Edit_Lecture()
+        {
+            //Arrange          
+            var lectureService = serviceProvider.GetService<ILectureService>();
+            Lecture expectedLecture = new Lecture
+            {
+                Name = "Lecture 1",
+                Description = "Lecture 1 new description",
+                Resources = new List<Resource> {
+                                new Resource
+                                    {
+                                        Id = 1,
+                                        Name = "Video 1",
+                                        ResourceTypeId = 2
+                                    }
+                }
+            };
+
+            //Act
+            await lectureService.EditLecture(1, "Lecture 1", "Lecture 1 new description", new List<Resource> { });
+            var actualLecture = sqliteDbContext.DbContext.Lectures.FirstOrDefault(l => l.Id == 1);
+
+            //Assert
+            Assert.AreEqual(expectedLecture.Name, actualLecture.Name);
+            Assert.AreEqual(expectedLecture.Description, actualLecture.Description);
+            Assert.AreEqual(expectedLecture.Resources.Count, actualLecture.Resources.Count);
+        }
+
+        [Test]
+        public async Task EditLecture_Should_Return_False_If_Is_Passed_Invalid_LectureId()
+        {
+            //Arrange          
+            var lectureService = serviceProvider.GetService<ILectureService>();
+            bool expectedResult = false;
+            int invalidLectureId = -1;
+
+            //Act
+            var actualResult = await lectureService.EditLecture(invalidLectureId, "Lecture 1", "Lecture 1 new description", new List<Resource> { });
+
+            //Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+
+        [Test]
         public async Task GetLectureById_Should_Return_Correct_Lecture()
         {
             //Arrange
@@ -142,7 +200,66 @@
             Assert.AreEqual(expLecture.CourseId, actualLecture.CourseId);
             Assert.AreEqual(expLecture.Name, actualLecture.Name);
             Assert.AreEqual(expLecture.Description, actualLecture.Description);
-          
+        }
+
+
+        [Test]
+        public async Task GetLectureDetails_Should_Return_Correct_Lecture_Details()
+        {
+            //Arrange
+            var lectureService = serviceProvider.GetService<ILectureService>();
+            int lectureId = 1;
+            LectureDetailsServiceModel expLectureDetails = new LectureDetailsServiceModel()
+            {
+                CourseId = 1,
+                Name = "Lecture 1",
+                Description = "Lecture 1 description",
+                ResourceUrls = new[] { "Video 1" }
+            };
+
+            //Act
+            var actualLectureDetails = await lectureService.GetLectureDetails(lectureId);
+
+            //Assert
+            Assert.AreEqual(expLectureDetails.CourseId, actualLectureDetails.CourseId);
+            Assert.AreEqual(expLectureDetails.Name, actualLectureDetails.Name);
+            Assert.AreEqual(expLectureDetails.Description, actualLectureDetails.Description);
+            for (int i = 0; i < expLectureDetails.ResourceUrls.Length; i++)
+            {
+                Assert.AreEqual(expLectureDetails.ResourceUrls[i], actualLectureDetails.ResourceUrls[i]);
+            }
+        }
+
+
+        [Test]
+        public async Task GetLectureIdByResourceId_Should_Return_Correct_Lecture()
+        {
+            //Arrange
+            var lectureService = serviceProvider.GetService<ILectureService>();
+            int expectedLectureId = 1;
+            int resourceId = 1;
+
+            //Act
+            int actualLectureId = await lectureService.GetLectureIdByResourceId(resourceId);
+
+            //Assert
+            Assert.AreEqual(expectedLectureId, actualLectureId);
+        }
+
+
+        [Test]
+        public async Task GetLectureIdByResourceId_Should_Return_MinusOne_If_Is_Passed_Invalid_ResourceId()
+        {
+            //Arrange
+            var lectureService = serviceProvider.GetService<ILectureService>();
+            int expectedLectureId = -1;
+            int invalidResourceId = -1;
+
+            //Act
+            int actualResultId = await lectureService.GetLectureIdByResourceId(invalidResourceId);
+
+            //Assert
+            Assert.AreEqual(expectedLectureId, actualResultId);
         }
     }
 }

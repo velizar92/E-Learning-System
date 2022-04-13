@@ -67,6 +67,13 @@ namespace E_LearningSystem.Tests
                 new CourseCategory() { Id = 3,   Name = "Algorithms"},
             };
 
+            List<ResourceType> resourceTypes = new List<ResourceType>
+            {
+                new ResourceType{ Name = "PPT Presentation" },
+                new ResourceType{ Name = "Video MP4" },
+                new ResourceType{ Name = "PDF Document" },
+            };
+
 
             var trainer = new Trainer()
             {
@@ -131,6 +138,15 @@ namespace E_LearningSystem.Tests
                                          Content = "Lecture 1 comment",
                                          UserId = "EEEEEEEE-6666-6666-6666-331431D13211"
                                     }
+                                },
+                                Resources = new List<Resource>
+                                {
+                                    new Resource
+                                    {
+                                        Id = 1,
+                                        Name = "Video 1",
+                                        ResourceTypeId = 2
+                                    }
                                 }
                             },
                             new Lecture
@@ -161,6 +177,7 @@ namespace E_LearningSystem.Tests
 
              DbContext.Users.AddRange(users);
              DbContext.CourseCategories.AddRange(courseCategories);
+             DbContext.ResourceTypes.AddRange(resourceTypes);
              DbContext.Trainers.Add(trainer);
              DbContext.SaveChanges();
         }

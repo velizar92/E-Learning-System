@@ -64,7 +64,6 @@
 
 
 
-        //NOT TESTED YET
         public async Task<bool> EditLecture(int lectureId, string name, string description, List<Resource> resources)
         {           
             var lecture = this.dbContext.Lectures.Find(lectureId);
@@ -126,7 +125,10 @@
                             .Resources
                             .FirstOrDefaultAsync(r => r.Id == resourceId);
 
-            return resource.LectureId;
+            if(resource != null)
+                return resource.LectureId;
+
+            return -1;
         }
 
 
