@@ -39,7 +39,6 @@
                 Description = "Test lecture description.",
             };
 
-
             //Act
             await lectureService.AddLectureToCourse(courseId, "C# Lecture 1", "Test lecture description.", null);
 
