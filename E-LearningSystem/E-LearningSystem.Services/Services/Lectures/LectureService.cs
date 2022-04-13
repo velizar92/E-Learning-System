@@ -63,6 +63,8 @@
         }
 
 
+
+        //NOT TESTED YET
         public async Task<bool> EditLecture(int lectureId, string name, string description, List<Resource> resources)
         {           
             var lecture = this.dbContext.Lectures.Find(lectureId);
