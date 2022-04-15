@@ -55,8 +55,7 @@
             string userId,           
             string searchTerm = null)
         {
-
-            List<Resource> myResources = new List<Resource>();
+            List<Resource> myResources = new List<Resource>();         
 
             var myCourses = await this.dbContext
                                     .Courses
@@ -64,7 +63,7 @@
                                     .Include(l => l.Lectures)
                                     .ThenInclude(l => l.Resources)
                                     .ToListAsync();
-
+            
             foreach (var course in myCourses)
             {
                 foreach (var lecture in course.Lectures)
@@ -93,43 +92,6 @@
                 }),
             };        
         }
-
-
-        public async Task<IEnumerable<AllResourcesServiceModel>> GetMyResources(string userId)
-        {
-            List<Resource> myResources = new List<Resource>();
-
-            var myCourses = await this.dbContext
-                                    .Courses
-                                    .Where(c => c.CourseUsers.Any(cu => cu.UserId == userId))
-                                    .Include(l => l.Lectures)
-                                    .ThenInclude(l => l.Resources)
-                                    .ToListAsync();
-
-            foreach (var course in myCourses)
-            {
-                foreach (var lecture in course.Lectures)
-                {
-                    foreach (var resource in lecture.Resources)
-                    {
-                        myResources.Add(resource);
-                    }
-                }
-            }
-
-            var resources = myResources.Select(r => new AllResourcesServiceModel
-            {
-                ResourceName = r.Name,
-                LectureName = r.Lecture.Name
-            });
-
-            return resources;         
-        }
-
-
-
-
-
 
     }
 }

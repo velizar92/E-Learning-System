@@ -8,9 +8,7 @@
 
         bool CheckIfResourceTypeExists(int resourceTypeId);
 
-        Task<IEnumerable<string>> GetAllResourceTypes();
-
-        Task<IEnumerable<AllResourcesServiceModel>> GetMyResources(string userId);
+        Task<IEnumerable<string>> GetAllResourceTypes();     
 
         Task<ResourceQueryServiceModel> GetAllMyResources(
             string userId,          
