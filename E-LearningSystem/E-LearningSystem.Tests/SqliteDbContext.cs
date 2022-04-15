@@ -1,5 +1,6 @@
 ﻿using E_LearningSystem.Data.Data;
 using E_LearningSystem.Data.Data.Models;
+using E_LearningSystem.Data.Enums;
 using E_LearningSystem.Data.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -57,6 +58,17 @@ namespace E_LearningSystem.Tests
                         Email = "ivan@example.com",
                         ProfileImageUrl = "ivan.jpg"
                     },
+                  new User
+                    {
+                        Id = "TTTTEEEE-6666-6666-6666-331431D17777",
+                        FirstName = "Georgi",
+                        LastName = "Gogov",
+                        UserName = "georgi@example.com",
+                        NormalizedUserName = "GEORGI@EXAMPLE.COM",
+                        Email = "georgi@example.com",
+                        ProfileImageUrl = "georgi.jpg"
+                    },
+                 
             };
 
 
@@ -82,6 +94,15 @@ namespace E_LearningSystem.Tests
                 CVUrl = "testUrl",
                 ProfileImageUrl = "TestUrl",
                 UserId = "EC90AD4D-7C94-4BAC-B04C-331431D132D5",
+                Status = TrainerStatus.Active,
+                Rating = 0,
+                Votes = new List<Vote>
+                {
+                    new Vote
+                    {
+                        UserId = "EEEEEEEE-6666-6666-6666-331431D13211",                     
+                    }
+                },
                 Courses = new List<Course>
                 {
                     new Course()
@@ -175,6 +196,7 @@ namespace E_LearningSystem.Tests
                 }
             };
 
+           
              DbContext.Users.AddRange(users);
              DbContext.CourseCategories.AddRange(courseCategories);
              DbContext.ResourceTypes.AddRange(resourceTypes);

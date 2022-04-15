@@ -47,8 +47,8 @@
             Assert.AreEqual(expLecture.CourseId, lecture.CourseId);
             Assert.AreEqual(expLecture.Name, lecture.Name);
             Assert.AreEqual(expLecture.Description, lecture.Description);
-
         }
+
 
         [Test]
         public async Task AddLectureToCourse_Should_Return_Minus_One_If_Is_Passed_Invalid_CourseId()
