@@ -67,6 +67,16 @@ Project Views:
   - All Reported Issues for course /Trainter Role/
 
     ![AllReportedIssues_TrainerView](https://user-images.githubusercontent.com/40525254/159506026-2241ccff-c3de-4f36-be90-8f5c8c8db132.jpg)
+    
+  - Course Management (Admin Role)
+
+    ![admin_coursemanagement](https://user-images.githubusercontent.com/40525254/163669568-cbe596c8-8537-4e69-b46b-fb041534018c.jpg)
+    
+  - Trainer Management (Admin Role)
+
+    ![admin_trainermanagement](https://user-images.githubusercontent.com/40525254/163669588-38c0b281-f278-40da-aadf-8b1663b66c22.jpg)
+
+
 
    
  
