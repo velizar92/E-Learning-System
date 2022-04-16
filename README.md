@@ -35,11 +35,12 @@ Project Views:
 
   - Course Details /Learner Role/
   
-    ![course-details](https://user-images.githubusercontent.com/40525254/159301415-72eff194-b140-4e88-9fa7-d1829d132f34.jpg)
+    ![course_details_learnerrole](https://user-images.githubusercontent.com/40525254/163674066-98144fd7-aab0-4bbf-a5b6-3975ec289902.jpg)
+
     
   - Course Details /Trainer Role/
 
-    ![course-details-trainer-view](https://user-images.githubusercontent.com/40525254/159505164-fffd57a3-1fae-428c-bd08-6bfd0dd15b05.jpg)
+    ![course_details_trainerrole](https://user-images.githubusercontent.com/40525254/163674138-1fb89c35-bc5a-4270-a7b4-fc01a89fa779.jpg)
 
 
   - Shopping Cart View
