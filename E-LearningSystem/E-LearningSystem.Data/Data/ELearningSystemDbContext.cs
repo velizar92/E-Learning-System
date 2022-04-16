@@ -48,10 +48,6 @@
             });
         }
 
-        public object FirstOrDefault()
-        {
-            throw new NotImplementedException();
-        }
 
         public override int SaveChanges()
         {
