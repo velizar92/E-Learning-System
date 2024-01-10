@@ -70,6 +70,8 @@ builder.Services.AddNotyf(config => {
 
 var app = builder.Build();
 
+SeedDatabase();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -82,7 +84,6 @@ else
 
 app.UseHttpsRedirection();
 
-SeedDatabase();
 
 app.UseStaticFiles();
 
