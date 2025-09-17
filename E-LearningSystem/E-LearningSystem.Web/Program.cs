@@ -36,16 +36,16 @@ builder.Services.AddControllersWithViews(options =>
         options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
     });
 
-builder.Services.AddTransient<ICourseService, CourseService>();
-builder.Services.AddTransient<ILectureService, LectureService>();
-builder.Services.AddTransient<IResourceService, ResourceService>();
-builder.Services.AddTransient<ITrainerService, TrainerService>();
-builder.Services.AddTransient<IShoppingCartService, ShoppingCartService>();
-builder.Services.AddTransient<ICommentService, CommentService>();
-builder.Services.AddTransient<IIssueService, IssueService>();
-builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<IStorageService, FileStorageService>();
-builder.Services.AddTransient<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<ILectureService, LectureService>();
+builder.Services.AddScoped<IResourceService, ResourceService>();
+builder.Services.AddScoped<ITrainerService, TrainerService>();
+builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IIssueService, IssueService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IStorageService, FileStorageService>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 builder.Services.Configure<FormOptions>(options => {
     options.ValueLengthLimit = int.MaxValue;
